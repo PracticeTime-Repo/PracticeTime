@@ -14,7 +14,8 @@ const App = () => {
     return storedUser !== null;
   };
 
-  // State to track current page
+  // State to track current page asdas
+  //home 
   const [currentPage, setCurrentPage] = useState("login");
 
   // Check authentication on initial load
