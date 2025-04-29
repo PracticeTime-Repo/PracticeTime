@@ -1,74 +1,104 @@
 /* Login.css - Updated with form styles */
 
-  
-  .loginWrapper {
-    display: flex;
-    height: calc(100vh - 80px);
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-  }
-  
+  /* Login Wrapper */
+.loginWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px);
+  width: 100%;
+  background-color: #f5f5f5;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Login Container */
+.loginContainer {
+  border-color: rgb(208, 144, 144);
+  width: 100%;
+  max-width: 360px;
+  background: #c0cdde;
+  color: #262626;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 12px;
+  padding: 35px 25px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  border-style: solid;
+}
+
+/* Logo/Image */
+.loginContainer img {
+  width: 70%;
+  margin: 0 auto 10px;
+  display: block;
+}
+
+/* Horizontal Rule */
+.loginContainer hr {
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: #e1e4e8;
+  margin: 10px 0 15px;
+}
+
+/* Error Message */
+.errorMessage {
+  background-color: #fff8f8;
+  color: #e53935;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border-left: 4px solid #e53935;
+  font-size: 14px;
+}
+
+/* Login Form */
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+/* Form Group */
+.formGroup {
+  width: 100%;
+  position: relative;
+}
+
+/* Input Fields */
+.formGroup input {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0 15px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 480px) {
   .loginContainer {
-    width: 320px;
-    margin: auto;
-    background: white;
-    color: #262626;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    padding: 25px 20px;
     border-radius: 10px;
-    padding: 35px 40px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
-  
-  .loginContainer img {
-    width: 70%;
-    margin: 0 auto 10px;
-    display: block;
-  }
-  
-  .loginContainer hr {
-    width: 100%;
-    border: none;
-    height: 1px;
-    background-color: #e1e4e8;
-    margin: 10px 0 15px;
-  }
-  
-  .errorMessage {
-    background-color: #fff8f8;
-    color: #e53935;
-    padding: 10px;
-    border-radius: 5px;
-    border-left: 3px solid #e53935;
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-  
-  .loginForm {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-  }
-  
-  .formGroup {
-    position: relative;
-    width: 100%;
-  }
-  
+
   .formGroup input {
-    width: 90%;
-    height: 45px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 0 15px;
-    font-size: 15px;
-    outline: none;
-    transition: border-color 0.3s;
+    height: 42px;
+    font-size: 14px;
   }
-  
+
+  .errorMessage {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+}
+
   .formGroup input:focus {
     border-color: #3f91d0;
   }
@@ -88,7 +118,7 @@
   }
   
   .loginButton:hover {
-    background: #3577ae;
+    background: #1a0560;
   }
   
   .loginButton:disabled {
