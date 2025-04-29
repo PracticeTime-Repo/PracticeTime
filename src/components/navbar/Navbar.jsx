@@ -1,8 +1,5 @@
-
-
 import React from 'react';
-import { Link } from 'react-router-dom';  // Import
-import "./Navbar.css";  // Ensure you have styles for both desktop and mobile views
+import "./Navbar.css";
 import { signOut } from "firebase/auth";
 import firebaseServices from "../firebase/firebaseSetup";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -12,43 +9,40 @@ const Navbar = ({ onNavigate }) => {
   const { auth } = firebaseServices;
 
   const handleHamburger = () => {
-    setShowmenu(!showmenu);  // Toggle the menu visibility on mobile view
+    setShowmenu(!showmenu);
   };
 
   const handleLogout = async () => {
     try {
-      await signOut(auth);  // Sign out user from Firebase
-      localStorage.removeItem("user");  // Remove user data from localStorage
-      onNavigate("login");  // Navigate to the login page
-      setShowmenu(false);  // Close the mobile menu after logout
+      await signOut(auth);
+      localStorage.removeItem("user");
+      onNavigate("login"); // Use onNavigate instead of useNavigate
+      setShowmenu(false);
     } catch (error) {
-      console.error("Logout error:", error);  // Log any logout errors
+      console.error("Logout error:", error);
     }
   };
 
-  // Function to navigate and close the menu
+  // Function to navigate & close menu
   const handleNavigation = (page) => {
-    onNavigate(page);  // Navigate to the desired page
-    setShowmenu(false);  // Close the mobile menu after navigation
+    onNavigate(page); // Use onNavigate prop
+    setShowmenu(false);
   };
 
   return (
     <div className="wrapper">
-      {/* Navigation Menu for Web and Mobile */}
       <nav className={showmenu ? "menu-mobile" : "menu-web"}>
         <ul>
-          {/* Navigation Items */}
-          <li onClick={() => handleNavigation("home")}>Home Page</li>
-          <li onClick={() => handleNavigation("start")}>Start</li> {/* Navigate to Start page */}
-          <li onClick={() => handleNavigation("progress")}>Progress</li>
-          <li onClick={handleLogout}>Log out</li>  {/* Logout functionality */}
+
+        <li onClick={() => handleNavigation("progress")}>Progress</li>
+          <li onClick={() => handleNavigation("start")}>Home Page</li>
+          
+          <li onClick={handleLogout}>Log out</li>
         </ul>
       </nav>
 
-
-      {/* Hamburger Menu for Mobile */}
       <div className="hamburger">
-        <button onClick={handleHamburger}><RxHamburgerMenu /></button>  {/* Display the hamburger icon */}
+        <button onClick={handleHamburger}><RxHamburgerMenu /></button>
       </div>
     </div>
   );
