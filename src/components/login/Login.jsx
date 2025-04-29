@@ -79,10 +79,21 @@ const Login = ({ onLoginSuccess }) => {
     }
   };
 
+  const navigateToHome = () => {
+    if (window.appNavigate) {
+      window.appNavigate('home'); // Navigate to the Home page
+    }
+  };
+
   return (
     <div className="loginWrapper">
       <div className="loginContainer">
-        <img src={PracticeTime} alt="Practice Time" />
+        <img 
+          src={PracticeTime} 
+          alt="Practice Time" 
+          style={{ cursor: 'pointer' }} // Makes the image clickable
+          onClick={navigateToHome} // Navigate to Home on click
+        />
         <hr />
         
         {error && <div className="errorMessage">{error}</div>}
@@ -116,8 +127,6 @@ const Login = ({ onLoginSuccess }) => {
             {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
           </button>
         </form>
-        
-        
       </div>
     </div>
   );

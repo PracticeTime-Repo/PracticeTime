@@ -1,9 +1,11 @@
+//App.jsx
 import React, { useState, useEffect } from 'react';
+import Home from './components/home/Home';
 import Quiz from './components/quiz/Quiz';
 import Login from './components/login/Login';
-import Home from './components/home/Home';
 import Navbar from './components/navbar/Navbar';
 import Progress from './components/progress/Progress';
+import Start from './components/start/start'; // ✅ Import start.jsx properly with capital 'S'
 
 const App = () => {
   // Check authentication status
@@ -14,11 +16,11 @@ const App = () => {
 
   // State to track current page
   const [currentPage, setCurrentPage] = useState("login");
-  
+
   // Check authentication on initial load
   useEffect(() => {
     if (isAuthenticated()) {
-      setCurrentPage("start");
+      setCurrentPage("home");
     } else {
       setCurrentPage("login");
     }
@@ -26,7 +28,6 @@ const App = () => {
 
   // Function to handle navigation
   const navigate = (page) => {
-    // Check if authentication is required
     if (page !== 'login' && !isAuthenticated()) {
       setCurrentPage('login');
       return;
@@ -45,19 +46,20 @@ const App = () => {
   // Render appropriate component based on currentPage
   const renderPage = () => {
     switch (currentPage) {
+      case "home":
+        return <Home />;    // Home.jsx page (✅ correct)
       case "start":
-        return <Home />;
+        return <Start />;   // Start.jsx page
       case "practice":
-        return <Quiz />;
-
+        return <Quiz />;    // Quiz.jsx page
       case "progress":
-        return <Progress />;
+        return <Progress />; // Progress.jsx page
       case "login":
       default:
         return <Login onLoginSuccess={() => navigate('start')} />;
     }
   };
-  
+
   return (
     <>
       {isAuthenticated() && <Navbar onNavigate={navigate} />}
