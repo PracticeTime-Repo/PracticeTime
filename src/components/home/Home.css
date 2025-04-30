@@ -1,4 +1,6 @@
+
 /* Base styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -40,6 +42,7 @@ body {
 
 .highlight {
   color: #4a90e2;
+  margin: left 25px;;
 }
 
 .practice-illustration {
