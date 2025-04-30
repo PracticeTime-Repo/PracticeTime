@@ -1,3 +1,4 @@
+//Header.jsx 
 import React from "react";
 
 function Header() {
@@ -59,7 +60,7 @@ function Header() {
         }
         .tagline {
           font-family: "Space Grotesk", sans-serif;
-          font-size: 60px;
+          font-size: 50px;
           font-weight: 650;
           line-height: 64px;
           letter-spacing: -1.2px;
@@ -83,4 +84,3 @@ function Header() {
 }
 
 export default Header;
-
