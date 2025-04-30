@@ -1,3 +1,4 @@
+//ContactForm.jsx
 "use client";
 import React, { useState } from "react";
 
@@ -248,7 +249,7 @@ function ContactForm() {
           width: 612px;
           padding: 40px;
           border-radius: 20px;
-          border: 1px solid #eee;
+          border: 1px solid #072d49;
           box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
           margin-top: 20px;
           background-color: #fff;
@@ -351,4 +352,3 @@ function ContactForm() {
 }
 
 export default ContactForm;
-
