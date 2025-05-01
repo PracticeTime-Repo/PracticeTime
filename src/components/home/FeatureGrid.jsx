@@ -12,14 +12,6 @@ function FeatureGrid() {
       backgroundColor: "rgba(250, 235, 120, 0.15)",
     },
     {
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/c7b884a0ca3a46bb1982fc7a90c66ee1bd63bc6b?placeholderIfAbsent=true",
-      altText: "Level-Based Practice",
-      title: "Personalized, Level-Based Practice Sheets",
-      description:
-        "Get customized sheets tailored to each learner's pace and ability",
-      backgroundColor: "rgba(255, 87, 87, 0.15)",
-    },
-    {
       image: "https://cdn.builder.io/api/v1/image/assets/TEMP/4465c59e41ba1c3e9f3b35818f0cbe024b0d885f?placeholderIfAbsent=true",
       altText: "Learn by Doing",
       title: "No Classes - Learn by Doing",
@@ -27,6 +19,15 @@ function FeatureGrid() {
         "Master concepts independently through focused, hands-on practice",
       backgroundColor: "rgba(126, 217, 86, 0.2)",
     },
+    {
+      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/c7b884a0ca3a46bb1982fc7a90c66ee1bd63bc6b?placeholderIfAbsent=true",
+      altText: "Level-Based Practice",
+      title: "Personalized, Level-Based Practice Sheets",
+      description:
+        "Get customized sheets tailored to each learner's pace and ability",
+      backgroundColor: "rgba(255, 87, 87, 0.15)",
+    },
+ 
     {
       image: "https://cdn.builder.io/api/v1/image/assets/TEMP/474222c49af0573ea0c069b5b2b42b6c334640b0?placeholderIfAbsent=true",
       altText: "Real-World Learning",
