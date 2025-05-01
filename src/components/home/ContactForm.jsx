@@ -26,7 +26,7 @@ function ContactForm() {
     const parent = document.getElementById("parent-name").value.trim();
     const child = document.getElementById("child-name").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.trim();
-    const city = document.getElementById("city").value.trim();
+
 
     if (!parent || !child || !whatsapp || selectedBoard === "" || selectedGrade === "Your child grade" || !city) {
       alert("Please fill out the complete form.");
@@ -39,15 +39,18 @@ function ContactForm() {
   return (
     <section className="contact-section">
       <h2 className="section-title">
-        <span>when kids have</span>
-        <span className="highlight">fun,</span>
-        <span>they</span>
-        <span className="highlight">learn more!</span>
-      </h2>
-      <p className="section-description">
-        Complete the form and our team will get in touch to help your child
-        grow!
-      </p>
+  <span>when kids have </span>
+  <span className="highlight">fun,</span>
+  <br />
+  <span>&nbsp;they </span>
+  <span className="highlight">learn more!</span>
+</h2>
+
+<p className="section-description">
+  Complete the form and our team will get in touch<br />
+  to help your child grow!
+</p>
+
       <form className="contact-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">Parent Name</label>
@@ -180,15 +183,7 @@ function ContactForm() {
             </label>
           </div>
         </div>
-        <div className="form-group">
-          <label className="form-label">City</label>
-          <input
-            type="text"
-            className="form-input"
-            id="city"
-            placeholder="Enter your City"
-          />
-        </div>
+      
         <button type="submit" className="submit-button">
           Submit!
         </button>
@@ -231,6 +226,7 @@ function ContactForm() {
 }
 
         .highlight {
+        margin-left:5px;
           color: #38b6ff;
         }
         .section-description {
