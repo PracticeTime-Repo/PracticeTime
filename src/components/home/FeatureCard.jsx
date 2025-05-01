@@ -1,3 +1,4 @@
+//FeatureCard.jsx
 
 import React from "react";
 
@@ -17,34 +18,40 @@ function FeatureCard({ image, altText, title, description, backgroundColor }) {
           display: flex;
           flex-direction: column;
           align-items: center;
-          width: 380px;
-          height: 492px;
+          width: 90%; /* Make it take 90% width of the screen */
+          max-width: 380px; /* Limit to 380px width max */
+          height: auto; /* Let it adjust based on content */
           padding-bottom: 32px;
           border-radius: 24px;
-          border: 4px solid #000;
+          border: 2px solid black; /* Red thin border */
           background-color: #fff;
+          box-sizing: border-box;
+          margin: 0 auto; /* Center align the card */
         }
+
         .image-container {
-          width: 380px;
+          width: 100%;
           height: 320px;
           border-radius: 24px 24px 0 0;
           position: relative;
         }
+
         .feature-image {
-          width: 320px;
-          height: 320px;
-          position: absolute;
-          left: 30px;
-          top: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover; /* Make sure the image doesn't stretch */
         }
+
         .content-container {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          width: 332px;
+          width: 100%;
           gap: 8px;
           margin-top: 20px;
+          padding-left: 16px; /* Some padding for better content alignment */
         }
+
         .feature-title {
           font-family: "Space Grotesk", sans-serif;
           font-size: 20px;
@@ -53,6 +60,7 @@ function FeatureCard({ image, altText, title, description, backgroundColor }) {
           color: #000;
           margin: 0;
         }
+
         .feature-description {
           font-family: "Geologica", sans-serif;
           font-size: 16px;
@@ -60,6 +68,27 @@ function FeatureCard({ image, altText, title, description, backgroundColor }) {
           line-height: 24px;
           color: rgba(0, 0, 0, 0.6);
           margin: 0;
+        }
+
+        /* Responsive Styling for smaller devices */
+        @media (max-width: 640px) {
+          .feature-card {
+            width: 95%; /* Let it occupy more width on smaller screens */
+            padding: 0 10px; /* Add some horizontal padding */
+            height: auto; /* Make sure the card height adjusts automatically */
+          }
+
+          .image-container {
+            height: 250px; /* Reduce image height on small screens */
+          }
+
+          .feature-title {
+            font-size: 18px;
+          }
+
+          .feature-description {
+            font-size: 14px;
+          }
         }
       `}</style>
     </article>
