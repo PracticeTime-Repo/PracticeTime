@@ -1,10 +1,11 @@
-//ContactForm.jsx
-"use client";
 import React, { useState } from "react";
+import emailjs from 'emailjs-com'; // ✅ Don't forget this
+import './ContactForm.css';
 
 function ContactForm() {
   const [selectedBoard, setSelectedBoard] = useState("");
   const [selectedGrade, setSelectedGrade] = useState("Your child grade");
+  const [showGradeOptions, setShowGradeOptions] = useState(false);
 
   const handleBoardChange = (event) => {
     setSelectedBoard(event.target.value);
@@ -19,37 +20,64 @@ function ContactForm() {
     setShowGradeOptions(false);
   };
 
-  const [showGradeOptions, setShowGradeOptions] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const parent = document.getElementById("parent-name").value.trim();
     const child = document.getElementById("child-name").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.trim();
 
-
-    if (!parent || !child || !whatsapp || selectedBoard === "" || selectedGrade === "Your child grade" || !city) {
+    if (!parent || !child || !whatsapp || selectedBoard === "" || selectedGrade === "Your child grade") {
       alert("Please fill out the complete form.");
       return;
     }
 
-    // Form submission logic here
+    const templateParams = {
+      name: `${child} (${parent})`,
+      time: new Date().toLocaleString(),
+      message: 'You have a new lead from the contact form.',
+      child_name: child,
+      parent_name: parent,
+      grade: selectedGrade,
+      phone: whatsapp,
+      email: "parent@example.com", // Replace or add email input if needed
+    };
+
+    emailjs.send(
+      'service_l3fompl',
+      'template_vignu0c',
+      templateParams,
+      'NAMwBXvOmw2faxYS3'
+    ).then(
+      (result) => {
+        console.log('Email sent successfully', result.text);
+        alert("✅ Submitted! We will contact you soon.");
+        document.getElementById("parent-name").value = "";
+        document.getElementById("child-name").value = "";
+        document.getElementById("whatsapp").value = "";
+        setSelectedBoard("");
+        setSelectedGrade("Your child grade");
+      },
+      (error) => {
+        console.error('Error sending email', error.text);
+        alert("❌ Something went wrong. Please try again later.");
+      }
+    );
   };
 
   return (
     <section className="contact-section">
       <h2 className="section-title">
-  <span>when kids have </span>
-  <span className="highlight">fun,</span>
-  <br />
-  <span>&nbsp;they </span>
-  <span className="highlight">learn more!</span>
-</h2>
+        <span>when kids have </span>
+        <span className="highlight">fun,</span><br />
+        <span>&nbsp;they </span>
+        <span className="highlight">learn more!</span>
+      </h2>
 
-<p className="section-description">
-  Complete the form and our team will get in touch<br />
-  to help your child grow!
-</p>
+      <p className="section-description">
+        Complete the form and our team will get in touch<br />
+        to help your child grow!
+      </p>
 
       <form className="contact-form" onSubmit={handleSubmit}>
         <div className="form-group">
@@ -58,21 +86,11 @@ function ContactForm() {
         </div>
         <div className="form-group">
           <label className="form-label">Child Name</label>
-          <input
-            type="text"
-            className="form-input"
-            id="child-name"
-            placeholder="Your cutie pie name"
-          />
+          <input type="text" className="form-input" id="child-name" placeholder="Your cutie pie name" />
         </div>
         <div className="form-group">
           <label className="form-label">WhatsApp Number</label>
-          <input
-            type="tel"
-            className="form-input"
-            id="whatsapp"
-            placeholder="Your WhatsApp number"
-          />
+          <input type="tel" className="form-input" id="whatsapp" placeholder="Your WhatsApp number" />
         </div>
         <div className="form-group">
           <label className="form-label">Grade <span className="required">*</span></label>
@@ -80,18 +98,18 @@ function ContactForm() {
             className="grade-select-box"
             onClick={handleGradeSelectClick}
             style={{
-              width: "100%", 
-              height: "48px", 
-              padding: "0 16px", 
-              borderRadius: "12px", 
-              border: "1px solid #ddd", 
-              fontFamily: "Geologica, sans-serif", 
-              fontSize: "14px", 
-              fontWeight: "200", 
-              lineHeight: "24px", 
-              color: "#999", 
-              display: "flex", 
-              alignItems: "center", 
+              width: "100%",
+              height: "48px",
+              padding: "0 16px",
+              borderRadius: "12px",
+              border: "1px solid #ddd",
+              fontFamily: "Geologica, sans-serif",
+              fontSize: "14px",
+              fontWeight: "200",
+              lineHeight: "24px",
+              color: "#999",
+              display: "flex",
+              alignItems: "center",
               justifyContent: "space-between",
               cursor: "pointer"
             }}
@@ -100,23 +118,19 @@ function ContactForm() {
             <span style={{ marginLeft: "auto" }}>▼</span>
           </div>
           {showGradeOptions && (
-            <ul className="options-list" style={{ 
-              padding: "10px", 
-              listStyle: "none", 
-              marginTop: "5px", 
-              border: "1px solid #ddd", 
-              borderRadius: "8px", 
-              position: "absolute", 
-              backgroundColor: "#999", 
-              zIndex: 10, 
+            <ul className="options-list" style={{
+              padding: "10px",
+              listStyle: "none",
+              marginTop: "5px",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              position: "absolute",
+              backgroundColor: "#999",
+              zIndex: 10,
               width: "70%"
             }}>
               {["Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10"].map((grade) => (
-                <li
-                  key={grade}
-                  onClick={() => handleGradeOptionClick(grade)}
-                  style={{ padding: "5px 10px", cursor: "pointer" }}
-                >
+                <li key={grade} onClick={() => handleGradeOptionClick(grade)} style={{ padding: "5px 10px", cursor: "pointer" }}>
                   {grade}
                 </li>
               ))}
@@ -126,223 +140,25 @@ function ContactForm() {
         <div className="form-group">
           <label className="form-label">School Board <span className="required">*</span></label>
           <div className="radio-group" id="board-group">
-            <label className="radio-option">
-              <input
-                type="radio"
-                name="board"
-                value="CBSE"
-                checked={selectedBoard === "CBSE"}
-                onChange={handleBoardChange}
-              />
-              <div className="radio-button"></div>
-              <span>CBSE</span>
-            </label>
-            <label className="radio-option">
-              <input
-                type="radio"
-                name="board"
-                value="ICSE"
-                checked={selectedBoard === "ICSE"}
-                onChange={handleBoardChange}
-              />
-              <div className="radio-button"></div>
-              <span>ICSE</span>
-            </label>
-            <label className="radio-option">
-              <input
-                type="radio"
-                name="board"
-                value="IB"
-                checked={selectedBoard === "IB"}
-                onChange={handleBoardChange}
-              />
-              <div className="radio-button"></div>
-              <span>IB</span>
-            </label>
-            <label className="radio-option">
-              <input
-                type="radio"
-                name="board"
-                value="IGCSE"
-                checked={selectedBoard === "IGCSE"}
-                onChange={handleBoardChange}
-              />
-              <div className="radio-button"></div>
-              <span>IGCSE</span>
-            </label>
-            <label className="radio-option">
-              <input
-                type="radio"
-                name="board"
-                value="OTHERS"
-                checked={selectedBoard === "OTHERS"}
-                onChange={handleBoardChange}
-              />
-              <div className="radio-button"></div>
-              <span>OTHERS</span>
-            </label>
+            {["CBSE", "ICSE", "IB", "IGCSE", "OTHERS"].map((board) => (
+              <label key={board} className="radio-option">
+                <input
+                  type="radio"
+                  name="board"
+                  value={board}
+                  checked={selectedBoard === board}
+                  onChange={handleBoardChange}
+                />
+                <div className="radio-button"></div>
+                <span>{board}</span>
+              </label>
+            ))}
           </div>
         </div>
-      
         <button type="submit" className="submit-button">
           Submit!
         </button>
       </form>
-
-      <style jsx>{`
-        .contact-section {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-          padding: 40px 0;
-          margin-top: 40px;
-          background-color: #fafafa;
-        }
-       .section-title {
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 56px;
-  font-weight: 650;
-  line-height: 64px;
-  text-align: center;
-  color: #000;
-  margin: 0;
-  padding: 0 16px; /* prevent text from hitting screen edges */
-  word-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .section-title {
-    font-size: 36px;
-    line-height: 44px;
-  }
-}
-
-@media (max-width: 480px) {
-  .section-title {
-    font-size: 40px;
-    line-height: 36px;
-  }
-}
-
-        .highlight {
-        margin-left:5px;
-          color: #38b6ff;
-        }
-        .section-description {
-          font-family: "Geologica", sans-serif;
-          font-size: 16px;
-          font-weight: 200;
-          line-height: 24px;
-          text-align: center;
-          color: rgba(0, 0, 0, 0.6);
-          margin-top: 20px;
-        }
-        .contact-form {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 612px;
-          padding: 40px;
-          border-radius: 20px;
-          border: 1px solid #072d49;
-          box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
-          margin-top: 20px;
-          background-color: #fff;
-        }
-        @media (max-width: 991px) {
-          .contact-form {
-            width: 90%;
-          }
-        }
-        @media (max-width: 640px) {
-          .contact-form {
-            width: 90%;
-          }
-        }
-        .form-group {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          width: 100%;
-          margin-bottom: 20px;
-        }
-        .form-label {
-          font-family: "Geologica", sans-serif;
-          font-size: 14px;
-          font-weight: 300;
-          line-height: 24px;
-          color: #000;
-        }
-        .required {
-          color: red;
-          margin-left: 2px;
-        }
-        .form-input {
-          width: 100%;
-          height: 48px;
-          padding: 0 16px;
-          border-radius: 12px;
-          border: 1px solid #ddd;
-          font-family: "Geologica", sans-serif;
-          font-size: 14px;
-          font-weight: 200;
-          line-height: 24px;
-          color: #999;
-        }
-        .radio-group {
-          display: flex;
-          align-items: center;
-          gap: 32px;
-          margin-top: 10px;
-          flex-wrap: wrap;
-        }
-        .radio-option {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .radio-button {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          border: 2px solid #1c6fb2;
-          display: inline-block;
-        }
-        .submit-button {
-          padding: 12px 32px;
-          border: none;
-          background-color: #38b6ff;
-          color: #fff;
-          font-family: "Geologica", sans-serif;
-          font-size: 16px;
-          font-weight: 500;
-          border-radius: 6px;
-          cursor: pointer;
-          margin-top: 20px;
-        }
-        .submit-button:hover {
-          background-color: #1c6fb2;
-        }
-        .options-list {
-          padding: 10px;
-          list-style: none;
-          margin-top: 5px;
-          border: 1px solid #ddd;
-          border-radius: 8px;
-          position: absolute;
-          background-color: #fff;
-          z-index: 10;
-          width: 70%;
-        }
-        .options-list li {
-          padding: 5px 10px;
-          cursor: pointer;
-        }
-        .options-list li:hover {
-          background-color: #f0f0f0;
-        }
-      `}</style>
     </section>
   );
 }
