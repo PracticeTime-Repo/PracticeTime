@@ -40,6 +40,9 @@ function ContactForm() {
       parent_name: parent,
       grade: selectedGrade,
       phone: whatsapp,
+      email: "parent@example.com",
+      board: selectedBoard, 
+      
       email: "parent@example.com", // Replace or add email input if needed
     };
 
