@@ -47,10 +47,10 @@ function ContactForm() {
     };
 
     emailjs.send(
-      'service_u1ieid2',
+      'service_7zzlil4',
       'template_elce2r2',
       templateParams,
-      '3w6VByJ-peGSxeUrF'
+      'z9EUU8ILLd_CQSLgV'
     ).then(
       (result) => {
         console.log('Email sent successfully', result.text);
