@@ -1,0 +1,133 @@
+.contact-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 40px 0;
+    margin-top: 40px;
+    background-color: #fafafa;
+  }
+  .section-title {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 56px;
+    font-weight: 650;
+    line-height: 64px;
+    text-align: center;
+    color: #000;
+    margin: 0;
+    padding: 0 16px; /* prevent text from hitting screen edges */
+    word-wrap: break-word;
+  }
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 36px;
+      line-height: 44px;
+    }
+  }
+  @media (max-width: 480px) {
+    .section-title {
+      font-size: 40px;
+      line-height: 36px;
+    }
+  }
+  .highlight {
+    margin-left: 5px;
+    color: #38b6ff;
+  }
+  .section-description {
+    font-family: "Geologica", sans-serif;
+    font-size: 16px;
+    font-weight: 200;
+    line-height: 24px;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 20px;
+  }
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 612px;
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid #072d49;
+    box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
+    margin-top: 20px;
+    background-color: #fff;
+  }
+  @media (max-width: 991px) {
+    .contact-form {
+      width: 90%;
+    }
+  }
+  @media (max-width: 640px) {
+    .contact-form {
+      width: 90%;
+    }
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .form-label {
+    font-family: "Geologica", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 24px;
+    color: #000;
+  }
+  .required {
+    color: red;
+    margin-left: 2px;
+  }
+  .form-input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    font-family: "Geologica", sans-serif;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 24px;
+    color: #999;
+  }
+  .radio-group {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .radio-button {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #1c6fb2;
+    display: inline-block;
+  }
+  .submit-button {
+    padding: 12px 32px;
+    border: none;
+    background-color: #38b6ff;
+    color: #fff;
+    font-family: "Geologica", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 200px;
+  }
+  .submit-button:hover {
+    background-color: #1c6fb2;
+  }
