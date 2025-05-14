@@ -1,6 +1,9 @@
 
 import React from "react";
 import FeatureCard from "./FeatureCard";
+import bg1 from "./bg1.jpg"; 
+import bg2 from "./bg2.jpg"; 
+import bg3 from "./bg3.jpg"; 
 
 function FeatureGrid() {
   const features = [
@@ -11,8 +14,8 @@ function FeatureGrid() {
       description: "Build skills quickly with short, daily practice sessions",
       backgroundColor: "rgba(250, 235, 120, 0.15)",
     },
-    {
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/4465c59e41ba1c3e9f3b35818f0cbe024b0d885f?placeholderIfAbsent=true",
+      {
+      image: bg1, // Use the local image here
       altText: "Learn by Doing",
       title: "No Classes - Learn by Doing",
       description:
@@ -29,7 +32,7 @@ function FeatureGrid() {
     },
  
     {
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/474222c49af0573ea0c069b5b2b42b6c334640b0?placeholderIfAbsent=true",
+      image: bg2,
       altText: "Real-World Learning",
       title: "Math Integrated with Real-World Learning Bubbles",
       description:
@@ -45,7 +48,7 @@ function FeatureGrid() {
       backgroundColor: "rgba(203, 107, 230, 0.2)",
     },
     {
-      image: "https://cdn.builder.io/api/v1/image/assets/TEMP/6e75cb7bbd4aa9c47c666438c4cb313ff3117218?placeholderIfAbsent=true",
+     image: bg3,
       altText: "Smart Reporting",
       title: "Smart Reporting",
       description:
