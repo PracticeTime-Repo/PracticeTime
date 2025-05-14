@@ -94,7 +94,7 @@ function Header() {
         }
 
         .arrow-icon {
-           margin-left: 442px;
+           margin-left: 435px;
     margin-bottom: 3px;
     margin-top: -110px;
         }
