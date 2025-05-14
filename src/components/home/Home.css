@@ -1,6 +1,4 @@
-
 /* Base styles */
-
 * {
   margin: 0;
   padding: 0;
@@ -42,7 +40,6 @@ body {
 
 .highlight {
   color: #4a90e2;
-  margin: left 25px;;
 }
 
 .practice-illustration {
@@ -180,19 +177,18 @@ body {
 }
 
 .feature-card {
-  background: #35cb4b;
+  background: #fff;
   border-radius: 20px;
   padding: 20px;
-  margin: 0 16px; /* Adds spacing from left and right */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, background-color 0.3s ease;
-  border: 2px solid black;
+  border: 2px solid black; /* Add thin black border */
   cursor: pointer;
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  background-color: #f1be9d;
+  background-color: #a8f7e9; /* Light color when hovered */
 }
 
 .feature-image-container {
@@ -204,48 +200,10 @@ body {
   border-radius: 16px;
   margin-bottom: 20px;
 }
-
-@media (min-width: 768px) {
-  .feature-card {
-    margin: 0; /* Reset margin for larger screens */
-  }
-}
-
 
 .yellow-bg {
   background: #fff8e1;
-}.feature-card {
-  background: #35cb4b;
-  border-radius: 20px;
-  padding: 20px;
-  margin: 0 16px; /* Adds spacing from left and right */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  border: 2px solid black;
-  cursor: pointer;
 }
-
-.feature-card:hover {
-  transform: translateY(-5px);
-  background-color: #96d4ca;
-}
-
-.feature-image-container {
-  width: 100%;
-  height: 160px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  margin-bottom: 20px;
-}
-
-@media (min-width: 768px) {
-  .feature-card {
-    margin: 0; /* Reset margin for larger screens */
-  }
-}
-
 
 .red-bg {
   background: #ffebee;
