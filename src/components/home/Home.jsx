@@ -4,9 +4,6 @@ import firebaseServices from '../firebase/firebaseSetup';
 import './Home.css';
 "use client";
 
-//home
-
-
 import Header from "./Header";
 import SubjectTabs from "./SubjectTabs";
 import FeatureGrid from "./FeatureGrid";
