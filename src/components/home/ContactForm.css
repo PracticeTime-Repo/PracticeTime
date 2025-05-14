@@ -1,12 +1,17 @@
+
 .contact-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding: 40px 0;
-    margin-top: 40px;
-    background-color: #fafafa;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 40px;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+  background-image: radial-gradient(circle, rgba(78, 77, 77, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
   .section-title {
     font-family: "Space Grotesk", sans-serif;
     font-size: 56px;
@@ -114,20 +119,33 @@
     border: 2px solid #1c6fb2;
     display: inline-block;
   }
+.submit-button {
+  width: 510px;
+  padding: 12px 32px;
+  border: 2px solid black;
+  background: #CB6BE6;
+  color: black;
+  font-family: "Geologica", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 14px;
+  box-shadow: 0 6px 10px rgb(171 53 190 / 50%);
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Responsive styles for mobile */
+@media (max-width: 640px) {
   .submit-button {
-    padding: 12px 32px;
-    border: none;
-    background-color: #38b6ff;
-    color: #fff;
-    font-family: "Geologica", sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
     width: 100%;
-    max-width: 200px;
+    max-width: 90vw;
+    padding: 12px 24px;
+    font-size: 15px;
   }
+}
+
+
   .submit-button:hover {
-    background-color: #1c6fb2;
+    background-color: #48d176;
   }
