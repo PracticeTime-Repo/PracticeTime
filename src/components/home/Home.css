@@ -1,4 +1,6 @@
+
 /* Base styles */
+
 * {
   margin: 0;
   padding: 0;
@@ -10,6 +12,7 @@ body {
   background: #f5f7fa;
   color: #333;
   line-height: 1.6;
+  background-image: url('../src/assets/blueGridBackground.png')
 }
 
 .container {
@@ -40,6 +43,7 @@ body {
 
 .highlight {
   color: #4a90e2;
+  margin: left 25px;;
 }
 
 .practice-illustration {
@@ -136,19 +140,14 @@ body {
   border: 1px solid black;
 }
 
-.live-badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: #e0a2a2;
-  border-radius: 50%;
-  padding: 4px;
-}
+
+
 
 .live-icon {
   width: 22px;
   height: 10px;
 }
+
 
 /* Practice Button */
 .practice-button {
@@ -177,18 +176,19 @@ body {
 }
 
 .feature-card {
-  background: #fff;
+  background: #35cb4b;
   border-radius: 20px;
   padding: 20px;
+  margin: 0 16px; /* Adds spacing from left and right */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   transition: transform 0.3s ease, background-color 0.3s ease;
-  border: 2px solid black; /* Add thin black border */
+  border: 2px solid black;
   cursor: pointer;
 }
 
 .feature-card:hover {
   transform: translateY(-5px);
-  background-color: #a8f7e9; /* Light color when hovered */
+  background-color: #f1be9d;
 }
 
 .feature-image-container {
@@ -201,9 +201,47 @@ body {
   margin-bottom: 20px;
 }
 
+@media (min-width: 768px) {
+  .feature-card {
+    margin: 0; /* Reset margin for larger screens */
+  }
+}
+
+
 .yellow-bg {
   background: #fff8e1;
+}.feature-card {
+  background: #35cb4b;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 0 16px; /* Adds spacing from left and right */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  border: 2px solid black;
+  cursor: pointer;
 }
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  background-color: #96d4ca;
+}
+
+.feature-image-container {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .feature-card {
+    margin: 0; /* Reset margin for larger screens */
+  }
+}
+
 
 .red-bg {
   background: #ffebee;
@@ -231,11 +269,18 @@ body {
 }
 
 /* Contact Section */
-.contact-section {
-  background: #ffffff;
-  padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+
+          .contact-section {
+  
+  background-image: radial-gradient(circle, rgba(78, 77, 77, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+      display: flex;
+          flex-direction: column;
+          align-items: center;
+     
 }
 
 .contact-heading {
@@ -323,15 +368,21 @@ body {
 }
 
 .submit-button {
-  background-color: #4a90e2;
-  color: #fff;
-  border: none;
-  padding: 12px 26px;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s ease;
+    width: 600px;
+    padding: 12px 32px;
+    border: 2px solid black;
+    background: #CB6BE6;
+    color: black;
+    font-family: "Geologica", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 14px;
+    box-shadow: 0 6px 10px rgb(171 53 190 / 50%);
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
 }
+
 
 .submit-button:hover {
   background-color: #357bd8;
