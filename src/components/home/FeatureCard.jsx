@@ -37,6 +37,7 @@ function FeatureCard({ image, altText, title, description, backgroundColor }) {
         }
 
         .feature-image {
+        
           width: 100%;
           height: 100%;
           object-fit: cover; /* Make sure the image doesn't stretch */
@@ -86,7 +87,8 @@ function FeatureCard({ image, altText, title, description, backgroundColor }) {
             font-size: 18px;
           }
 
-          .feature-description {
+          
+          z-description {
             font-size: 14px;
           }
         }
