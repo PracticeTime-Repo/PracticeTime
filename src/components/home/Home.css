@@ -9,11 +9,15 @@
 
 body {
   font-family: 'Geologica', 'Space Grotesk', sans-serif;
-  background: #f5f7fa;
+  background-color: #f5f7fa;
   color: #333;
   line-height: 1.6;
- background-image: url('/blueGridBackground.png');
+  
+  /* Dotted background pattern */
+  background-image: radial-gradient(circle, #d0d0d0 1px, transparent 1px);
+  background-size: 20px 20px;
 }
+
 
 .container {
   max-width: 1200px;
