@@ -1,0 +1,845 @@
+.section7 {
+  justify-content: start;
+  align-items: start;
+  gap: 10px;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.example04 {
+  z-index: 0;
+  background-color: #fff;
+  align-self: stretch;
+  width: 1440px;
+  margin-top: auto;
+  margin-bottom: auto;
+  overflow: hidden;
+}
+
+/* Fix media query syntax and add max-width 100% */
+@media (max-width: 991px) {
+  .example04 {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 15px; /* add some padding for mobile */
+    box-sizing: border-box;
+  }
+}
+
+.backgroundContainer {
+  background-blend-mode: multiply;
+  flex-direction: column;
+  min-height: 1024px;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 991px) {
+  .backgroundContainer {
+    min-height: auto; /* allow height to adjust */
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+}
+
+.backgroundImage {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.overlayImage {
+  aspect-ratio: 1.39;
+  object-fit: contain;
+  object-position: center;
+  background-blend-mode: soft_light;
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .overlayImage {
+    max-width: 100%;
+    height: auto; /* let height adjust */
+  }
+}
+
+.bento {
+  z-index: 0;
+  width: 528px;
+  min-width: 240px;
+  height: 514px;
+  position: absolute;
+  bottom: 120px;
+  left: 205px;
+}
+
+/* On mobile, make bento block smaller and reposition */
+@media (max-width: 991px) {
+  .bento {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    height: auto; /* responsive height */
+    bottom: auto;
+    left: auto;
+    margin: 20px 0;
+  }
+}
+
+.bentoGrid {
+  gap: 20px;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .bentoGrid {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
+
+.column {
+  flex-direction: column;
+  align-items: stretch;
+  width: 50%;
+  margin-left: 0;
+  line-height: normal;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .column {
+    width: 100%;
+  }
+}
+
+.columnContent {
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .columnContent {
+    margin-top: 14px;
+  }
+}
+
+.practiceCard {
+  color: #000;
+  text-align: center;
+  letter-spacing: -0.4px;
+  aspect-ratio: 1;
+  background-color: #38b6ff;
+  border: 2px solid #000;
+  border-radius: 20px;
+  padding: 162px 56px 30px;
+  font-family: Space Grotesk, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 29px;
+  box-shadow: 4px 4px #000;
+}
+
+@media (max-width: 991px) {
+  .practiceCard {
+    padding-top: 100px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 16px; /* slightly smaller font for mobiles */
+  }
+}
+
+.highlightedText {
+  font-weight: 650;
+  color: #fff;
+}
+
+.regularText {
+  font-weight: 650;
+}
+
+.cardRow {
+  align-items: stretch;
+  gap: 14px;
+  margin-top: 14px;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .cardRow {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.cardImage {
+  aspect-ratio: 1.03;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 20px;
+  flex-shrink: 0;
+  width: 122px;
+  max-width: 100%;
+}
+
+.redCard {
+  background-color: #ff5757;
+  border: 2px solid #000;
+  border-radius: 20px;
+  flex-shrink: 0;
+  width: 120px;
+  height: 120px;
+  display: flex;
+}
+
+.blueCard {
+  background-color: #3498db;
+  border: 2px solid #000;
+  border-radius: 20px;
+  flex-shrink: 0;
+  height: 118px;
+  margin-top: 14px;
+  display: flex;
+  box-shadow: 4px 4px #000;
+}
+
+.column2 {
+  flex-direction: column;
+  align-items: stretch;
+  width: 50%;
+  margin-left: 20px;
+  line-height: normal;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .column2 {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+.columnContent2 {
+  letter-spacing: -0.4px;
+  flex-grow: 1;
+  font-family: Space Grotesk, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 650;
+  line-height: 1;
+}
+
+@media (max-width: 991px) {
+  .columnContent2 {
+    margin-top: 14px;
+    font-size: 16px; /* smaller font */
+  }
+}
+
+.greenCard {
+  background-color: #7ed956;
+  border: 2px solid #000;
+  border-radius: 20px;
+  flex-shrink: 0;
+  height: 118px;
+  display: flex;
+}
+
+.whiteCard {
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 20px;
+  margin-top: 14px;
+  padding-top: 30px;
+  height: 455px;
+  box-shadow: 4px 4px #000;
+}
+
+@media (max-width: 991px) {
+  .whiteCard {
+    height: auto; /* allow flexible height */
+    padding: 20px;
+  }
+}
+
+.cardContent {
+  flex-direction: column;
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .cardContent {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.quickFunReal {
+  color: #cb6be6;
+  align-self: start;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 650;
+}
+
+.mathPractices {
+  color: #000;
+  text-align: right;
+  align-self: end;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .mathPractices {
+    text-align: left;
+    margin-top: 10px;
+  }
+}
+
+.practiceImage {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  background-blend-mode: multiply;
+  width: 100%;
+  margin-top: 37px;
+}
+
+.decorativeImage {
+  aspect-ratio: 1.2;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+  flex-shrink: 0;
+  width: 120px;
+  height: 100px;
+  position: absolute;
+  top: 140px;
+  left: 560px;
+}
+
+@media (max-width: 991px) {
+  .decorativeImage {
+    position: relative; /* allow natural flow */
+    width: 80px;
+    height: 70px;
+    top: auto;
+    left: auto;
+    margin: 20px auto;
+  }
+}
+
+.logoImage {
+  aspect-ratio: 5.88;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+  flex-shrink: 0;
+  width: 443px;
+  min-width: 240px;
+  height: 43px;
+  position: absolute;
+  top: 32px;
+  left: 17%;
+  transform: translate(-50%);
+}
+
+@media (max-width: 991px) {
+  .logoImage {
+    position: relative;
+    width: 70%;
+    height: auto;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 20px auto;
+  }
+}
+
+.practiceHeading {
+  color: #000;
+  letter-spacing: -0.96px;
+  z-index: 0;
+  width: 528px;
+  height: 64px;
+  font-family: Space Grotesk, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+  position: absolute;
+  top: 156px;
+  left: 22%;
+  transform: translate(-50%);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .practiceHeading {
+    position: relative;
+    width: 90%;
+    font-size: 28px;
+    top: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 30px auto;
+    text-align: center;
+  }
+}
+
+.headingRegular {
+  font-weight: 650;
+}
+
+.headingHighlight {
+  font-weight: 650;
+  color: #38b6ff;
+}
+
+.headingBlue {
+  font-weight: 650;
+  color: #3498db;
+}
+
+.formDescription {
+  color: #000;
+  text-align: center;
+  z-index: 0;
+  width: 369px;
+  height: 48px;
+  font-family: Geologica, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 24px;
+  position: absolute;
+  top: 109px;
+  right: 439px;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .formDescription {
+    position: relative;
+    width: 90%;
+    height: auto;
+    font-size: 14px;
+    top: auto;
+    right: auto;
+    margin: 10px auto 20px;
+  }
+}
+
+.formContainer {
+  z-index: 0;
+  border-radius: 0;
+  flex-direction: column;
+  width: 752px;
+  min-width: 240px;
+  height: 800px;
+  font-family: Geologica, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  display: flex;
+  position: absolute;
+  bottom: 30px;
+  right: 290px;
+}
+
+@media (max-width: 991px) {
+  .formContainer {
+    position: relative;
+    width: 90%;
+    height: auto;
+    bottom: auto;
+    right: auto;
+    margin: 0 auto 30px;
+  }
+}
+
+.formCard {
+  height: 700px;
+  background-color: #fff;
+  border: 2px solid #181515;
+  border-radius: 20px;
+  width: 100%;
+  padding: 40px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 991px) {
+  .formCard {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: auto;
+  }
+}
+
+.formRow {
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 12px;
+  line-height: 24px;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .formRow {
+    flex-direction: column;
+  }
+}
+
+.formGroup {
+  flex: 1 0 0;
+  width: fit-content;
+}
+
+.formLabel {
+  color: #000;
+  font-weight: 300;
+  display: block;
+  margin-bottom: 10px;
+}
+.formInput {
+  color: #999;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 20px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  font-weight: 200;
+  font-family: inherit;
+  font-size: inherit;
+  box-sizing: border-box;
+}
+
+.formFullWidth {
+  width: 100%;
+  margin-top: 20px;
+  line-height: 24px;
+}
+
+@media (max-width: 991px) {
+  .formFullWidth {
+    max-width: 100%;
+  }
+}
+
+.selectWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.formSelect {
+  color: #999;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 20px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  font-weight: 200;
+  font-family: inherit;
+  font-size: inherit;
+  appearance: none;
+  background-color: transparent;
+}
+
+.selectArrow {
+  aspect-ratio: 1;
+  object-fit: contain;
+  object-position: center;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  pointer-events: none;
+}
+
+.boardSection {
+  flex-direction: column;
+  justify-content: start;
+  align-items: stretch;
+  width: 100%;
+  margin-top: 20px;
+  font-weight: 300;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .boardSection {
+    max-width: 100%;
+  }
+}
+
+.required {
+  color: #e8380f;
+}
+
+.boardOptions {
+  color: #999;
+  white-space: nowrap;
+  justify-content: start;
+  align-self: start;
+  align-items: start;
+  gap: 32px;
+  margin-top: 10px;
+  line-height: 48px;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .boardOptions {
+    max-width: 100%;
+    white-space: normal;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+
+.boardOption {
+  color: #000;
+  justify-content: start;
+  align-items: start;
+  gap: 10px;
+  display: flex;
+}
+
+@media (max-width: 991px) {
+  .boardOption {
+    white-space: normal;
+  }
+}
+
+.boardLabel {
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+  display: flex;
+  cursor: pointer;
+}
+
+@media (max-width: 991px) {
+  .boardLabel {
+    white-space: normal;
+  }
+}
+.hiddenRadio {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+
+.radioUnchecked {
+  border: 2px solid #999;
+  border-radius: 24px;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 24px;
+  height: 24px;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+}
+
+.radioChecked {
+  border: 2px solid #000;
+  border-radius: 24px;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: 24px;
+  height: 24px;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+  position: relative;
+}
+
+.radioChecked::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #000;
+}
+
+.boardText {
+  align-self: stretch;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.submitButton {
+  color: #000;
+  white-space: nowrap;
+  width: 665px;
+  background-color: #cb6be6;
+  border: 2px solid #000;
+  border-radius: 12px;
+  align-self: stretch;
+  gap: 8px;
+  min-height: 48px;
+  margin-top: 50px;
+  padding: 0 24px;
+  font-weight: 400;
+  line-height: 24px;
+  box-shadow: 4px 4px #000;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+@media (max-width: 991px) {
+  .submitButton {
+    white-space: normal;
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.becomeHeading {
+  color: #000;
+  letter-spacing: -0.96px;
+  z-index: 0;
+  width: 528px;
+  height: 64px;
+  font-family: Space Grotesk, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1;
+  position: absolute;
+  top: 200px;
+  left: 22%;
+  transform: translate(-50%);
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .becomeHeading {
+    max-width: 100%;
+    font-size: 40px;
+  }
+}
+
+.subjectTabs {
+  z-index: 0;
+  color: #000;
+  white-space: nowrap;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  min-width: 240px;
+  font-family: Geologica, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  display: flex;
+  position: absolute;
+  top: 270px;
+  left: 25%;
+  transform: translate(-50%);
+}
+
+@media (max-width: 991px) {
+  .subjectTabs {
+    max-width: 100%;
+    white-space: normal; /* changed from initial for better wrapping */
+  }
+}
+
+.activeTab {
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 52px;
+  justify-content: center;
+  align-self: stretch;
+  align-items: flex-start;
+  gap: 8px;
+  width: 124px;
+  max-width: 152px;
+  min-height: 35px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 14px 24px;
+  font-weight: 500;
+  display: flex;
+  position: relative;
+}
+
+@media (max-width: 991px) {
+  .activeTab {
+    white-space: normal;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.tabText {
+  z-index: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.newBadge {
+  aspect-ratio: 2.24;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+  border-radius: 40px;
+  flex-shrink: 0;
+  justify-content: start;
+  align-self: start;
+  align-items: stretch;
+  width: 65px;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}
+
+.tabDivider {
+  align-self: stretch;
+  width: 4px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 12px;
+  line-height: 2;
+}
+
+.inactiveTab {
+  color: #999;
+  background-color: #fff;
+  border: 2px solid rgba(153, 153, 153, 0.4);
+  border-radius: 52px;
+  align-self: stretch;
+  gap: 8px;
+  width: 135px;
+  max-width: 152px;
+  min-height: 35px;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 14px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 991px) {
+  .inactiveTab {
+    white-space: normal;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
