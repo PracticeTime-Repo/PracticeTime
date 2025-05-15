@@ -1,6 +1,8 @@
 // App.jsx
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import Section7 from './components/signup/Section7';
+
 import Home from './components/home/Home';
 import Quiz from './components/quiz/Quiz';
 import Login from './components/login/Login';
@@ -28,20 +30,17 @@ const AppContent = () => {
       {location.pathname !== '/login' && isAuthenticated && (
         <Navbar onNavigate={(page) => navigate(`/${page}`)} />
       )}
-      <Routes>
-        <Route path="/login" element={<Login onLoginSuccess={() => navigate('/start')} />} />
-        <Route path="/" element={<Home />} />
-        
-        {/* Conditional rendering based on authentication */}
-        <Route
-          path="/start"
-          element={isAuthenticated ? <Start /> : <Navigate to="/login" />}
-        />
+   <Routes>
+  <Route path="/login" element={<Login onLoginSuccess={() => navigate('/start')} />} />
+  <Route path="/signup" element={<Section7 />} />
+  <Route path="/" element={<Home />} />
 
-        <Route path="/practice" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
-        <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+  <Route path="/start" element={isAuthenticated ? <Start /> : <Navigate to="/login" />} />
+  <Route path="/practice" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+  <Route path="/progress" element={<ProtectedRoute><Progress /></ProtectedRoute>} />
+  <Route path="*" element={<Navigate to="/" />} />
+</Routes>
+
     </>
   );
 };
