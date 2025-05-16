@@ -132,7 +132,7 @@
 
 @media (max-width: 991px) {
   .columnContent {
-    margin-top: 335px;
+    margin-top: 350px;
   }
 }
 
@@ -340,10 +340,10 @@
 
 @media (max-width: 991px) {
   .decorativeImage {
-    position: relative;
+            position: relative;
         width: 80px;
         height: 70px;
-        top: -130px;
+        top: -1591px;
         left: 20%;
         margin: 15px auto;
   }
@@ -403,12 +403,12 @@
 @media (max-width: 991px) {
   .practiceHeading,
   .becomeHeading {
-    bottom: 225px;
-    position: relative;
-    top: auto;
-    transform: translateX(-50%);
-    font-size: clamp(20px, 5vw, 28px);
-    margin: 6px auto;
+         bottom: 1687px;
+        position: relative;
+        top: auto;
+        transform: translateX(-50%);
+        font-size: clamp(20px, 5vw, 28px);
+        margin: 6px auto;
   }
 }
 
@@ -451,7 +451,7 @@
     right: auto;
     width: 90%;
     max-width: 100%;
-    margin: -170px auto;
+    margin: -350px auto;
     font-size: 14px;
   }
 }
@@ -478,7 +478,7 @@
     width: 90%;
     height: auto;
     bottom: auto;
-    top:-140px;
+    top:-276px;
     right: auto;
     margin: -135 auto 30px;
   }
@@ -755,15 +755,15 @@
 
 @media (max-width: 991px) {
   .subjectTabs {
- position: absolute;
-        top: 162px;
+        position: absolute;
+        top: 200px;
         left: 29%;
         transform: translateX(-50%);
         max-width: 90vw;
         white-space: normal;
         font-size: clamp(12px, 3vw, 16px);
         min-width: unset;
-        gap: 8px;           /* smaller gaps on mobile */
+        gap: 8px;          /* smaller gaps on mobile */
   }
 }
 
