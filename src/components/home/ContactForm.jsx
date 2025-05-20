@@ -78,8 +78,7 @@ function ContactForm() {
       </h2>
 
       <p className="section-description">
-        Complete the form and our team will get in touch<br />
-        to help your child grow!
+        Complete the form and our team will get in touch with you!<br />
       </p>
 
       <form className="contact-form" onSubmit={handleSubmit}>
