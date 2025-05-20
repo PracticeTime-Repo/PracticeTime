@@ -18,7 +18,7 @@
 @media (width<=991px){.img{margin-left:6px}}
 .themoreyoupractice{letter-spacing:-.96px;margin-top:100px;line-height:1}
 @media (width<=991px){.themoreyoupractice{max-width:100%;margin-top:40px;font-size:40px}}
-.thebetteryoubecome{letter-spacing:-.96px;line-height:2}
+.thebetteryoubecome{letter-spacing:-.96px;line-height:1.5}
 @media (width<=991px){.thebetteryoubecome{max-width:100%;font-size:40px}}
 .div3{    margin-right: 110px;white-space:nowrap;flex-wrap:wrap;justify-content:center;align-items:center;gap:12px;margin-top:40px;font-family:Geologica,-apple-system,Roboto,Helvetica,sans-serif;font-size:16px;font-weight:300;display:flex}
 @media (width<=991px){.div3{width:600px;max-width:85%;white-space:initial;margin-right:10px}}
