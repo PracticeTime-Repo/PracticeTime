@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from "./Section7.module.css";
 import SubjectButton from "./SubjectButton";
-import ContactForm from "./ContactForm";
+import ContactForm from "./ContactForm1";
 import arrowImg from "./arrow.png";
 
 
