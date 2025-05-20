@@ -89,7 +89,7 @@ function ContactForm() {
         </div>
         <div className="form-group">
           <label className="form-label">Child Name</label>
-          <input type="text" className="form-input" id="child-name" placeholder="Your cutie pie name" />
+          <input type="text" className="form-input" id="child-name" placeholder="Your Child Name" />
         </div>
         <div className="form-group">
           <label className="form-label">WhatsApp Number</label>
