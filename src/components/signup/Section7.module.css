@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Geologica:opsz,wght@9..144,400;500&display=swap');
 
 .section7 {
   overflow: hidden;
@@ -178,6 +179,13 @@
     display: none !important;
   }
 }
+.div4,
+.english,
+.coding {
+  font-family: "Geologica", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-style: normal !important;
+}
 
 .div4 {
   background-color: #fff;
@@ -216,29 +224,7 @@
   margin-top: auto;
   margin-bottom: auto;
 }
-.img2 {
-  aspect-ratio: 2.24;
-  object-fit: contain;
-  object-position: center;
-  z-index: 0;
-  border-radius: 40px;
-  flex-shrink: 0;
-  justify-content: start;
-  align-self: start;
-  align-items: stretch;
-  width: 90px;
-  position: absolute;
-  top: -15px;
-  right:-20px;
-}
-.div5 {
-  align-self: stretch;
-  width: 4px;
-  margin-top: auto;
-  margin-bottom: auto;
-  font-size: 12px;
-  line-height: 2;
-}
+
 .english {
   color: #999;
   background-color: #fff;
@@ -247,25 +233,30 @@
   align-self: stretch;
   gap: 8px;
   width: 152px;
-  /* max-width: 152px; */
   min-height: 52px;
   margin-top: auto;
   margin-bottom: auto;
   padding: 14px 24px;
-  padding-left: 50px !important;
-    font-family: "Geologica", sans-serif !important;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  font-family: "Geologica", sans-serif !important;
   font-optical-sizing: auto !important;
   font-style: normal !important;
-
 }
-@media (width<=991px) {
+
+@media (width <= 991px) {
   .english {
     white-space: initial;
     padding-left: 20px;
     padding-right: 20px !important;
     width: 98%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
+
 .div6 {
   align-self: stretch;
   width: 4px;
@@ -286,8 +277,9 @@
   min-height: 52px;
   margin-top: auto;
   margin-bottom: auto;
-  padding: 14px 24px;
-  padding-left: 50px !important;  
+  display: flex; 
+  justify-content: center; 
+  align-items: center;  
   font-family: "Geologica", sans-serif !important;
   font-optical-sizing: auto !important;
   font-style: normal !important;
@@ -296,8 +288,9 @@
 @media (width<=991px) {
   .coding {
     white-space: initial;
-    padding-left: 20px !important;
-    padding-right: 20px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
     width: 98% !important;
   }
 }
@@ -368,7 +361,29 @@ margin-top: 30px;
 }
 
 
-
+.img2 {
+  aspect-ratio: 2.24;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+  border-radius: 40px;
+  flex-shrink: 0;
+  justify-content: start;
+  align-self: start;
+  align-items: stretch;
+  width: 90px;
+  position: absolute;
+  top: -15px;
+  right:-20px;
+}
+.div5 {
+  align-self: stretch;
+  width: 4px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 12px;
+  line-height: 2;
+}
 
 @media (width<=991px) {
   .img3 {
