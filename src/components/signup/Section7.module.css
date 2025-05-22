@@ -8,6 +8,7 @@
   font-style: normal !important;
 
 }
+
 .example07 {
   width: 100%;
   /* padding: 32px; */
@@ -174,7 +175,7 @@
     justify-content: center; /* Optional: center on small screens */
   }
   .divider {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -195,6 +196,10 @@
   font-weight: 500;
   display: flex;
   position: relative;
+    font-family: "Geologica", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-style: normal !important;
+
 }
 @media (width<=991px) {
   .div4 {
@@ -247,13 +252,17 @@
   margin-top: auto;
   margin-bottom: auto;
   padding: 14px 24px;
-  padding-left: 50px;
+  padding-left: 50px !important;
+    font-family: "Geologica", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-style: normal !important;
+
 }
 @media (width<=991px) {
   .english {
     white-space: initial;
     padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 20px !important;
     width: 98%;
   }
 }
@@ -278,14 +287,18 @@
   margin-top: auto;
   margin-bottom: auto;
   padding: 14px 24px;
-  padding-left: 50px;
+  padding-left: 50px !important;  
+  font-family: "Geologica", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-style: normal !important;
+
 }
 @media (width<=991px) {
   .coding {
     white-space: initial;
-    padding-left: 20px;
+    padding-left: 20px !important;
     padding-right: 20px;
-    width: 98%;
+    width: 98% !important;
   }
 }
 
@@ -329,14 +342,9 @@
 }
 
 @media (max-width: 768px) {
-  .outsideArrow {
-    top: 140px;
-    right: 20px;
-    width: 80px;
-    height: 70px;
-  }
+
   .outsideArrow{
-    display: none;
+    display: none !important;
   }
 }
 
