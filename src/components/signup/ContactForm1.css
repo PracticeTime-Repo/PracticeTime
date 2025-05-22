@@ -1,4 +1,4 @@
-
+/* 
 
 .contact-section1 {
     margin-right: 400px;
@@ -22,7 +22,7 @@
     text-align: center;
     color: #000;
     margin: 0;
-    padding: 0 16px; /* prevent text from hitting screen edges */
+    padding: 0 16px; 
     word-wrap: break-word;
   }
   @media (max-width: 768px) {
@@ -68,11 +68,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 0; /* remove unwanted spacing */
+  margin: 0; 
 }
 
 .form-label {
-  margin-bottom: 4px; /* tight spacing between label and input */
+  margin-bottom: 4px;
 }
 
 .form-input,
@@ -149,7 +149,7 @@ textarea {
   transition: all 0.3s ease;
 }
 
-/* Responsive styles for mobile */
+
 @media (max-width: 640px) {
   .submit-button {
     width: 100%;
@@ -162,4 +162,367 @@ textarea {
 
   .submit-button:hover {
     background-color: #48d176;
+  } */
+
+.contact-form-container {
+  width: 520px;
+
+  border-radius: 20px;
+  border: 1px solid #EEEEEE;
+  background: #FFFFFF;
+  box-shadow: 0px 8px 40px 0px #00000014;
+  padding: 20px; /* Optional padding */
+  box-sizing: border-box;
+  position: relative; /* in case you want to place absolutely inside */
+  /* font-family: 'Geologica', -apple-system, Roboto, Helvetica, sans-serif; */
+    font-family: "Geologica", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-style: normal !important;
+}
+
+@media (max-width: 640px) {
+  .contact-form-container {
+    width: 100%;
+    height: auto;
+    padding: 20px; 
+    box-shadow: 0px 0px 10px 0px #00000014;
   }
+}
+  /* Base styles */
+.contact-section1 {
+  padding: 20px;
+  /* max-width: 600px; */
+  /* margin: auto; */
+  
+  margin-top: 180px !important;
+  margin-bottom: 20px;
+  margin-right: 20px;
+}
+
+.contact-section1 .section-description {
+  font-size: 16px;
+  text-align: center;
+  margin: 0px 60px;
+  margin-bottom: 50px;
+}
+
+
+/* .form-group {
+  display: flex;
+  flex-direction: column;
+} */
+
+.form-label {
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: nowrap; /* prevent wrapping on desktop */
+  justify-content: flex-start;
+}
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0px;
+  }
+}
+
+
+
+.form-group1 {
+  display: flex;
+  flex-direction: column;
+  width: 100%; 
+  margin: 10px 0px;
+}
+
+.form-input {
+  width: 100%;
+  height: 48px;
+  max-height: 48px;
+  padding: 0 16px;
+  border: 1px solid #DDDDDD;
+  border-radius: 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.space-grotesk-custom {
+  font-family: "Geologica", sans-serif !important;
+  font-optical-sizing: auto !important;
+  font-style: normal !important;
+  padding-top: 5px;
+}
+
+.form-group.grade-group {
+  position: relative; /* Important for absolute positioning of dropdown */
+  width: 100%;
+  /* max-width: 400px; */
+  margin-bottom: 20px;
+}
+.form-input1 {
+  border: 1px solid #ccc !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  height: 48px;
+  outline: none !important; /* removes default browser outline */
+  /* transition: border 0.3s ease !important; */
+}
+
+/* When input is focused */
+.form-input1:focus {
+  border: 1px solid #CB6BE6 !important;
+  outline: none !important; /* ensures no double border */
+}
+
+/* Grade select box */
+.grade-select-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border: 1px solid #DDDDDD;
+  min-height: 48px;
+  border-radius: 12px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s, background-color 0.3s;
+  width: 100%; /* Takes full width of the form-group */
+  box-sizing: border-box;
+}
+
+.grade-select-box span{
+  color:  #999999;
+font-size: 14px;
+}
+
+/* .grade-select-box:hover {
+  border-color: #CB6BE6;
+  background-color: #FFFFFF;
+} */
+.grade-select-box.dropdown-open {
+  /* border-color: #CB6BE6; */
+  border: 1px solid #CB6BE6;
+}
+.dropdown-arrow {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Dropdown options */
+.options-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+  /* Ensure it matches parent */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.option-item {
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.option-item:hover {
+  background-color: #CB6BE6;
+  color: white;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+  .form-group.grade-group {
+    max-width: 100%;
+  }
+
+  .grade-select-box,
+  .options-list {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  .option-item {
+    padding: 10px 14px;
+  }
+}
+
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px !important;
+}
+
+.radio-option {
+  margin-top: -10px !important;
+  display: flex;
+  /* gap: 6px; */
+  font-size: 14px !important;
+  cursor: pointer;
+  user-select: none;
+  color:  #999999;
+  margin-bottom: 10px;
+  
+}
+/* Set placeholder text color to red */
+input::placeholder,
+textarea::placeholder {
+  color: #999999;
+  opacity: 1; /* Ensure full visibility */
+}
+
+/* Optional: set placeholder color for WebKit and Firefox specifically */
+input::-webkit-input-placeholder {
+  color: #999999;
+}
+input::-moz-placeholder {
+  color: #999999;
+}
+input:-ms-input-placeholder {
+  color: #999999;
+}
+input:-moz-placeholder {
+  color: #999999;
+}
+.grade-select-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  font-size: 16px;
+  color: #333;
+  color: #FFFFFF;
+}
+
+.dropdown-arrow {
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  font-size: 12px !important; 
+  color: #000000 !important; 
+}
+
+
+
+/* Base style for radio button */
+.radio-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 24px;
+  border: 1.5px solid #999999 !important; 
+  background-color: #fff;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Selected radio button styling */
+.radio-option input[type="radio"]:checked + .radio-button {
+  border-color: #000000 !important;
+  background-color: white;
+}
+
+/* Inner dot for selected */
+.radio-option input[type="radio"]:checked + .radio-button::after {
+  content: "";
+  position: absolute;
+  top: 4px !important;
+  left: 4px !important;
+  width: 10px;
+  height: 10px;
+  border-radius: 10px;
+  background-color: black;
+}
+
+/* Selected text color */
+.radio-option input[type="radio"]:checked ~ span {
+  color: black;
+}
+
+
+.submit-button2 {
+  width:100%;
+  height: 48px;
+  max-height: 48px;
+  border-radius: 12px;
+  border: 2px solid #000000;
+  background: #CB6BE6;
+
+margin-bottom: 10px;
+  gap: 8px; 
+  cursor: pointer;
+  color: black; /* Assuming white text on purple */
+  font-size: 16px;
+  font-weight: 600;
+    box-shadow: 
+    4px 4px 0px 0px #000000,
+    inset 0px 8px 4px 0px #0000000A !important;
+}
+
+
+.submit-button2:hover {
+   height: 48px;
+  max-height: 48px;
+  background-color:#CB6BE6;
+      box-shadow: none !important;
+}
+
+.required {
+  color: red;
+}
+
+
+
+/* Tablet/Desktop responsiveness */
+@media (width<=991px) {
+  .contact-section1 {
+  padding: 10px;
+  /* max-width: 600px; */
+  /* margin: auto; */
+  margin-top: 0px !important;
+    margin-bottom: 0px;
+  margin-right: 0px;
+}
+  .contact-section1  .section-description {
+    font-size: 14px !important;
+    text-align: center !important;
+    margin-bottom: 20px !important;
+    margin: 0px 0px;
+  }
+
+  /* .contact-section .contact-form {
+    gap: 10px;
+  } */
+
+  .radio-group {
+    gap: 10px;
+  }
+
+  /* The CSS code `.submit-button` is targeting a class named `submit-button` and setting its width to
+  `150px`. Additionally, it is using the `align-self` property with a value of `flex-start`. This
+  property is typically used in a flex container to control the alignment of a flex item along the
+  cross axis (perpendicular to the main axis). */
+  /* .submit-button {
+    width: 150px;
+    align-self: flex-start;
+  } */
+}
