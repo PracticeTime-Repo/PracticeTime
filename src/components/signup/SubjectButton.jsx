@@ -1,5 +1,5 @@
 
-import React from "react";
+// import React from "react";
 import styles from "./Section7.module.css";
 
 function SubjectButton({ name, active }) {
