@@ -9,7 +9,7 @@ function Section7() {
   return (
     <div className="container-fluid">
       <div className="container">
-      <img src={arrowImg} alt="Dotted Arrow" className={styles.outsideArrow} />
+
 
       <section className={styles.section7}>
         <div className={styles.example04}>
@@ -26,17 +26,22 @@ function Section7() {
                 <div className={styles.heroSection}>
                   <div className={styles.leftCont3ent}>
                     <div className={styles.motivationText}>
-                      <h2>
-                        <span className={styles.boldText}>the more you </span>
-                        <span className={styles.highlightBlue}>practice!</span>
-                      </h2>
-                      <h2>
-                        <span className={styles.boldText}>the better you </span>
-                        <span className={styles.highlightLightBlue}>
-                          become!
-                        </span>
-                      </h2>
-                    </div>
+  <h2>
+    <span className={styles.boldText}>the more you </span>
+    <span className={styles.highlightBlue}>practice!</span>
+  </h2>
+  <h2>
+    <span className={styles.boldText}>the better you </span>
+    <span className={styles.highlightLightBlue}>become!</span>
+  </h2>
+</div>
+
+<img
+  src={arrowImg}
+  alt="Dotted Arrow"
+  className={styles.arrowOverlay}
+/>
+
                   </div>
                 </div>
 
