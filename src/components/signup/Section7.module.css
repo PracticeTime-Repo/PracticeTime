@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Geologica:opsz,wght@9..144,400;500&display=swap');
 
 .section7 {
   overflow: hidden;
@@ -9,7 +8,6 @@
   font-style: normal !important;
 
 }
-
 .example07 {
   width: 100%;
   /* padding: 32px; */
@@ -20,6 +18,29 @@
     /* width: 100%; */
     padding: 0;
     margin: 20px !important;
+  }
+}
+
+.arrowOverlay {
+  position: absolute;
+  top: 5px;       /* Adjust for desktop */
+  right: -80px;    /* Adjust for desktop */
+  width: 150px;
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 📱 For iPhone 12 / smaller devices */
+@media (max-width: 768px) {
+  .arrowOverlay {
+    position: relative;     /* change to relative so it flows naturally */
+    top: -10px;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 120px;
   }
 }
 
@@ -176,15 +197,8 @@
     justify-content: center; /* Optional: center on small screens */
   }
   .divider {
-    display: none !important;
+    display: none;
   }
-}
-.div4,
-.english,
-.coding {
-  font-family: "Geologica", sans-serif !important;
-  font-optical-sizing: auto !important;
-  font-style: normal !important;
 }
 
 .div4 {
@@ -204,10 +218,6 @@
   font-weight: 500;
   display: flex;
   position: relative;
-    font-family: "Geologica", sans-serif !important;
-  font-optical-sizing: auto !important;
-  font-style: normal !important;
-
 }
 @media (width<=991px) {
   .div4 {
@@ -224,7 +234,29 @@
   margin-top: auto;
   margin-bottom: auto;
 }
-
+.img2 {
+  aspect-ratio: 2.24;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+  border-radius: 40px;
+  flex-shrink: 0;
+  justify-content: start;
+  align-self: start;
+  align-items: stretch;
+  width: 90px;
+  position: absolute;
+  top: -15px;
+  right:-20px;
+}
+.div5 {
+  align-self: stretch;
+  width: 4px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 12px;
+  line-height: 2;
+}
 .english {
   color: #999;
   background-color: #fff;
@@ -233,30 +265,21 @@
   align-self: stretch;
   gap: 8px;
   width: 152px;
+  /* max-width: 152px; */
   min-height: 52px;
   margin-top: auto;
   margin-bottom: auto;
   padding: 14px 24px;
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-  font-family: "Geologica", sans-serif !important;
-  font-optical-sizing: auto !important;
-  font-style: normal !important;
+  padding-left: 50px;
 }
-
-@media (width <= 991px) {
+@media (width<=991px) {
   .english {
     white-space: initial;
     padding-left: 20px;
-    padding-right: 20px !important;
+    padding-right: 20px;
     width: 98%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   }
 }
-
 .div6 {
   align-self: stretch;
   width: 4px;
@@ -277,21 +300,15 @@
   min-height: 52px;
   margin-top: auto;
   margin-bottom: auto;
-  display: flex; 
-  justify-content: center; 
-  align-items: center;  
-  font-family: "Geologica", sans-serif !important;
-  font-optical-sizing: auto !important;
-  font-style: normal !important;
-
+  padding: 14px 24px;
+  padding-left: 50px;
 }
 @media (width<=991px) {
   .coding {
     white-space: initial;
-  display: flex; 
-  justify-content: center; 
-  align-items: center; 
-    width: 98% !important;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 98%;
   }
 }
 
@@ -307,8 +324,9 @@
 
 @media (max-width: 1024px) {
   .outsideArrow {
+    margin-right: 2040px;
     top: 120px !important;
-    right: 200px !important;
+    right: 2000px !important;
     width: 70px !important;
     height: 60px !important;
   }
@@ -335,9 +353,14 @@
 }
 
 @media (max-width: 768px) {
-
+  .outsideArrow {
+    top: 140px;
+    right: 20px;
+    width: 80px;
+    height: 70px;
+  }
   .outsideArrow{
-    display: none !important;
+    display: none;
   }
 }
 
@@ -361,29 +384,7 @@ margin-top: 30px;
 }
 
 
-.img2 {
-  aspect-ratio: 2.24;
-  object-fit: contain;
-  object-position: center;
-  z-index: 0;
-  border-radius: 40px;
-  flex-shrink: 0;
-  justify-content: start;
-  align-self: start;
-  align-items: stretch;
-  width: 90px;
-  position: absolute;
-  top: -15px;
-  right:-20px;
-}
-.div5 {
-  align-self: stretch;
-  width: 4px;
-  margin-top: auto;
-  margin-bottom: auto;
-  font-size: 12px;
-  line-height: 2;
-}
+
 
 @media (width<=991px) {
   .img3 {
@@ -963,7 +964,7 @@ margin-bottom: 30px;
   }
 
   .rightArrow {
-    align-self: center;
+  
     margin-top: 20px;
   }
 
