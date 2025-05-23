@@ -90,7 +90,7 @@ function ContactForm() {
               type="text"
               className="form-input1"
               id="parent-name"
-              placeholder="Your name"
+              placeholder="Your Name"
             />
           </div>
 
@@ -100,7 +100,7 @@ function ContactForm() {
               type="text"
               className="form-input1"
               id="child-name"
-              placeholder="Your cutie pie name"
+              placeholder="Your Cutie Pie Name"
             />
           </div>
         </div>
@@ -111,7 +111,7 @@ function ContactForm() {
             type="tel"
             className="form-input1"
             id="whatsapp"
-            placeholder="Your WhatsApp number"
+            placeholder="Your WhatsApp Number"
           />
         </div>
         <div className="form-group grade-group">
@@ -182,7 +182,7 @@ function ContactForm() {
             type="text"
             className="form-input1"
             id="city"
-            placeholder="Enter your city"
+            placeholder="Enter Your ity"
           />
         </div>
 
