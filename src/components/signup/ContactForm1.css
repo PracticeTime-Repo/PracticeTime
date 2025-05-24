@@ -1,200 +1,199 @@
-/* 
+@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@400;600&display=swap");
+
+@media screen and (max-width: 1024px) and (min-width: 693px) {
+  .contact-form-container {
+    width: 450px !important;
+
+    border-radius: 20px;
+    border: 1px solid #eeeeee;
+    background: #ffffff;
+    box-shadow: 0px 8px 40px 0px #00000014;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    font-family: "Geologica", sans-serif !important;
+    font-optical-sizing: auto !important;
+    font-style: normal !important;
+  }
+  .contact-section1 {
+    padding: 20px;
+    /* max-width: 600px; */
+    /* margin: auto; */
+
+    margin-top: 100px !important;
+    margin-bottom: 20px;
+    margin-right: 20px;
+  }
+  .contact-section1 .section-description {
+    font-size: 16px;
+    text-align: center;
+    margin: 0px 40px !important;
+    margin-bottom: 50px;
+    /* margin-right: -60px !important; */
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+    font-family: "Geologica", sans-serif !important;
+  }
+}
+@media screen and (max-width: 853px) and (min-width: 693px) {
+  .contact-form-container {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 768px) and (min-width: 520px) {
+  .contact-form-container {
+    width: 100% !important;
+  }
+}
+@media screen and (max-width: 768px) and (min-width: 520px) {
+  .contact-form-container {
+    width: 100% !important;
+  }
+}
+/* Extra Small Devices (phones, portrait) */
+@media screen and (max-width: 480px) {
+  .contact-form-container {
+    width: 100% !important;
+    padding: 1rem;
+  }
+}
+@media screen and (width: 1024px) and (height: 1366px) {
+  .contact-form-container {
+    min-width: 450px;
+  }
+  .contact-section1 .section-description {
+    font-size: 16px;
+    text-align: center;
+    margin: 0px 40px !important;
+    margin-bottom: 50px;
+    margin-right: -60px !important;
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+    font-family: "Geologica", sans-serif !important;
+  }
+}
+@media screen and (width: 1024px) and (height: 600px) {
+  .contact-form-container {
+    min-width: 450px;
+  }
+  .contact-section1 .section-description {
+    font-size: 16px;
+    text-align: center;
+    margin: 0px 40px !important;
+    margin-bottom: 50px;
+    margin-right: -60px !important;
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+    font-family: "Geologica", sans-serif !important;
+  }
+}
+@media screen and (width: 1024px) and (height: 693px) {
+  .contact-form-container {
+    min-width: 450px;
+  }
+  .contact-section1 .section-description {
+    font-size: 16px;
+    text-align: center;
+    margin: 0px 40px !important;
+    margin-bottom: 50px;
+    margin-right: -60px !important;
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+    font-family: "Geologica", sans-serif !important;
+  }
+}
+/* Small Devices (phones, landscape and small tablets) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .contact-form-container {
+    width: 100% !important;
+    padding: 1.5rem;
+  }
+}
+@media screen and (min-width: 1733px) and (max-width: 2560px) {
+  .contact-form-container {
+    min-width: 450px !important;
+  }
+}
+
+/* Medium Devices (tablet to small laptops) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .contact-form-container {
+    width: 90% !important;
+    margin: 0 auto;
+  }
+}
+
+/* Extra Large Devices (large desktop / 4K) */
+@media screen and (min-width: 1441px) {
+  .contact-form-container {
+    width: 60% !important;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 912px) and (max-width: 912px) and (min-height: 1368px) and (max-height: 1368px) {
+  .contact-form-container {
+    width: 100% !important;
+  }
+}
 
 .contact-section1 {
-    margin-right: 400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 60px;
-  padding: 40px 20px;
-  position: relative;
-  z-index: 1;
-  background-image: radial-gradient(circle, rgba(78, 77, 77, 0.05) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-  .section-title {
-    font-family: "Space Grotesk", sans-serif;
-    font-size: 56px;
-    font-weight: 650;
-    line-height: 64px;
-    text-align: center;
-    color: #000;
-    margin: 0;
-    padding: 0 16px; 
-    word-wrap: break-word;
-  }
-  @media (max-width: 768px) {
-    .section-title {
-      font-size: 36px;
-      line-height: 44px;
-    }
-  }
-  @media (max-width: 480px) {
-    .section-title {
-      font-size: 40px;
-      line-height: 36px;
-    }
-  }
-  .highlight {
-    margin-left: 5px;
-    color: #38b6ff;
-  }
-  .section-description {
-    font-family: "Geologica", sans-serif;
-    font-size: 16px;
-    font-weight: 200;
-    line-height: 24px;
-    text-align: center;
-    color: rgba(0, 0, 0, 0.6);
-    margin-top: 9px;
-  }
-  .contact-form {    
- display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 1567px;
-    padding: 40px;
-    border-radius: 20px;
-    border: 1px solid #072d49;
-    box-shadow: 0px 8px 40px rgba(0, 0, 0, 0.08);
-    margin-top: 73px;
-    background-color: #fff;
-
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: 0; 
-}
-
-.form-label {
-  margin-bottom: 4px;
-}
-
-.form-input,
-select,
-textarea {
-  width: 100%;
-  height: 58px;
-  padding: 0 16px;
-  border-radius: 12px;
-  border: 1px solid #ddd;
   font-family: "Geologica", sans-serif;
-  font-size: 14px;
-  font-weight: 200;
-  line-height: 24px;
-  color: #333;
-  box-sizing: border-box;
 }
 
-  .form-label {
-    font-family: "Geologica", sans-serif;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 24px;
-    color: #000;
-  }
-  .required {
-    color: red;
-    margin-left: 2px;
-  }
-  .form-input {
-    width: 100%;
-    height: 58px;
-    padding: 0 16px;
-    border-radius: 12px;
-    border: 1px solid #ddd;
-    font-family: "Geologica", sans-serif;
-    font-size: 14px;
-    font-weight: 200;
-    line-height: 24px;
-    color: #999;
-  }
-  .radio-group {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-  }
-  .radio-option {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .radio-button {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid #1c6fb2;
-    display: inline-block;
-  }
-.submit-button {
-  width: 510px;
-  padding: 12px 32px;
-  border: 2px solid black;
-  background: #CB6BE6;
-  color: black;
+.contact-form-container,
+.contact-form-container * {
   font-family: "Geologica", sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 14px;
-  box-shadow: 0 6px 10px rgb(171 53 190 / 50%);
-  cursor: pointer;
-  margin-top: 20px;
-  transition: all 0.3s ease;
 }
-
-
-@media (max-width: 640px) {
-  .submit-button {
-    width: 100%;
-    max-width: 90vw;
-    padding: 12px 24px;
-    font-size: 15px;
-  }
-}
-
-
-  .submit-button:hover {
-    background-color: #48d176;
-  } */
-
 .contact-form-container {
-  width: 520px;
+  width: 100% !important;
 
   border-radius: 20px;
-  border: 1px solid #EEEEEE;
-  background: #FFFFFF;
+  border: 1px solid #eeeeee;
+  background: #ffffff;
   box-shadow: 0px 8px 40px 0px #00000014;
   padding: 20px; /* Optional padding */
   box-sizing: border-box;
   position: relative; /* in case you want to place absolutely inside */
   /* font-family: 'Geologica', -apple-system, Roboto, Helvetica, sans-serif; */
-    font-family: "Geologica", sans-serif !important;
+  /* font-family: "Geologica", sans-serif !important;
   font-optical-sizing: auto !important;
-  font-style: normal !important;
+  font-style: normal !important; */
+  font-family: "Geologica", "Space Grotesk", sans-serif !important;
+}
+@media (max-width: 1024px) {
+  .contact-form-container {
+    width: 100%;
+
+    border-radius: 20px;
+    border: 1px solid #eeeeee;
+    background: #ffffff;
+    box-shadow: 0px 4px 10px 0px #00000014;
+    padding: 20px; /* Optional padding */
+    box-sizing: border-box;
+    position: relative; /* in case you want to place absolutely inside */
+    /* font-family: 'Geologica', -apple-system, Roboto, Helvetica, sans-serif; */
+    font-family: "Geologica", sans-serif !important;
+    font-optical-sizing: auto !important;
+    font-style: normal !important;
+  }
 }
 
 @media (max-width: 640px) {
   .contact-form-container {
     width: 100%;
     height: auto;
-    padding: 20px; 
+    padding: 20px;
     box-shadow: 0px 0px 10px 0px #00000014;
   }
 }
-  /* Base styles */
+/* Base styles */
 .contact-section1 {
   padding: 20px;
   /* max-width: 600px; */
   /* margin: auto; */
-  
-  margin-top: 180px !important;
+
+  margin-top: 160px !important;
   margin-bottom: 20px;
   margin-right: 20px;
 }
@@ -204,8 +203,9 @@ textarea {
   text-align: center;
   margin: 0px 60px;
   margin-bottom: 50px;
+  /* padding-left: 70px !important; */
+  font-weight: 500;
 }
-
 
 /* .form-group {
   display: flex;
@@ -230,12 +230,10 @@ textarea {
   }
 }
 
-
-
 .form-group1 {
   display: flex;
   flex-direction: column;
-  width: 100%; 
+  width: 100%;
   margin: 10px 0px;
 }
 
@@ -244,7 +242,7 @@ textarea {
   height: 48px;
   max-height: 48px;
   padding: 0 16px;
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   border-radius: 12px;
   font-size: 14px;
   box-sizing: border-box;
@@ -264,17 +262,18 @@ textarea {
   margin-bottom: 20px;
 }
 .form-input1 {
-  border: 1px solid #ccc !important;
+  border: 1.5px solid #ccc !important;
   padding: 12px !important;
   border-radius: 12px !important;
   height: 48px;
+  width: 100%;
   outline: none !important; /* removes default browser outline */
   /* transition: border 0.3s ease !important; */
 }
 
 /* When input is focused */
 .form-input1:focus {
-  border: 1px solid #CB6BE6 !important;
+  border: 1.5px solid #cb6be6 !important;
   outline: none !important; /* ensures no double border */
 }
 
@@ -284,7 +283,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   padding: 12px 16px;
-  border: 1px solid #DDDDDD;
+  border: 1.5px solid #dddddd;
   min-height: 48px;
   border-radius: 12px;
   background-color: white;
@@ -294,9 +293,9 @@ textarea {
   box-sizing: border-box;
 }
 
-.grade-select-box span{
-  color:  #999999;
-font-size: 14px;
+.grade-select-box span {
+  color: #999999;
+  font-size: 14px;
 }
 
 /* .grade-select-box:hover {
@@ -305,7 +304,7 @@ font-size: 14px;
 } */
 .grade-select-box.dropdown-open {
   /* border-color: #CB6BE6; */
-  border: 1px solid #CB6BE6;
+  border: 1.5px solid #cb6be6;
 }
 .dropdown-arrow {
   font-size: 14px;
@@ -340,7 +339,7 @@ font-size: 14px;
 }
 
 .option-item:hover {
-  background-color: #CB6BE6;
+  background-color: #cb6be6;
   color: white;
   font-weight: 500;
 }
@@ -362,7 +361,6 @@ font-size: 14px;
   }
 }
 
-
 .radio-group {
   display: flex;
   flex-wrap: wrap;
@@ -376,9 +374,8 @@ font-size: 14px;
   font-size: 14px !important;
   cursor: pointer;
   user-select: none;
-  color:  #999999;
+  color: #999999;
   margin-bottom: 10px;
-  
 }
 /* Set placeholder text color to red */
 input::placeholder,
@@ -411,25 +408,23 @@ input:-moz-placeholder {
   position: relative;
   font-size: 16px;
   color: #333;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .dropdown-arrow {
   display: flex;
   align-items: center;
   margin-left: 8px;
-  font-size: 12px !important; 
-  color: #000000 !important; 
+  font-size: 12px !important;
+  color: #000000 !important;
 }
-
-
 
 /* Base style for radio button */
 .radio-button {
   width: 24px;
   height: 24px;
   border-radius: 24px;
-  border: 1.5px solid #999999 !important; 
+  border: 1.5px solid #999999 !important;
   background-color: #fff;
   box-sizing: border-box;
   position: relative;
@@ -458,55 +453,60 @@ input:-moz-placeholder {
   color: black;
 }
 
-
 .submit-button2 {
-  width:100%;
+  width: 100%;
   height: 48px;
   max-height: 48px;
   border-radius: 12px;
-  border: 2px solid #000000;
-  background: #CB6BE6;
+  border: 1.5px solid #000000;
+  background: #cb6be6;
 
-margin-bottom: 10px;
-  gap: 8px; 
+  margin-bottom: 10px;
+  gap: 8px;
   cursor: pointer;
   color: black; /* Assuming white text on purple */
   font-size: 16px;
   font-weight: 600;
-    box-shadow: 
-    4px 4px 0px 0px #000000,
-    inset 0px 8px 4px 0px #0000000A !important;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
 }
 
-
 .submit-button2:hover {
-   height: 48px;
+  height: 48px;
   max-height: 48px;
-  background-color:#CB6BE6;
-      box-shadow: none !important;
+  background-color: #cb6be6;
+  box-shadow: none !important;
+}
+
+.submit-button2:focus,
+.submit-button2:active {
+  outline: none;
+  border: 1.5px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
 }
 
 .required {
   color: red;
 }
 
-
-
 /* Tablet/Desktop responsiveness */
 @media (width<=991px) {
   .contact-section1 {
-  padding: 10px;
-  /* max-width: 600px; */
-  /* margin: auto; */
-  margin-top: 0px !important;
+    padding: 10px;
+    /* max-width: 600px; */
+    /* margin: auto; */
+    margin-top: 0px !important;
     margin-bottom: 0px;
-  margin-right: 0px;
-}
-  .contact-section1  .section-description {
+    margin-right: 0px;
+  }
+  .contact-section1 .section-description {
     font-size: 14px !important;
     text-align: center !important;
     margin-bottom: 20px !important;
     margin: 0px 0px;
+    padding-left: 0px !important;
+  }
+  .divider {
+    display: none !important;
   }
 
   /* .contact-section .contact-form {

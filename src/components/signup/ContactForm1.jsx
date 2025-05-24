@@ -78,8 +78,7 @@ function ContactForm() {
   return (
     <section className="contact-section1">
       <p className="section-description">
-        Complete the form and our team will get in touch to help your child
-        grow!
+        Complete the form and our team will get in touch
       </p>
 
       <form className="contact-form-container" onSubmit={handleSubmit}>
@@ -100,7 +99,7 @@ function ContactForm() {
               type="text"
               className="form-input1"
               id="child-name"
-              placeholder="Your Cutie Pie Name"
+              placeholder="Your Child Name"
             />
           </div>
         </div>

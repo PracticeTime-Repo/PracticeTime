@@ -541,8 +541,12 @@
   /* .example04,
   .div,
   .column,*/
-  .subjectWrapper,
-  .logo {
+    .img {
+    width: 250px;
+    max-width: 100%;
+    margin-bottom: 30px;
+  }
+  .subjectWrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -604,11 +608,11 @@
 .column2 {
   flex-direction: column;
   align-items: stretch;
-  width: 40%;
+  width: 50%;
   /* margin-left: 20px; */
   line-height: normal;
   display: flex;
-  margin-left: -100px !important;
+  /* margin-left: -100px !important; */
 }
 @media (width<=991px) {
   .column2 {
