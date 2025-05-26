@@ -27,9 +27,9 @@ const AppContent = () => {
 
   return (
     <>
-      {location.pathname !== '/login' && isAuthenticated && (
-        <Navbar onNavigate={(page) => navigate(`/${page}`)} />
-      )}
+      {!['/login', '/signup'].includes(location.pathname) && isAuthenticated && (
+  <Navbar onNavigate={(page) => navigate(`/${page}`)} />
+)}
    <Routes>
   <Route path="/login" element={<Login onLoginSuccess={() => navigate('/start')} />} />
   <Route path="/signup" element={<Section7 />} />

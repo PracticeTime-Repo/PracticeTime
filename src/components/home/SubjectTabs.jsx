@@ -140,7 +140,7 @@ function SubjectTabs() {
           height: 31px;
         }
         .practice-button {
-          width: 207px;
+          width: auto;
           height: 52px;
           padding: 0 52px;
           border-radius: 12px;
