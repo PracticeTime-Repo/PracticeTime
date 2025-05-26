@@ -36,7 +36,7 @@
 
 //         <li onClick={() => handleNavigation("progress")}>Progress</li>
 //           <li onClick={() => handleNavigation("home")}>Home</li>
-          
+
 //           <li onClick={handleLogout}>Log out</li>
 //         </ul>
 //       </nav>
@@ -54,8 +54,11 @@ import React, { useEffect, useRef } from "react";
 import "./Navbar.css";
 import { signOut } from "firebase/auth";
 import firebaseServices from "../firebase/firebaseSetup";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { FaHome, FaChevronDown } from "react-icons/fa";
+import { RxHamburgerMenu, RxCross2 } from "react-icons/rx";
+import { FaChevronRight, FaChevronDown } from "react-icons/fa";
+import home from "./home.png";
+import hand from "./hand.png";
+import emojiHappy from "./emoji-happy.png";
 
 const Navbar = ({ onNavigate }) => {
   const [showmenu, setShowmenu] = React.useState(false);
@@ -109,66 +112,99 @@ const Navbar = ({ onNavigate }) => {
 
   return (
     <div className="container">
-    <header className="navbar">
-      <div className="navbar-left">
-        <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/0442a517a403251d5959637b0e2a64010cc28ce9?placeholderIfAbsent=true&apiKey=771d35a4e8294f3083bdf0cbd6294e9e"
-          alt="PracticeTime Logo"
-          className="logo-image"
-        />
-      </div>
+      <header className="navbar">
+        <div className="navbar-left">
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/0442a517a403251d5959637b0e2a64010cc28ce9?placeholderIfAbsent=true&apiKey=771d35a4e8294f3083bdf0cbd6294e9e"
+            alt="PracticeTime Logo"
+            className="logo-image"
+          />
+        </div>
 
-      {/* <button1 className="hamburger" onClick={handleHamburger}>
-        <RxHamburgerMenu />
-      </button1> */}
-      <button className="hamburger" onClick={handleHamburger}>
-  {showmenu ? "❌" : <RxHamburgerMenu />}
-</button>
-<div className="web-navbar">
-      <nav className={`navbar-menu ${showmenu ? "open" : ""}`}>
-        <ul>
-          <li onClick={() => handleNavigation("home")}>
-            <FaHome /> Home
-          </li>
-          <li onClick={() => handleNavigation("progress")}>Track Progress</li>
-
-          <li className="user-dropdown" ref={dropdownRef}>
-            <div className="user-trigger" onClick={() => setShowlogout((prev) => !prev)}>
-              Hi, 👋 &nbsp;<span>User Name</span>
-              <FaChevronDown size={12} />
+        {/* <button1 className="hamburger" onClick={handleHamburger}>
+          {showmenu ? <RxCross2 /> : <RxHamburgerMenu />}
+        </button1> */}
+        <button1 className="hamburger" onClick={handleHamburger}>
+          {showmenu ? (
+            <RxCross2 className="menu-icon" />
+          ) : (
+            <div className="menu-icon two-line-icon">
+              <span></span>
+              <span></span>
             </div>
-            {showlogout && (
-              <ul className="dropdown-menu">
-                <li onClick={handleLogout} className="logout">
-                  Log out
-                </li>
-              </ul>
-            )}
-          </li>
-        </ul>
-      </nav>
-      </div>
-      <div className="mobile-navbar">
-      <nav className={`navbar-menu ${showmenu ? "open" : ""}`}>
-  <div className="dropdown-header">
-    <span className="emoji">😊</span>
-    <span className="greeting">Hi 👋, @User Name</span>
-  </div>
-  <hr />
-  <ul>
-    <li onClick={() => handleNavigation("home")}>
-      Home <FaChevronDown className="chevron" />
-    </li>
-    <li onClick={() => handleNavigation("progress")}>
-      Track Progress <FaChevronDown className="chevron" />
-    </li>
-    <li onClick={handleLogout}>
-      Logout <FaChevronDown className="chevron" />
-    </li>
-  </ul>
-</nav>
-</div>
-    </header>
+          )}
+        </button1>
+
+        <div className="web-navbar">
+          <nav className={`navbar-menu ${showmenu ? "open" : ""}`}>
+            <ul>
+              <li onClick={() => handleNavigation("home")}>
+                <img src={home} alt="Home" className="nav-image" />
+              </li>
+
+              <li
+                onClick={() => handleNavigation("progress")}
+                className="track-progress"
+              >
+                Track Progress
+              </li>
+
+              <li
+                onClick={() => handleNavigation("progress")}
+                className="navbar-line"
+              ></li>
+
+              <li className="user-dropdown" ref={dropdownRef}>
+                <div
+                  className="user-trigger"
+                  onClick={() => setShowlogout((prev) => !prev)}
+                >
+                  <img src={emojiHappy} alt="User" className="avatar-img" />
+                  <span>
+                    Hi, <img src={hand} alt="wave" className="emoji-img" />{" "}
+                    &nbsp;
+                    <span>User Name</span>
+                  </span>
+                  <FaChevronDown size={12} className="navbar-arrow" />
+                </div>
+                {showlogout && (
+                  <ul className="dropdown-menu">
+                    <li onClick={handleLogout} className="logout">
+                      Log out
+                    </li>
+                  </ul>
+                )}
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div className="mobile-navbar">
+          <nav className={`navbar-menu ${showmenu ? "open" : ""}`}>
+            <div className="dropdown-header">
+              <img src={emojiHappy} alt="smile" className="emoji-img" />
+              <span className="greeting">
+                Hi <img src={hand} alt="wave" className="hand-img" />, @User
+                Name
+              </span>
+            </div>
+            <hr />
+            <ul>
+              <li onClick={() => handleNavigation("home")}>
+                <span className="menu-text">Home</span>
+                <FaChevronRight className="chevron" />
+              </li>
+              <li onClick={() => handleNavigation("progress")}>
+                <span className="menu-text">Track Progress</span>
+                <FaChevronRight className="chevron" />
+              </li>
+              <li onClick={handleLogout}>
+                <span className="menu-text">Logout</span>
+                <FaChevronRight className="chevron" />
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
     </div>
   );
 };

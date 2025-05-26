@@ -181,7 +181,7 @@ function ContactForm() {
             type="text"
             className="form-input1"
             id="city"
-            placeholder="Enter Your ity"
+            placeholder="Enter Your city"
           />
         </div>
 

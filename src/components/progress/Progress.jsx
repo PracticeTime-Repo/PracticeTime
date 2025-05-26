@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import firebaseServices from "../firebase/firebaseSetup";
 import "./Progress.css";
+import rocket from "./rocket.png";
+import graph from "./graph.png";
+import star from "./star.png";
+import medal from "./medal.png";
 
 //Adding Function for Daily streak
 const calculateDailyStreak = (quizResults) => {
@@ -525,9 +529,17 @@ const Progress = () => {
     // <div className="progress-container">\
     <div className="container">
       {/* <h1>Your Learning Progress</h1> */}
-      <h1 className="progress-heading">Track Progress 📈</h1>
-      <p className="progress-subheading">Keep track of your growth! 🚀</p>
-      <div className="progress-wrapper">
+      {/* <h1 className="progress-heading">Track Progress 📈</h1>
+      <p className="progress-subheading">Keep track of your growth! 🚀</p> */}
+      <h1 className="progress-heading">
+        Track Progress <img src={graph} alt="chart" className="graph" />
+      </h1>
+      <p className="progress-subheading">
+        Keep track of your growth!{" "}
+        <img src={rocket} alt="rocket" className="rocket" />
+      </p>
+
+      <div className="progress-section3">
         <h2 className="overview-heading">Overview</h2>
 
         <div className="card-grid">
@@ -546,34 +558,46 @@ const Progress = () => {
         </div>
       </div>
 
-      <div class="achievements-wrapper">
+      <div class="progress-section3">
         <h2 class="achievements-heading">Stars & Achievements</h2>
 
-        <div class="achievements-grid">
-          <div class="achievement-card">
-            <p class="achievement-value">{totalStars} ⭐</p>
-            <p class="achievement-title">Total Stars Earned!</p>
-            <p class="achievement-subtext">
+        <div className="achievements-grid">
+          <div className="achievement-card">
+            <p className="achievement-value">
+              {totalStars}{" "}
+              <img src={star} alt="star" className="star-item-header" />
+            </p>
+            <p className="achievement-title">Total Stars Earned!</p>
+            <p className="achievement-subtext">
               No stars earned yet. Complete a set above 50% to earn a star!
             </p>
           </div>
 
           <div className="achievement-card">
-            <p className="achievement-value">:( 🎖️</p>
+            <p className="achievement-value">
+              {dailyStars > 0 ? (
+                <>
+                  {dailyStars}{" "}
+                  <img src={medal} alt="medal" className="model-item-header" />
+                </>
+              ) : (
+                <>
+                  :( <img src={medal} alt="medal" className="model-item-header" />
+                </>
+              )}
+            </p>
             <p className="achievement-title">Today's Achievements!</p>
 
             {dailyStars > 0 ? (
               <>
                 <div className="stars-container">
                   {Array.from({ length: dailyStars }, (_, i) => (
-                    <span
+                    <img
                       key={i}
-                      role="img"
-                      aria-label="star"
+                      src={star}
+                      alt="star"
                       className="star-item"
-                    >
-                      ⭐
-                    </span>
+                    />
                   ))}
                 </div>
                 <p>{`(${dailyStars}x sets completed above 50% today)`}</p>
@@ -708,14 +732,14 @@ const Progress = () => {
                 <div className="progress-header">
                   <span className="progress-label">{category}</span>
                   <div>
-                  <span className="progress-info">
-                    {" "}
-                    {data.correct} of {data.attempted} questions
-                  </span>
-                  <span className="progress-line"></span>
-                  <span className="progress-percentage">
-                    {data.percentage}%
-                  </span>
+                    <span className="progress-info">
+                      {" "}
+                      {data.correct} of {data.attempted} questions
+                    </span>
+                    <span className="progress-line"></span>
+                    <span className="progress-percentage">
+                      {data.percentage}%
+                    </span>
                   </div>
                 </div>
                 <div className="progress-bar-bg">
@@ -765,9 +789,7 @@ const Progress = () => {
                     <td>{quiz.totalQuestions || 0}</td>
                     <td>
                       {hasStar(quiz) ? (
-                        <span role="img" aria-label="star">
-                          ⭐
-                        </span>
+                        <img src={star} alt="star" className="star-img" />
                       ) : (
                         "-"
                       )}

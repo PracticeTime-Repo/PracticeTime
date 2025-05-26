@@ -36,8 +36,13 @@
 
 /* Headings */
 .container h1 {
-  font-size: 1.5rem;
+  font-size:32px;
   font-weight: 700;
+}
+
+.progress-subheading{
+  font-size: 16px;
+  color: #00000066;
 }
 
 .container p {
@@ -121,6 +126,25 @@
 .blue {
   border: 1px solid black;
   box-shadow: 8px 8px 0 #3498db;
+}
+.star-item-header{
+    width: 40px;
+  height: 40px;
+}
+.model-item-header{
+    width: 40px;
+  height: 40px;
+  vertical-align: middle;
+}
+.star-item {
+  width: 20px;
+  height: 20px;
+  margin-right: 4px;
+}
+
+.star-img{
+    width: 16px;
+  height: 16px;
 }
 
 /* Responsive */
@@ -434,7 +458,14 @@
   margin: 0 1.5rem; /* Optional spacing around the line */
 }
 
-
+.graph{
+  width: 32px;
+  height: 30px;
+}
+.rocket{
+  width: 16px;
+  height: 16px;
+}
 
 .progress-info {
   text-align: right;
@@ -571,10 +602,27 @@
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
+  .progress-label {
+    margin-top: 3px;
+  font-weight: 400;
+  font-size: 14px;
+}
+.progress-info {
+  text-align: right;
+  font-size: 12px;
+  color: var(--gray-600);
+}
+.progress-percentage {
+  font-weight: 600;
+  font-size: 14px;
+}
+
 
   .table-container {
     overflow-x: auto;
   }
+}
+  
 
   .results-table {
     min-width: 600px;
@@ -588,7 +636,7 @@
   margin: 0 0.5rem; /* Optional spacing around the line */
 }
 
-}
+
 
 /* .quiz-details {
   padding: 10px;
@@ -810,6 +858,17 @@
   font-weight: bold;
 }
 @media screen and (max-width: 768px) {
+  .progress-section3 {
+  position: relative;
+  margin-top: 70px !important;
+  margin: 2rem auto;
+  padding: 3rem 1rem 1rem 1rem;
+  border-radius: 16px;
+  background-color: #fff;
+  font-family: sans-serif;
+  border: 1px solid #dddddd;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+}
   .section-label {
   position: absolute;
   top: -1.2rem;
