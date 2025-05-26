@@ -4,30 +4,83 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px);
+  min-height: 100vh; /* Ensures full viewport height */
   width: 100%;
-  background-color: #f5f5f5;
+  background-image: url("../../assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   padding: 20px;
   box-sizing: border-box;
 }
 
 .loginContainer {
-  border-color: rgb(208, 144, 144);
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.85); /* semi-transparent background */
+  border: 1px solid rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 360px;
-  background: #ebf4ff;
+  padding: 50px !important;
   color: #262626;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  border-radius: 12px;
-  padding: 35px 25px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-radius: 32px;
+  /* padding: 35px 25px; */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  border-style: solid;
-  min-height: 500px; /* <--- added */
+  min-height: auto;
+}
+.eyeIcon {
+  position: absolute;
+  top: 60%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 24px;
 }
 
+.eyeIcon:hover {
+  color: black;
+}
+
+.arrowIcon {
+  margin-left: 8px;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+@media screen and (max-width: 480px) {
+  .loginContainer {
+    padding: 30px !important;
+    border-radius: 32px !important;
+  }
+
+  .formGroup input {
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .errorMessage {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
+
+  .loginWrapper {
+    padding: 10px;
+  }
+  .login-text-box {
+    margin: 20px 0px !important;
+  }
+
+  /* Form Group */
+  .formGroup {
+    width: 100%;
+    position: relative;
+    margin-top: 10px !important;
+  }
+}
 
 /* Make container wider on larger screens */
 @media (min-width: 768px) {
@@ -65,29 +118,37 @@
 
 /* Login Form */
 .loginForm {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  /* display: flex;
+  flex-direction: column; */
   width: 100%;
+  /* margin: 0px 10px !important; */
+}
+.login-text-box {
+  margin: 30px 0px;
 }
 
 /* Form Group */
 .formGroup {
   width: 100%;
   position: relative;
+  margin-top: 20px;
 }
 
 /* Input Fields */
 .formGroup input {
   width: 100%;
   height: 44px;
-  border: 1px solid #b64444;
+  border: 1px solid #dddddd;
   border-radius: 8px;
   padding: 0 15px;
   font-size: 15px;
   transition: border-color 0.3s ease;
   box-sizing: border-box;
 }
+
+/* .formGroup input:focus {
+  outline: 2px solid #cb6be6;
+} */
 
 /* Responsive Design */
 @media screen and (max-width: 480px) {
@@ -107,95 +168,103 @@
   }
 }
 
-  .formGroup input:focus {
-    border-color: #3f91d0;
-  }
-  
-  .loginButton {
-    margin: 35px auto;
-    width: 100%;
-    height: 45px;
-    background: #3f91d0;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .loginButton:hover {
-    background: #1a0560;
-  }
-  
-  .loginButton:disabled {
-    background: #a0c4e4;
-    cursor: not-allowed;
-  }
-  
-  #signInWithGoogle {
-    margin: 10px auto 0;
-    width: 100%;
-    height: 45px;
-    background: #4285f4;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.3s;
-  }
-  
-  #signInWithGoogle:hover {
-    background: #3367d6;
-  }
-  
-  #signInWithGoogle:disabled {
-    background: #a5baed;
-    cursor: not-allowed;
-  }
-  
-  .authToggle {
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-    margin: 5px 0;
-  }
-  
-  .authToggle span {
-    cursor: pointer;
-    color: #3f91d0;
-  }
-  
-  .authToggle span:hover {
-    text-decoration: underline;
-  }
-  
-  .divider {
-    position: relative;
-    text-align: center;
-    margin: 15px 0;
-  }
-  
-  .divider::before {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 1px;
-    background: #e1e4e8;
-    position: absolute;
-    top: 50%;
-  }
-  
-  .divider span {
-    background: white;
-    padding: 0 15px;
-    position: relative;
-    color: #888;
-    font-size: 14px;
-  }
+.formGroup input:focus {
+  border-color: #3f91d0;
+}
+
+.loginButton {
+  width: 100%;
+  height: 48px;
+  max-height: 48px;
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background: #cb6be6;
+  margin-top: 20px !important;
+  margin-bottom: 10px;
+  gap: 8px;
+  cursor: pointer;
+  color: black; /* Assuming white text on purple */
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+
+.loginButton:hover {
+  height: 48px;
+  max-height: 48px;
+  background-color: #cb6be6;
+  box-shadow: none !important;
+}
+
+.loginButton:focus,
+.loginButton:active {
+  outline: none;
+  border: 1.5px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+
+#signInWithGoogle {
+  margin: 10px auto 0;
+  width: 100%;
+  height: 45px;
+  background: #4285f4;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+#signInWithGoogle:hover {
+  background: #3367d6;
+}
+
+#signInWithGoogle:disabled {
+  background: #a5baed;
+  cursor: not-allowed;
+}
+
+.authToggle {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.authToggle span {
+  cursor: pointer;
+  color: #3f91d0;
+}
+
+.authToggle span:hover {
+  text-decoration: underline;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.divider::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: #e1e4e8;
+  position: absolute;
+  top: 50%;
+}
+
+.divider span {
+  background: white;
+  padding: 0 15px;
+  position: relative;
+  color: #888;
+  font-size: 14px;
+}

@@ -180,6 +180,7 @@
 }
 
 .nav-image {
+    margin-right: -5px;
   width: 32px;
   height: 32px;
   max-height: 32px;

@@ -1497,12 +1497,12 @@
 }
 
 /* Focus styles for accessibility */
-input:focus,
+/* input:focus,
 select:focus,
 button:focus {
   outline: 2px solid #cb6be6;
   outline-offset: 2px;
-}
+} */
 
 /* Hover effects */
 .submit:hover {

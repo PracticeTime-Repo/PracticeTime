@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import "./Login.css";
 import PracticeTime from "../../assets/practiceTime.jpg";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import firebaseServices from "../firebase/firebaseSetup";
+import { FaArrowRight } from "react-icons/fa";
+
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const Login = ({ onLoginSuccess }) => {
   const { auth, db, ref, set } = firebaseServices;
@@ -11,34 +17,43 @@ const Login = ({ onLoginSuccess }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleUsernamePasswordAuth = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    
+
     if (!username || !password) {
       setError("Username and password are required");
       setLoading(false);
       return;
     }
-    
+
     // Convert username to email format by appending @gmail.com
     const email = `${username}@gmail.com`;
-    
+
     try {
       let userCredential;
-      
+
       if (isSignUp) {
         // Create new user account
-        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
       } else {
         // Sign in existing user
-        userCredential = await signInWithEmailAndPassword(auth, email, password);
+        userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
       }
-      
+
       const user = userCredential.user;
-      
+
       if (user) {
         // Save user data in Realtime Database if signing up
         if (isSignUp) {
@@ -50,22 +65,28 @@ const Login = ({ onLoginSuccess }) => {
             loginDate: new Date().toISOString(),
           });
         }
-        
+
         // Save user login status in localStorage
-        localStorage.setItem("user", JSON.stringify({
-          name: username,
-          email: user.email,
-          uid: user.uid
-        }));
-        
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            name: username,
+            email: user.email,
+            uid: user.uid,
+          })
+        );
+
         // Use the onLoginSuccess prop instead of navigate
         onLoginSuccess();
       }
     } catch (error) {
       console.error("Authentication error:", error);
-      
+
       // Handle specific error codes
-      if (error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
+      if (
+        error.code === "auth/wrong-password" ||
+        error.code === "auth/user-not-found"
+      ) {
         setError("Invalid username or password");
       } else if (error.code === "auth/email-already-in-use") {
         setError("Username already exists. Please try another or sign in.");
@@ -83,41 +104,49 @@ const Login = ({ onLoginSuccess }) => {
     <div className="loginWrapper">
       <div className="loginContainer">
         <img src={PracticeTime} alt="Practice Time" />
-        <hr />
-        
+
         {error && <div className="errorMessage">{error}</div>}
-        
+
         <form onSubmit={handleUsernamePasswordAuth} className="loginForm">
+          <div className="login-text-box">
           <div className="formGroup">
             <input
               type="text"
-              placeholder="Username or phone number"
+              placeholder="Enter User Name or Phone Number"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}
             />
           </div>
-          
+
           <div className="formGroup">
             <input
-              type="password"
-              placeholder="Password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Your Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
             />
+            <span
+              className="eyeIcon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+            </span>
           </div>
-          
-          <button 
-            type="submit" 
-            className="loginButton"
-            disabled={loading}
-          >
-            {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
+          </div>
+
+          <button type="submit" className="loginButton" disabled={loading}>
+            {loading ? (
+              "Processing..."
+            ) : (
+              <>
+                {isSignUp ? "Sign Up" : "Login"}{" "}
+                <FaArrowRight className="arrowIcon" />
+              </>
+            )}
           </button>
         </form>
-        
-        
       </div>
     </div>
   );
