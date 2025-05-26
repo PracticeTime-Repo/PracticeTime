@@ -112,6 +112,26 @@
 .label3 {
   padding: 0 90px !important;
 }
+@media screen and (width: 820px) and (height: 1180px) {
+    .stat-label {
+  padding: 0 0px !important;
+  font-size:16px;
+  color: #00000066;
+}
+.label3 {
+  padding: 0 0px !important;
+}
+}
+@media screen and (width: 912px) and (height: 1368px) {
+    .stat-label {
+  padding: 0 0px !important;
+  font-size:16px;
+  color: #00000066;
+}
+.label3 {
+  padding: 0 0px !important;
+}
+}
 /* Color borders */
 .orange {
   border: 1px solid black;
