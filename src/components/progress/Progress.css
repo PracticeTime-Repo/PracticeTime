@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Geologica:wght@400;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Geologica&display=swap');
 
 
 /* Base styles */
@@ -22,8 +22,9 @@
 }
 
 
-.container {
-  font-family: 'Geologica', sans-serif !important;
+.container,
+.container * {
+  font-family: 'Geologica', sans-serif;
 }
 
 /* Main container */

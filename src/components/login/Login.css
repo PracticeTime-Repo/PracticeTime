@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica&display=swap');
+
 /* Login.css - Updated with form styles */
 /* Login Wrapper */
+.loginWrapper,
+.loginWrapper * {
+  font-family: 'Geologica', sans-serif;
+}
 .loginWrapper {
   display: flex;
   justify-content: center;

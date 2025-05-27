@@ -612,111 +612,7 @@ const Progress = () => {
         </div>
       </div>
 
-      {/* Overall Progress */}
-      {/* <div className="progress-section">
-        <h2>Overall Progress</h2>
-        <div className="stat-card">
-          <div className="metrics-grid">
-            <div className="metric-item">
-              <p className="metric-label">Total Attempted</p>
-              <p className="metric-value">{overallProgress.attempted}</p>
-            </div>
-            <div className="metric-item">
-              <p className="metric-label">Correctly Answered</p>
-              <p className="metric-value">{overallProgress.correct}</p>
-            </div>
-            <div className="metric-item">
-              <p className="metric-label">Success Rate</p>
-              <p className="metric-value">{overallProgress.percentage}%</p>
-            </div>
-          </div>
-          <div className="progress-bar-bg">
-            <div
-              className="progress-bar-fill"
-              style={{ width: `${overallProgress.percentage}%` }}
-            ></div>
-          </div>
-          <div className="progress-info">
-            {overallProgress.correct} of {overallProgress.attempted} questions
-          </div>
-
-          <div className="total-stars">
-            <h3>Total Stars Earned ({totalStars})</h3>
-            {totalStars > 0 ? (
-              <div className="stars-container">
-                {Array.from({ length: totalStars }, (_, i) => (
-                  <span
-                    key={i}
-                    role="img"
-                    aria-label="star"
-                    className="star-item"
-                  >
-                    ⭐
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p>
-                No stars earned yet. Complete a set above 50% to earn a star!
-              </p>
-            )}
-          </div> */}
-
-      {/* Here Adding daily streak   */}
-
-      {/* <div className="daily-streak">
-            <h3>Daily Streak 🔥</h3>
-            {dailyStreak > 0 ? (
-              <div className="streak-container">
-                {Array.from({ length: dailyStreak }, (_, i) => (
-                  <span
-                    key={i}
-                    role="img"
-                    aria-label="flame"
-                    className="streak-fire"
-                  >
-                    🔥
-                  </span>
-                ))}
-                <p>{`${dailyStreak} day streak!`}</p>
-                <p>{` ( You attempted ${totalAttempts} quiz${
-                  totalAttempts > 1 ? "zes" : ""
-                } during this streak)`}</p>
-              </div>
-            ) : (
-              <p>No streak yet. Keep practicing daily to build your streak!</p>
-            )}
-          </div> */}
-
-      {/* Replace the existing Daily Stars section with this */}
-      {/* <div className="daily-stars">
-            <h3>Today's Achievements</h3>
-            {dailyStars > 0 ? (
-              <>
-                <div className="stars-container">
-                  {Array.from({ length: dailyStars }, (_, i) => (
-                    <span
-                      key={i}
-                      role="img"
-                      aria-label="star"
-                      className="star-item"
-                    >
-                      ⭐
-                    </span>
-                  ))}
-                </div>
-                <p>{`(${dailyStars}x sets completed above 50% today)`}</p>
-              </>
-            ) : (
-              <p>
-                No stars earned yet today. Complete a set above 50% to earn a
-                star!
-              </p>
-            )}
-          </div> */}
-      {/* </div>
-      </div> */}
-
+     
       {/* Category Progress */}
       {/* <div className="progress-section">
         <h2>Progress by Category</h2> */}
@@ -872,3 +768,109 @@ const Progress = () => {
 };
 
 export default Progress;
+
+
+ {/* Overall Progress */}
+      {/* <div className="progress-section">
+        <h2>Overall Progress</h2>
+        <div className="stat-card">
+          <div className="metrics-grid">
+            <div className="metric-item">
+              <p className="metric-label">Total Attempted</p>
+              <p className="metric-value">{overallProgress.attempted}</p>
+            </div>
+            <div className="metric-item">
+              <p className="metric-label">Correctly Answered</p>
+              <p className="metric-value">{overallProgress.correct}</p>
+            </div>
+            <div className="metric-item">
+              <p className="metric-label">Success Rate</p>
+              <p className="metric-value">{overallProgress.percentage}%</p>
+            </div>
+          </div>
+          <div className="progress-bar-bg">
+            <div
+              className="progress-bar-fill"
+              style={{ width: `${overallProgress.percentage}%` }}
+            ></div>
+          </div>
+          <div className="progress-info">
+            {overallProgress.correct} of {overallProgress.attempted} questions
+          </div>
+
+          <div className="total-stars">
+            <h3>Total Stars Earned ({totalStars})</h3>
+            {totalStars > 0 ? (
+              <div className="stars-container">
+                {Array.from({ length: totalStars }, (_, i) => (
+                  <span
+                    key={i}
+                    role="img"
+                    aria-label="star"
+                    className="star-item"
+                  >
+                    ⭐
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p>
+                No stars earned yet. Complete a set above 50% to earn a star!
+              </p>
+            )}
+          </div> */}
+
+      {/* Here Adding daily streak   */}
+
+      {/* <div className="daily-streak">
+            <h3>Daily Streak 🔥</h3>
+            {dailyStreak > 0 ? (
+              <div className="streak-container">
+                {Array.from({ length: dailyStreak }, (_, i) => (
+                  <span
+                    key={i}
+                    role="img"
+                    aria-label="flame"
+                    className="streak-fire"
+                  >
+                    🔥
+                  </span>
+                ))}
+                <p>{`${dailyStreak} day streak!`}</p>
+                <p>{` ( You attempted ${totalAttempts} quiz${
+                  totalAttempts > 1 ? "zes" : ""
+                } during this streak)`}</p>
+              </div>
+            ) : (
+              <p>No streak yet. Keep practicing daily to build your streak!</p>
+            )}
+          </div> */}
+
+      {/* Replace the existing Daily Stars section with this */}
+      {/* <div className="daily-stars">
+            <h3>Today's Achievements</h3>
+            {dailyStars > 0 ? (
+              <>
+                <div className="stars-container">
+                  {Array.from({ length: dailyStars }, (_, i) => (
+                    <span
+                      key={i}
+                      role="img"
+                      aria-label="star"
+                      className="star-item"
+                    >
+                      ⭐
+                    </span>
+                  ))}
+                </div>
+                <p>{`(${dailyStars}x sets completed above 50% today)`}</p>
+              </>
+            ) : (
+              <p>
+                No stars earned yet today. Complete a set above 50% to earn a
+                star!
+              </p>
+            )}
+          </div> */}
+      {/* </div>
+      </div> */}
