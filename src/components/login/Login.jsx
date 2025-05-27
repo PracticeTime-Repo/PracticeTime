@@ -105,10 +105,11 @@ const Login = ({ onLoginSuccess }) => {
       <div className="loginContainer">
         <img src={PracticeTime} alt="Practice Time" />
 
-        {error && <div className="errorMessage">{error}</div>}
 
         <form onSubmit={handleUsernamePasswordAuth} className="loginForm">
           <div className="login-text-box">
+        {error && <div className="errorMessage">{error}</div>}
+
           <div className="formGroup">
             <input
               type="text"
