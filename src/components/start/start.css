@@ -195,41 +195,6 @@
   
   /* Add these styles to your Quiz.css file */
   
- .quizHeader1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 1rem;
-  background-color: white;
-}
-
-/* Style tweaks for text spacing */
-.quizIntro h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: 700;
-}
-
-.quizIntro p {
-  margin: 0.5rem 0 0;
-  font-size: 1rem;
-}
-
-/* Optional: Revert to horizontal layout on wider screens */
-@media (min-width: 768px) {
-  .quizHeader1 {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    text-align: left;
-  }
-
-  .quizIntro {
-    text-align: left;
-  }
-}
 
   
   .setInfo {

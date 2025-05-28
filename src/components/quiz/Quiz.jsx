@@ -9,6 +9,9 @@ import { MdCheck } from "react-icons/md";
 import QuestionProgress from "./QuestionProgress";
 import { MdHelpOutline } from "react-icons/md";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
+import cloud from './cloud.png';
+import exicted from './exicted.png';
+// import SignupImage from "./SignupImage.png";
 
 const Quiz = () => {
   const { auth, provider, db, ref, set, get, child } = firebaseServices;
@@ -509,12 +512,12 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   if (loading) {
     return (
       <div className="container">
-      <div className="quizContainer">
-        <div className="loaderContainer">
-          <div className="loader"></div>
-          <p>Loading quiz questions...</p>
+        <div className="quizContainer">
+          <div className="loaderContainer">
+            <div className="loader"></div>
+            <p>Loading quiz questions...</p>
+          </div>
         </div>
-      </div>
       </div>
     );
   }
@@ -522,14 +525,14 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   if (error) {
     return (
       <div className="container">
-      <div className="quizContainer">
-        <div className="errorContainer">
-          <p className="errorMessage">{error}</p>
-          <button onClick={handleBackToHome} className="retryButton">
-            Hurray, Practice for today is Completed
-          </button>
+        <div className="quizContainer">
+          <div className="errorContainer">
+            <p className="errorMessage">{error}</p>
+            <button onClick={handleBackToHome} className="retryButton">
+              Hurray, Practice for today is Completed
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     );
   }
@@ -537,14 +540,14 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   if (questions.length === 0) {
     return (
       <div className="container">
-      <div className="quizContainer">
-        <p className="noQuestionsMessage">
-          No questions found for this quiz set.
-        </p>
-        <button onClick={handleBackToHome} className="retryButton">
-          Hurray, Practice for today is Completed
-        </button>
-      </div>
+        <div className="quizContainer">
+          <p className="noQuestionsMessage">
+            No questions found for this quiz set.
+          </p>
+          <button onClick={handleBackToHome} className="retryButton">
+            Hurray, Practice for today is Completed
+          </button>
+        </div>
       </div>
     );
   }
@@ -552,97 +555,97 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   if (quizCompleted && quizResults) {
     return (
       <div className="container">
-    <div className="quizContainer resultsContainer">
-        <h1 className="resultsTitle">Quiz Results</h1>
+        <div className="quizContainer resultsContainer">
+          <h1 className="resultsTitle">Quiz Results</h1>
 
-        <div className="scoreCard">
-          <div className="scoreCircle">
-            <div className="scoreValue">{quizResults.score}%</div>
+          <div className="scoreCard">
+            <div className="scoreCircle">
+              <div className="scoreValue">{quizResults.score}%</div>
+            </div>
+            <div className="scoreDetails">
+              <h2 className="performanceText">{quizResults.performance}</h2>
+              <p className="scoreText">
+                You answered {quizResults.correctAnswers} out of{" "}
+                {quizResults.totalQuestions} questions correctly.
+              </p>
+            </div>
           </div>
-          <div className="scoreDetails">
-            <h2 className="performanceText">{quizResults.performance}</h2>
-            <p className="scoreText">
-              You answered {quizResults.correctAnswers} out of{" "}
-              {quizResults.totalQuestions} questions correctly.
-            </p>
-          </div>
-        </div>
 
-        <div className="questionReview">
-          <h2>Question Review</h2>
-          {quizResults.responses.map((response, index) => {
-            // Find the corresponding question
-            const question =
-              questions.find((q) => q.id === response.questionId) ||
-              questions[index];
+          <div className="questionReview">
+            <h2>Question Review</h2>
+            {quizResults.responses.map((response, index) => {
+              // Find the corresponding question
+              const question =
+                questions.find((q) => q.id === response.questionId) ||
+                questions[index];
 
-            // Skip showing trivia questions in review
-            if (response.type === "TRIVIA") {
-              return null;
-            }
+              // Skip showing trivia questions in review
+              if (response.type === "TRIVIA") {
+                return null;
+              }
 
-            return (
-              <div
-                key={index}
-                className={`reviewItem ${
-                  response.skipped
-                    ? "skipped"
-                    : response.isCorrect
-                    ? "correct"
-                    : "incorrect"
-                }`}
-              >
-                <div className="reviewHeader">
-                  <span className="questionNumber">Question {index + 1}</span>
-                  <span
-                    className={`statusBadge ${
-                      response.skipped
-                        ? "skippedBadge"
-                        : response.isCorrect
-                        ? "correctBadge"
-                        : "incorrectBadge"
-                    }`}
-                  >
-                    {response.skipped
-                      ? "Skipped"
+              return (
+                <div
+                  key={index}
+                  className={`reviewItem ${
+                    response.skipped
+                      ? "skipped"
                       : response.isCorrect
-                      ? "Correct"
-                      : "Incorrect"}
-                  </span>
-                </div>
-                <p className="reviewQuestion">
-                  {question
-                    ? isHTML(question.question)
-                      ? parse(question.question)
-                      : question.question
-                    : "Question not found"}
-                </p>
-                <div className="answerDetail">
-                  <p>
-                    <strong>Your answer:</strong>{" "}
-                    {response.userAnswer || "(No answer)"}
+                      ? "correct"
+                      : "incorrect"
+                  }`}
+                >
+                  <div className="reviewHeader">
+                    <span className="questionNumber">Question {index + 1}</span>
+                    <span
+                      className={`statusBadge ${
+                        response.skipped
+                          ? "skippedBadge"
+                          : response.isCorrect
+                          ? "correctBadge"
+                          : "incorrectBadge"
+                      }`}
+                    >
+                      {response.skipped
+                        ? "Skipped"
+                        : response.isCorrect
+                        ? "Correct"
+                        : "Incorrect"}
+                    </span>
+                  </div>
+                  <p className="reviewQuestion">
+                    {question
+                      ? isHTML(question.question)
+                        ? parse(question.question)
+                        : question.question
+                      : "Question not found"}
                   </p>
-                  <p>
-                    <strong>Correct answer:</strong>{" "}
-                    {Array.isArray(response.correctAnswer)
-                      ? response.correctAnswer.join(", ")
-                      : typeof response.correctAnswer === "object" &&
-                        response.correctAnswer.text
-                      ? response.correctAnswer.text
-                      : response.correctAnswer}
-                  </p>
+                  <div className="answerDetail">
+                    <p>
+                      <strong>Your answer:</strong>{" "}
+                      {response.userAnswer || "(No answer)"}
+                    </p>
+                    <p>
+                      <strong>Correct answer:</strong>{" "}
+                      {Array.isArray(response.correctAnswer)
+                        ? response.correctAnswer.join(", ")
+                        : typeof response.correctAnswer === "object" &&
+                          response.correctAnswer.text
+                        ? response.correctAnswer.text
+                        : response.correctAnswer}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        <div className="actionButtons">
-          <button onClick={handleBackToHome} className="homeButton">
-            Hurray, Practice for today is Completed
-          </button>
+          <div className="actionButtons">
+            <button onClick={handleBackToHome} className="homeButton">
+              Hurray, Practice for today is Completed
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     );
   }
@@ -671,10 +674,16 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     <div className="container">
       <div className="quizContainer">
         <div className="quizHeader1">
-          <div className="quizIntro">
-            <h1>Daily Quiz 💭</h1>
-            <p>Time to test your skills! Let’s Go! 🤩</p>
-          </div>
+         <div className="quizIntro">
+  <h1>
+    Daily Quiz <img src={cloud} alt="quiz icon" style={{ width: 32, height: 32, verticalAlign: 'middle' }} className="quiz-icon"/>
+  </h1>
+  <p>
+    Time to test your skills! Let’s Go!{" "}
+    <img src={exicted} alt="excited icon" style={{ width: 20, height: 20, verticalAlign: 'middle' }} className="excited-icon" />
+  </p>
+</div>
+
           <QuestionProgress
             currentQuestionIndex={currentQuestionIndex}
             questions={questions}
@@ -764,14 +773,15 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
         <div className="buttonContainer">
           {/* Left side - Previous Button */}
           <div className="leftButtons">
-            <button
-              onClick={handlePreviousQuestion}
-              className="previousButton"
-              disabled={currentQuestionIndex === 0}
-            >
-              <MdArrowBack size={18} style={{ marginRight: 8 }} />
-              Previous
-            </button>
+            {currentQuestionIndex !== 0 && (
+              <button
+                onClick={handlePreviousQuestion}
+                className="previousButton"
+              >
+                <MdArrowBack size={18} style={{ marginRight: 8 }} />
+                Previous
+              </button>
+            )}
           </div>
 
           {/* Right side - Skip and Next Buttons */}

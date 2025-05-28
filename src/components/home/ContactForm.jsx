@@ -43,7 +43,7 @@ function ContactForm() {
       email: "parent@example.com",
       board: selectedBoard, 
       
-      email: "parent@example.com", // Replace or add email input if needed
+      // email: "parent@example.com", 
     };
 
     emailjs.send(

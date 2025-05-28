@@ -7,7 +7,8 @@ const QuestionProgress = ({
   questions,
   skippedQuestions = [],
 }) => {
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const completedQuestionsCount = currentQuestionIndex; // Only count questions before the current one
+  const progress = (completedQuestionsCount / questions.length) * 100;
 
   return (
     <div className="questionProgress">
@@ -39,11 +40,11 @@ const QuestionProgress = ({
         <div className="progressBar" style={{ width: `${progress}%` }}></div>
       </div>
       <div className="progressText">
-        <span style={{ color: "#1E88E5" }}>{Math.round(progress)}% Done</span> -
-        Keep going!
+        <span style={{ color: "#1E88E5" }}>{Math.round(progress)}% Done</span> - Keep going!
       </div>
     </div>
   );
 };
+
 
 export default QuestionProgress;

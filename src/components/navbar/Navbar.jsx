@@ -1,60 +1,8 @@
-// import React from 'react';
-// import "./Navbar.css";
-// import { signOut } from "firebase/auth";
-// import firebaseServices from "../firebase/firebaseSetup";
-// import { RxHamburgerMenu } from "react-icons/rx";
-
-// const Navbar = ({ onNavigate }) => {
-//   const [showmenu, setShowmenu] = React.useState(false);
-//   const { auth } = firebaseServices;
-
-//   const handleHamburger = () => {
-//     setShowmenu(!showmenu);
-//   };
-
-//   const handleLogout = async () => {
-//     try {
-//       await signOut(auth);
-//       localStorage.removeItem("user");
-//       onNavigate("login"); // Use onNavigate instead of useNavigate
-//       setShowmenu(false);
-//     } catch (error) {
-//       console.error("Logout error:", error);
-//     }
-//   };
-
-//   // Function to navigate & close menu
-//   const handleNavigation = (page) => {
-//     onNavigate(page); // Use onNavigate prop
-//     setShowmenu(false);
-//   };
-
-//   return (
-//     <div className="wrapper">
-//       <nav className={showmenu ? "menu-mobile" : "menu-web"}>
-//         <ul>
-
-//         <li onClick={() => handleNavigation("progress")}>Progress</li>
-//           <li onClick={() => handleNavigation("home")}>Home</li>
-
-//           <li onClick={handleLogout}>Log out</li>
-//         </ul>
-//       </nav>
-
-//       <div className="hamburger">
-//         <button onClick={handleHamburger}><RxHamburgerMenu /></button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Navbar;
-
 import React, { useEffect, useRef } from "react";
 import "./Navbar.css";
 import { signOut } from "firebase/auth";
 import firebaseServices from "../firebase/firebaseSetup";
-import { RxHamburgerMenu, RxCross2 } from "react-icons/rx";
+import { RxCross2 } from "react-icons/rx";
 import { FaChevronRight, FaChevronDown } from "react-icons/fa";
 import home from "./home.png";
 import hand from "./hand.png";
@@ -65,6 +13,7 @@ const Navbar = ({ onNavigate }) => {
   const [showlogout, setShowlogout] = React.useState(window.innerWidth <= 768);
   const { auth } = firebaseServices;
   const dropdownRef = useRef(null);
+  const [showLogoutModal, setShowLogoutModal] = React.useState(false);
 
   const handleHamburger = () => {
     setShowmenu(!showmenu);
@@ -112,6 +61,28 @@ const Navbar = ({ onNavigate }) => {
 
   return (
     <div className="container">
+      {showLogoutModal && (
+        <div className="logout-modal-overlay">
+          <div className="logout-modal">
+            <h3>Are you sure you want to log out?</h3>
+            <p>
+              Your progress is saved. You can come back and practice anytime!
+            </p>
+            <div className="modal-buttons">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="cancel-btn"
+              >
+                Cancel
+              </button>
+              <button onClick={handleLogout} className="logout-btn">
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="navbar">
         <div
           className="navbar-left"
@@ -173,7 +144,10 @@ const Navbar = ({ onNavigate }) => {
                 </div>
                 {showlogout && (
                   <ul className="dropdown-menu">
-                    <li onClick={handleLogout} className="logout">
+                    <li
+                      onClick={() => setShowLogoutModal(true)}
+                      className="logout"
+                    >
                       Log out
                     </li>
                   </ul>
@@ -201,7 +175,7 @@ const Navbar = ({ onNavigate }) => {
                 <span className="menu-text">Track Progress</span>
                 <FaChevronRight className="chevron" />
               </li>
-              <li onClick={handleLogout}>
+              <li onClick={() => setShowLogoutModal(true)}>
                 <span className="menu-text">Logout</span>
                 <FaChevronRight className="chevron" />
               </li>
