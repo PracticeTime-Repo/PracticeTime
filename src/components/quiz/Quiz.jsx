@@ -508,17 +508,20 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
   if (loading) {
     return (
+      <div className="container">
       <div className="quizContainer">
         <div className="loaderContainer">
           <div className="loader"></div>
           <p>Loading quiz questions...</p>
         </div>
       </div>
+      </div>
     );
   }
 
   if (error) {
     return (
+      <div className="container">
       <div className="quizContainer">
         <div className="errorContainer">
           <p className="errorMessage">{error}</p>
@@ -527,11 +530,13 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
           </button>
         </div>
       </div>
+      </div>
     );
   }
 
   if (questions.length === 0) {
     return (
+      <div className="container">
       <div className="quizContainer">
         <p className="noQuestionsMessage">
           No questions found for this quiz set.
@@ -539,6 +544,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
         <button onClick={handleBackToHome} className="retryButton">
           Hurray, Practice for today is Completed
         </button>
+      </div>
       </div>
     );
   }
