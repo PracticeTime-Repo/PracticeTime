@@ -113,7 +113,11 @@ const Navbar = ({ onNavigate }) => {
   return (
     <div className="container">
       <header className="navbar">
-        <div className="navbar-left">
+        <div
+          className="navbar-left"
+          onClick={() => handleNavigation("start")}
+          style={{ cursor: "pointer" }}
+        >
           <img
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/0442a517a403251d5959637b0e2a64010cc28ce9?placeholderIfAbsent=true&apiKey=771d35a4e8294f3083bdf0cbd6294e9e"
             alt="PracticeTime Logo"

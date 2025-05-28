@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import './Quiz.css';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getAuth } from 'firebase/auth';
-import firebaseServices from '../firebase/firebaseSetup';
-import practiceTime from '../../assets/practiceTime.jpg';
-import parse from 'html-react-parser';
+import React, { useState, useEffect } from "react";
+import "./Quiz.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import firebaseServices from "../firebase/firebaseSetup";
+import practiceTime from "../../assets/practiceTime.jpg";
+import parse from "html-react-parser";
+import { MdCheck } from "react-icons/md";
+import QuestionProgress from "./QuestionProgress";
+import { MdHelpOutline } from "react-icons/md";
+import { MdArrowBack, MdArrowForward } from "react-icons/md";
 
 const Quiz = () => {
   const { auth, provider, db, ref, set, get, child } = firebaseServices;
@@ -22,13 +26,14 @@ const Quiz = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [quizResults, setQuizResults] = useState(null);
   const [verifying, setVerifying] = useState(false);
+  const [skippedQuestions, setSkippedQuestions] = useState([]);
 
   //gemini api key
   const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
   // Get quiz set from localStorage on component mount
   useEffect(() => {
-    const storedQuizSet = localStorage.getItem('selectedQuizSet');
+    const storedQuizSet = localStorage.getItem("selectedQuizSet");
     if (storedQuizSet) {
       setSelectedQuizSet(storedQuizSet);
     } else {
@@ -67,29 +72,28 @@ const Quiz = () => {
           const questionIds = Object.keys(setData);
 
           // Fetch each question with their order information
-          const questionPromises = questionIds.map(id =>
-            get(ref(db, `questions/${id}`))
-              .then(snap => {
-                // Get the order from the set data
-                const order = setData[id]?.order || 0;
+          const questionPromises = questionIds.map((id) =>
+            get(ref(db, `questions/${id}`)).then((snap) => {
+              // Get the order from the set data
+              const order = setData[id]?.order || 0;
 
-                return {
-                  snapshot: snap,
-                  order: order,
-                  id: id
-                };
-              })
+              return {
+                snapshot: snap,
+                order: order,
+                id: id,
+              };
+            })
           );
 
           const questionResults = await Promise.all(questionPromises);
 
           // Filter out questions that don't exist and sort by order
           const loadedQuestions = questionResults
-            .filter(result => result.snapshot.exists())
-            .map(result => ({
+            .filter((result) => result.snapshot.exists())
+            .map((result) => ({
               id: result.id,
               order: result.order,
-              ...result.snapshot.val()
+              ...result.snapshot.val(),
             }))
             .sort((a, b) => a.order - b.order); // Sort by the order field
 
@@ -111,18 +115,16 @@ const Quiz = () => {
     fetchQuizData();
   }, [selectedQuizSet, db]);
 
-  
-
   // Enhanced normalization function
   const normalizeAnswer = (answer) => {
-    if (answer === null || answer === undefined) return '';
+    if (answer === null || answer === undefined) return "";
 
     // Convert to string, trim whitespace, and convert to lowercase
     let normalized = String(answer).trim().toLowerCase();
 
     // Remove extra spaces, punctuation and special characters
-    normalized = normalized.replace(/\s+/g, ' ');
-    normalized = normalized.replace(/[.,;:!?'"()\[\]{}]/g, '');
+    normalized = normalized.replace(/\s+/g, " ");
+    normalized = normalized.replace(/[.,;:!?'"()\[\]{}]/g, "");
 
     // Handle numeric values (e.g., "1" and 1 should match)
     if (!isNaN(normalized) && !isNaN(parseFloat(normalized))) {
@@ -131,11 +133,27 @@ const Quiz = () => {
 
     // Common word replacements for numbers
     const numberWords = {
-      'zero': '0', 'one': '1', 'two': '2', 'three': '3', 'four': '4',
-      'five': '5', 'six': '6', 'seven': '7', 'eight': '8', 'nine': '9',
-      'ten': '10', 'eleven': '11', 'twelve': '12', 'thirteen': '13', 'fourteen': '14',
-      'fifteen': '15', 'sixteen': '16', 'seventeen': '17', 'eighteen': '18', 'nineteen': '19',
-      'twenty': '20'
+      zero: "0",
+      one: "1",
+      two: "2",
+      three: "3",
+      four: "4",
+      five: "5",
+      six: "6",
+      seven: "7",
+      eight: "8",
+      nine: "9",
+      ten: "10",
+      eleven: "11",
+      twelve: "12",
+      thirteen: "13",
+      fourteen: "14",
+      fifteen: "15",
+      sixteen: "16",
+      seventeen: "17",
+      eighteen: "18",
+      nineteen: "19",
+      twenty: "20",
     };
 
     // Check if the answer is a number word and replace it
@@ -154,14 +172,18 @@ const Quiz = () => {
     const normalizedUserAnswer = normalizeAnswer(userAnswer);
 
     // Handle different ways correctAnswer might be stored
-    if (typeof correctAnswer === 'string') {
+    if (typeof correctAnswer === "string") {
       return normalizedUserAnswer === normalizeAnswer(correctAnswer);
     } else if (Array.isArray(correctAnswer)) {
       // Check if any of the correct answers match
-      return correctAnswer.some(answer =>
-        normalizedUserAnswer === normalizeAnswer(answer)
+      return correctAnswer.some(
+        (answer) => normalizedUserAnswer === normalizeAnswer(answer)
       );
-    } else if (correctAnswer && typeof correctAnswer === 'object' && correctAnswer.text) {
+    } else if (
+      correctAnswer &&
+      typeof correctAnswer === "object" &&
+      correctAnswer.text
+    ) {
       return normalizedUserAnswer === normalizeAnswer(correctAnswer.text);
     }
 
@@ -169,7 +191,11 @@ const Quiz = () => {
   };
 
   // Enhanced verification function with better prompt engineering and fallback handling
-  const verifyAnswerWithGemini = async (question, correctAnswer, userAnswer) => {
+  const verifyAnswerWithGemini = async (
+    question,
+    correctAnswer,
+    userAnswer
+  ) => {
     try {
       console.log("Verifying answer with Gemini:");
       console.log("Question:", question);
@@ -177,7 +203,7 @@ const Quiz = () => {
       console.log("User answer:", userAnswer);
 
       // Handle empty user answers
-      if (!userAnswer || userAnswer.trim() === '') {
+      if (!userAnswer || userAnswer.trim() === "") {
         console.log("Empty user answer, marking as incorrect");
         return false;
       }
@@ -185,8 +211,8 @@ const Quiz = () => {
       // Format correctAnswer for the prompt
       let formattedCorrectAnswer = correctAnswer;
       if (Array.isArray(correctAnswer)) {
-        formattedCorrectAnswer = correctAnswer.join(' OR ');
-      } else if (typeof correctAnswer === 'object' && correctAnswer.text) {
+        formattedCorrectAnswer = correctAnswer.join(" OR ");
+      } else if (typeof correctAnswer === "object" && correctAnswer.text) {
         formattedCorrectAnswer = correctAnswer.text;
       }
 
@@ -207,21 +233,26 @@ Instructions:
 Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 `;
 
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{ text: prompt }]
-          }],
-          generationConfig: {
-            temperature: 0.1,
-            maxOutputTokens: 20
-          }
-        })
-      });
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [{ text: prompt }],
+              },
+            ],
+            generationConfig: {
+              temperature: 0.1,
+              maxOutputTokens: 20,
+            },
+          }),
+        }
+      );
 
       // Check if response is valid
       if (!response.ok) {
@@ -235,15 +266,19 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
       // Extract and validate the result
       if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-        const result = data.candidates[0].content.parts[0].text.trim().toLowerCase();
+        const result = data.candidates[0].content.parts[0].text
+          .trim()
+          .toLowerCase();
         console.log("Gemini response:", result);
 
-        if (result.includes('correct') && !result.includes('incorrect')) {
+        if (result.includes("correct") && !result.includes("incorrect")) {
           return true;
-        } else if (result.includes('incorrect')) {
+        } else if (result.includes("incorrect")) {
           return false;
         } else {
-          console.log("Ambiguous Gemini response, falling back to direct comparison");
+          console.log(
+            "Ambiguous Gemini response, falling back to direct comparison"
+          );
           return fallbackVerification(userAnswer, correctAnswer);
         }
       } else {
@@ -285,10 +320,16 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
           currentAnswer
         );
 
-        console.log("Final verification result:", isCorrect ? "Correct" : "Incorrect");
+        console.log(
+          "Final verification result:",
+          isCorrect ? "Correct" : "Incorrect"
+        );
       } else if (currentQuestion.type === "MCQ" && currentAnswer) {
         // For MCQ, use regular comparison
-        isCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correctAnswer);
+        isCorrect = isAnswerCorrect(
+          currentAnswer,
+          currentQuestion.correctAnswer
+        );
       } else if (currentQuestion.type === "TRIVIA") {
         // Trivia questions are just for information, no correct/incorrect
         isCorrect = null;
@@ -301,7 +342,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
         userAnswer: currentAnswer || "(Skipped)",
         correctAnswer: currentQuestion.correctAnswer,
         isCorrect: isCorrect,
-        type: currentQuestion.type
+        type: currentQuestion.type,
       };
 
       setUserResponses(updatedResponses);
@@ -323,6 +364,11 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   const handleSkipQuestion = () => {
     const currentQuestion = questions[currentQuestionIndex];
 
+    // Avoid duplicate entries in skippedQuestions
+    if (!skippedQuestions.includes(currentQuestionIndex)) {
+      setSkippedQuestions((prev) => [...prev, currentQuestionIndex]);
+    }
+
     // Save the skipped question response
     const updatedResponses = [...userResponses];
     updatedResponses[currentQuestionIndex] = {
@@ -331,30 +377,34 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
       correctAnswer: currentQuestion.correctAnswer,
       isCorrect: false,
       skipped: true,
-      type: currentQuestion.type
+      type: currentQuestion.type,
     };
 
     setUserResponses(updatedResponses);
 
-    // Move to the next question or complete the quiz if it's the last question
+    // Move to the next question or finish the quiz
     if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
     } else {
-      // Handle quiz completion
-      handleQuizComplete(updatedResponses);
+      handleQuizComplete(updatedResponses); // Trigger end of quiz
     }
   };
 
   const calculateResults = (responses) => {
     // Filter out any null responses and trivia questions
-    const validResponses = responses.filter(response =>
-      response !== null && response.type !== "TRIVIA"
+    const validResponses = responses.filter(
+      (response) => response !== null && response.type !== "TRIVIA"
     );
 
     // Count only non-trivia questions for scoring
     const totalQuestions = validResponses.length;
-    const correctAnswers = validResponses.filter(response => response.isCorrect).length;
-    const score = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+    const correctAnswers = validResponses.filter(
+      (response) => response.isCorrect
+    ).length;
+    const score =
+      totalQuestions > 0
+        ? Math.round((correctAnswers / totalQuestions) * 100)
+        : 0;
 
     let performance;
     if (score >= 90) performance = "Excellent";
@@ -367,7 +417,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
       correctAnswers,
       score,
       performance,
-      responses: responses.filter(r => r !== null) // Include all non-null responses including trivia
+      responses: responses.filter((r) => r !== null), // Include all non-null responses including trivia
     };
   };
 
@@ -388,22 +438,25 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
         // Ensure responses do not contain undefined values
         const filteredResponses = responses
-          .filter(r => r !== null) // Remove null responses
-          .map(r => ({
+          .filter((r) => r !== null) // Remove null responses
+          .map((r) => ({
             ...r,
             correctAnswer: r.correctAnswer ?? null, // Replace undefined with null
-            selectedAnswer: r.selectedAnswer ?? null // Replace undefined with null
+            selectedAnswer: r.selectedAnswer ?? null, // Replace undefined with null
           }));
 
         // Save quiz results
-        const resultsRef = ref(db, `users/${user.uid}/quizResults/${currentSet}`);
+        const resultsRef = ref(
+          db,
+          `users/${user.uid}/quizResults/${currentSet}`
+        );
         await set(resultsRef, {
           completedAt: new Date().toISOString(),
           score: results.score,
           correctAnswers: results.correctAnswers,
           totalQuestions: results.totalQuestions,
           selectedSet: currentSet,
-          responses: filteredResponses
+          responses: filteredResponses,
         });
 
         // Remove the completed quiz set from user's available sets
@@ -425,14 +478,13 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     }
   };
 
-
   const handleAnswerSelect = (option) => {
     const currentQuestion = questions[currentQuestionIndex];
 
     if (currentQuestion.type === "MCQ") {
       setSelectedAnswers({
         ...selectedAnswers,
-        [currentQuestionIndex]: option
+        [currentQuestionIndex]: option,
       });
     }
   };
@@ -440,15 +492,14 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   const handleTextAnswer = (event) => {
     setSelectedAnswers({
       ...selectedAnswers,
-      [currentQuestionIndex]: event.target.value
+      [currentQuestionIndex]: event.target.value,
     });
   };
-
 
   const handleBackToHome = () => {
     // Use global navigate function from window object
     if (window.appNavigate) {
-      window.appNavigate('start');
+      window.appNavigate("start");
     }
   };
   const isHTML = (str) => {
@@ -482,7 +533,9 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   if (questions.length === 0) {
     return (
       <div className="quizContainer">
-        <p className="noQuestionsMessage">No questions found for this quiz set.</p>
+        <p className="noQuestionsMessage">
+          No questions found for this quiz set.
+        </p>
         <button onClick={handleBackToHome} className="retryButton">
           Hurray, Practice for today is Completed
         </button>
@@ -492,7 +545,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
   if (quizCompleted && quizResults) {
     return (
-      <div className="quizContainer resultsContainer">
+      <div className="container">
+    <div className="quizContainer resultsContainer">
         <h1 className="resultsTitle">Quiz Results</h1>
 
         <div className="scoreCard">
@@ -502,7 +556,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
           <div className="scoreDetails">
             <h2 className="performanceText">{quizResults.performance}</h2>
             <p className="scoreText">
-              You answered {quizResults.correctAnswers} out of {quizResults.totalQuestions} questions correctly.
+              You answered {quizResults.correctAnswers} out of{" "}
+              {quizResults.totalQuestions} questions correctly.
             </p>
           </div>
         </div>
@@ -511,7 +566,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
           <h2>Question Review</h2>
           {quizResults.responses.map((response, index) => {
             // Find the corresponding question
-            const question = questions.find(q => q.id === response.questionId) ||
+            const question =
+              questions.find((q) => q.id === response.questionId) ||
               questions[index];
 
             // Skip showing trivia questions in review
@@ -522,26 +578,53 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
             return (
               <div
                 key={index}
-                className={`reviewItem ${response.skipped ? 'skipped' : (response.isCorrect ? 'correct' : 'incorrect')}`}
+                className={`reviewItem ${
+                  response.skipped
+                    ? "skipped"
+                    : response.isCorrect
+                    ? "correct"
+                    : "incorrect"
+                }`}
               >
                 <div className="reviewHeader">
                   <span className="questionNumber">Question {index + 1}</span>
-                  <span className={`statusBadge ${response.skipped ? 'skippedBadge' : (response.isCorrect ? 'correctBadge' : 'incorrectBadge')}`}>
-                    {response.skipped ? 'Skipped' : (response.isCorrect ? 'Correct' : 'Incorrect')}
+                  <span
+                    className={`statusBadge ${
+                      response.skipped
+                        ? "skippedBadge"
+                        : response.isCorrect
+                        ? "correctBadge"
+                        : "incorrectBadge"
+                    }`}
+                  >
+                    {response.skipped
+                      ? "Skipped"
+                      : response.isCorrect
+                      ? "Correct"
+                      : "Incorrect"}
                   </span>
                 </div>
                 <p className="reviewQuestion">
-                  {question ? (isHTML(question.question) ? parse(question.question) : question.question) : 'Question not found'}
+                  {question
+                    ? isHTML(question.question)
+                      ? parse(question.question)
+                      : question.question
+                    : "Question not found"}
                 </p>
                 <div className="answerDetail">
-                  <p><strong>Your answer:</strong> {response.userAnswer || '(No answer)'}</p>
-                  <p><strong>Correct answer:</strong> {
-                    Array.isArray(response.correctAnswer) ?
-                      response.correctAnswer.join(', ') :
-                      (typeof response.correctAnswer === 'object' && response.correctAnswer.text) ?
-                        response.correctAnswer.text :
-                        response.correctAnswer
-                  }</p>
+                  <p>
+                    <strong>Your answer:</strong>{" "}
+                    {response.userAnswer || "(No answer)"}
+                  </p>
+                  <p>
+                    <strong>Correct answer:</strong>{" "}
+                    {Array.isArray(response.correctAnswer)
+                      ? response.correctAnswer.join(", ")
+                      : typeof response.correctAnswer === "object" &&
+                        response.correctAnswer.text
+                      ? response.correctAnswer.text
+                      : response.correctAnswer}
+                  </p>
                 </div>
               </div>
             );
@@ -554,8 +637,20 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
           </button>
         </div>
       </div>
+      </div>
     );
   }
+  const handlePreviousQuestion = () => {
+    if (currentQuestionIndex > 0) {
+      const prevIndex = currentQuestionIndex - 1;
+      setCurrentQuestionIndex(prevIndex);
+
+      // Optionally remove from skipped list when going back
+      setSkippedQuestions((prev) =>
+        prev.filter((index) => index !== prevIndex)
+      );
+    }
+  };
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -563,98 +658,151 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   const isTriviaQuestion = currentQuestion.type === "TRIVIA";
 
   // Calculate progress percentage
-  const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const progressPercentage =
+    ((currentQuestionIndex + 1) / questions.length) * 100;
 
   return (
-    <div className='quizContainer'>
-      <img src={practiceTime} alt="" />
-
-      <div className="progressBarContainer">
-        <div
-          className="progressBar"
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
-
-      <div className='quizIndex'>
-        Question {currentQuestionIndex + 1} of {questions.length}
-      </div>
-
-      {/* Display question image if available */}
-      {currentQuestion.questionImage ? (
-        <img src={currentQuestion.questionImage} alt="Question" className="questionImage" />
-      ) : null}
-
-      <div className="questionContainer">
-        <h2 className="questionText">
-          {isTriviaQuestion && <span className="triviaTag">Trivia</span>}
-          {isHTML(currentQuestion.question) ? parse(currentQuestion.question) : currentQuestion.question}
-        </h2>
-
-        {currentQuestion.type === "FILL_IN_THE_BLANKS" ? (
-          <div className="fillBlankContainer">
-            <input
-              type="text"
-              placeholder="Type your answer here"
-              value={selectedAnswers[currentQuestionIndex] || ''}
-              onChange={handleTextAnswer}
-              className="fillBlankInput"
-            />
+    <div className="container">
+      <div className="quizContainer">
+        <div className="quizHeader1">
+          <div className="quizIntro">
+            <h1>Daily Quiz 💭</h1>
+            <p>Time to test your skills! Let’s Go! 🤩</p>
           </div>
-        ) : currentQuestion.type === "MCQ" ? (
-          <ul className="optionsList">
-            {/* Only display options that exist */}
-            {currentQuestion.options && currentQuestion.options
-              .filter(option => option && option.text) // Only include valid options
-              .map((option, index) => (
-                <li
-                  key={index}
-                  className={`optionItem ${selectedAnswers[currentQuestionIndex] === option.text ? 'selected' : ''}`}
-                  onClick={() => handleAnswerSelect(option.text)}
-                >
-                  {option.image && (
-                    <img src={option.image} alt={`Option ${index + 1}`} className="optionImage" />
-                  )}
-                  <span className="optionText">{option.text}</span>
-                </li>
-              ))}
-          </ul>
-        ) : (
-          // Trivia display - just show the information
-          <div className="triviaContainer">
-            {currentQuestion.content && (
-              <div className="triviaContent">
-                {isHTML(currentQuestion.content) ? parse(currentQuestion.content) : currentQuestion.content}
-              </div>
+          <QuestionProgress
+            currentQuestionIndex={currentQuestionIndex}
+            questions={questions}
+            skippedQuestions={skippedQuestions}
+          />
+        </div>
+
+        <div className="progressBarContainer">
+          <div
+            className="progressBar"
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+        </div>
+
+        {/* Display question image if available */}
+        {currentQuestion.questionImage ? (
+          <img
+            src={currentQuestion.questionImage}
+            alt="Question"
+            className="questionImage"
+          />
+        ) : null}
+
+        <div className="questionContainer">
+          <div className="questionNumberStyled">
+            <MdHelpOutline size={24} className="questionIcon" />
+            <span>Question No: {currentQuestionIndex + 1}</span>
+          </div>
+          <h2 className="questionText">
+            {isTriviaQuestion && <span className="triviaTag">Trivia</span>}
+            {isHTML(currentQuestion.question)
+              ? parse(currentQuestion.question)
+              : currentQuestion.question}
+          </h2>
+
+          {currentQuestion.type === "FILL_IN_THE_BLANKS" ? (
+            <div className="fillBlankContainer">
+              <input
+                type="text"
+                placeholder="Type your answer here"
+                value={selectedAnswers[currentQuestionIndex] || ""}
+                onChange={handleTextAnswer}
+                className="fillBlankInput"
+              />
+            </div>
+          ) : currentQuestion.type === "MCQ" ? (
+            <ul className="optionsList">
+              {/* Only display options that exist */}
+              {currentQuestion.options &&
+                currentQuestion.options
+                  .filter((option) => option && option.text) // Only include valid options
+                  .map((option, index) => (
+                    <li
+                      key={index}
+                      className={`optionItem ${
+                        selectedAnswers[currentQuestionIndex] === option.text
+                          ? "selected"
+                          : ""
+                      }`}
+                      onClick={() => handleAnswerSelect(option.text)}
+                    >
+                      {option.image && (
+                        <img
+                          src={option.image}
+                          alt={`Option ${index + 1}`}
+                          className="optionImage"
+                        />
+                      )}
+                      <span className="optionText">{option.text}</span>
+                    </li>
+                  ))}
+            </ul>
+          ) : (
+            // Trivia display - just show the information
+            <div className="triviaContainer">
+              {currentQuestion.content && (
+                <div className="triviaContent">
+                  {isHTML(currentQuestion.content)
+                    ? parse(currentQuestion.content)
+                    : currentQuestion.content}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="buttonContainer">
+          {/* Left side - Previous Button */}
+          <div className="leftButtons">
+            <button
+              onClick={handlePreviousQuestion}
+              className="previousButton"
+              disabled={currentQuestionIndex === 0}
+            >
+              <MdArrowBack size={18} style={{ marginRight: 8 }} />
+              Previous
+            </button>
+          </div>
+
+          {/* Right side - Skip and Next Buttons */}
+          <div className="rightButtons">
+            {!isTriviaQuestion && (
+              <button
+                onClick={handleSkipQuestion}
+                className="skipButton"
+                disabled={verifying}
+              >
+                Skip
+              </button>
             )}
+            <button
+              onClick={handleNextQuestion}
+              disabled={!isTriviaQuestion && !hasSelectedAnswer && verifying}
+              className={`filledButton ${verifying ? "verifying" : ""}`}
+            >
+              {verifying ? (
+                "Verifying..."
+              ) : isLastQuestion ? (
+                <>
+                  Completed{" "}
+                  <MdArrowForward size={18} style={{ marginLeft: 8 }} />
+                </>
+              ) : (
+                <>
+                  Done, Next{" "}
+                  <MdArrowForward size={18} style={{ marginLeft: 8 }} />
+                </>
+              )}
+            </button>
           </div>
-        )}
-      </div>
-
-      <div className="buttonContainer">
-
-
-        {/* Skip button - only show for non-trivia questions */}
-        {!isTriviaQuestion && (
-          <button
-            onClick={handleSkipQuestion}
-            className="skipButton"
-            disabled={verifying}
-          >
-            Skip
-          </button>
-        )}
-
-        <button
-          onClick={handleNextQuestion}
-          disabled={!isTriviaQuestion && !hasSelectedAnswer && verifying}
-          className={`nextButton ${verifying ? 'verifying' : ''}`}
-        >
-          {verifying ? 'Verifying...' : isLastQuestion ? 'Complete PracticeSheet' : 'Next'}
-        </button>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Quiz; 
+export default Quiz;

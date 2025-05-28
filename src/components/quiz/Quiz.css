@@ -1,410 +1,607 @@
 /* Quiz.css */
+.stepCircles {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 
+.stepCircle {
+  height: 52px;
+  width: 52px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid #dddddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #00000066;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.stepCircle.current {
+  border: 1px solid #1e88e5;
+  background-color: white;
+  color: #1e88e5;
+}
+
+.stepCircle.completed {
+  background-color: #8bc34a;
+  color: black;
+}
+
+.progressBarContainer {
+  height: 8px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 1.5rem auto;
+  /* max-width: 300px; */
+}
+
+.progressBar {
+  height: 100%;
+  background-color: #2196f3;
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+.quizHeader1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.quizHeader1 p{
+  color: #00000066;
+  font-size: 14px;
+  font-weight: 300;
+}
 /* Main Container */
 .quizContainer {
-    
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
-    
-    width: 60%;
-    min-height: 550px;
-    max-height: 800px;
-    
-    display: flex;
+
+  width: 100%;
+  /* min-height: 550px;
+    max-height: 800px; */
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  margin: 0 auto;
+  padding: 50px 80px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Roboto", sans-serif;
+}
+.quizContainer::-webkit-scrollbar {
+  display: none;
+}
+.quizContainer img {
+  margin: 0 auto;
+  width: 30%;
+
+  object-fit: contain;
+
+  margin-bottom: 20px;
+}
+
+/* Progress Bar */
+.progressBarContainer {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background: linear-gradient(to right, #4dabf7, #228be6);
+  transition: width 0.3s ease;
+}
+
+.quizIndex {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+/* Question Metadata */
+.questionMetadata {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.difficultyLevel,
+.grade {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background-color: #f1f3f5;
+  color: #495057;
+}
+
+/* Images */
+
+.quizContainer .questionImage {
+  width: 100%;
+  height: 200px;
+
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* Question Container */
+
+.questionText {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: black;
+  line-height: 1.4;
+  font-weight: 400;
+}
+.questionNumberStyled {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid #febd59;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+  width: 170px;
+  margin: 1rem 0;
+}
+
+.questionIcon {
+  color: #febd59;
+}
+
+/* Options List for MCQ */
+.optionsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.optionItem {
+  padding: 15px;
+  margin-bottom: 10px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.optionItem:hover {
+  background-color: #f8f9fa;
+  transform: translateY(-2px);
+}
+
+.optionItem.selected {
+  background-color: #e7f5ff;
+  border-color: #4dabf7;
+}
+
+.optionImage {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.optionText {
+  flex: 1;
+}
+
+/* Fill in the blanks input */
+.fillBlankContainer {
+  margin: 20px 0;
+}
+
+.fillBlankInput {
+  width: 100%;
+  padding: 15px;
+  margin: auto;
+  font-size: 16px;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.fillBlankInput:focus {
+  outline: none;
+  border-color: #4dabf7;
+  box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
+}
+
+/* Buttons */
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.leftButtons,
+.rightButtons {
+  display: flex;
+  gap: 10px;
+}
+/* Button container remains a flex layout */
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+  flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  gap: 10px; /* Optional spacing */
+}
+
+/* Common centering for all buttons */
+.previousButton,
+.skipButton,
+.filledButton {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center text horizontally */
+  text-align: center; /* Center text inside the button */
+  white-space: nowrap; /* Prevent line breaks */
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+  .buttonContainer {
     flex-direction: column;
-    justify-content: space-between;
-    
-    
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: 'Roboto', sans-serif;
+    align-items: center;
+  }
+
+  .leftButtons,
+  .rightButtons {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .previousButton,
+  .skipButton,
+  .filledButton {
+    width: auto; /* You can change to 100% if full width is needed */
+    text-align: center;
+    justify-content: center;
+  }
+}
+
+/* Styles for outlined and filled buttons (reuse previous styles) */
+.previousButton {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: white;
+  border: 1px solid #dddddd;
+  color: #333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.previousButton:hover {
+  background-color: #f0f0f0;
+}
+
+.previousButton:disabled {
+  opacity: 0.5;
+  color: black;
+  border: 1px solid #333;
+  cursor: not-allowed;
+}
+.skipButton {
+  display: flex;
+  align-items: center;
+  /* padding: 10px 50px; */
+  font-size: 14px;
+  font-weight: 500;
+  background-color: white;
+  border: 1.5px solid black;
+  color: #333;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.skipButton:hover {
+  background-color: white;
+}
+.filledButton {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background: #cb6be6;
+
+  gap: 8px;
+  cursor: pointer;
+  color: black; /* Assuming white text on purple */
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+
+.filledButton:disabled {
+  background-color: #ccc;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.filledButton:hover {
+  background-color: #cb6be6;
+  box-shadow: none !important;
+}
+
+.filledButton:focus,
+.filledButton:active {
+  outline: none;
+  border: 1.5px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+@media (max-width: 768px) {
+  .buttonContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; /* space between top and bottom sections */
+  }
+
+  .leftButtons,
+  .rightButtons {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .previousButton,
+  .skipButton,
+  .filledButton {
+    width: 100%; /* Make buttons full width on smaller screens */
+    max-width: 320px;
+  }
+
+  .skipButton {
+    /* padding: 10px 0; */
+  }
+}
+
+/* Loading State */
+.loaderContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #228be6;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error States */
+.errorContainer {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.errorMessage,
+.noQuestionsMessage {
+  color: #e03131;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* Results Page */
+.resultsContainer {
+  padding: 30px;
+}
+
+.resultsTitle {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #212529;
+}
+
+.scoreCard {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.scoreCircle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom right, #4dabf7, #228be6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+  box-shadow: 0 4px 8px rgba(77, 171, 247, 0.2);
+}
+
+.scoreValue {
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+}
+
+.scoreDetails {
+  flex: 1;
+}
+
+.performanceText {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #212529;
+}
+
+.scoreText {
+  color: #495057;
+  font-size: 16px;
+}
+
+.questionReview {
+  margin-top: 30px;
+}
+
+.reviewItem {
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.reviewItem.correct {
+  border-left: 4px solid #40c057;
+}
+
+.reviewItem.incorrect {
+  border-left: 4px solid #fa5252;
+}
+
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.questionNumber {
+  font-weight: 600;
+  color: #495057;
+}
+
+.statusBadge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.correctBadge {
+  background-color: #d3f9d8;
+  color: #2b8a3e;
+}
+
+.incorrectBadge {
+  background-color: #ffe3e3;
+  color: #c92a2a;
+}
+
+.reviewQuestion {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #212529;
+}
+
+.answerDetail {
+  background-color: white;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.retakeButton,
+.homeButton {
+  flex: 1;
+  margin-top: 0;
+}
+
+.homeButton {
+  background-color: #495057;
+}
+
+.homeButton:hover {
+  background-color: #343a40;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .quizContainer {
+    max-width: 100%;
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+
+    padding: 30px;
+    border-radius: 8px;
   }
   .quizContainer::-webkit-scrollbar {
     display: none;
-}
-  .quizContainer img {
-    margin: 0 auto;
-    width: 30%;
-    
-    object-fit: contain;
-    
-    margin-bottom: 20px;
   }
-  
-  /* Progress Bar */
-  .progressBarContainer {
-    height: 8px;
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    overflow: hidden;
-  }
-  
-  .progressBar {
-    height: 100%;
-    background: linear-gradient(to right, #4dabf7, #228be6);
-    transition: width 0.3s ease;
-  }
-  
-  .quizIndex {
-    text-align: center;
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-  }
-  
-  /* Question Metadata */
-  .questionMetadata {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .difficultyLevel, .grade {
-    font-size: 13px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    background-color: #f1f3f5;
-    color: #495057;
-  }
-  
-  /* Images */
-  
- .quizContainer .questionImage {
-     width: 100%;
-    height: 200px;
-    
-    object-fit: contain;
-    border-radius: 8px;
-    
-  }
-  
-  /* Question Container */
-  .questionContainer {
-    margin-top: 20px;
-  }
-  
+
   .questionText {
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: #212529;
-    line-height: 1.4;
-  }
-  
-  /* Options List for MCQ */
-  .optionsList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .optionItem {
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-  }
-  
-  .optionItem:hover {
-    background-color: #f8f9fa;
-    transform: translateY(-2px);
-  }
-  
-  .optionItem.selected {
-    background-color: #e7f5ff;
-    border-color: #4dabf7;
-  }
-  
-  .optionImage {
-    width: 50px;
-    height: 50px;
-    margin-right: 15px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-  
-  .optionText {
-    flex: 1;
-  }
-  
-  /* Fill in the blanks input */
-  .fillBlankContainer {
-    margin: 20px 0;
-  }
-  
-  .fillBlankInput {
-    width: 93%;
-    padding: 15px;
-    margin: auto;
-    font-size: 16px;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    transition: border-color 0.2s ease;
-  }
-  
-  .fillBlankInput:focus {
-    outline: none;
-    border-color: #4dabf7;
-    box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.2);
-  }
-.buttonContainer{
-  display: flex;
-  gap: 15px;
-  justify-content: space-between;
-  width: 100%;
-}
-  .skipButton{
-    display: block;
-    width: 100%;
-    padding: 15px;
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: 600;
-    text-align: center;
-    color: white;
-    background-image:linear-gradient(#990303, #ea00ff);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  /* Buttons */
-   .nextButton, .retakeButton, .homeButton, .retryButton {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    margin-top: 20px;
-    font-size: 16px;
-    font-weight: 600;
-    text-align: center;
-    color: white;
-    background-image:linear-gradient(#434cc1, #7a32ef);;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .nextButton:hover, .retakeButton:hover, .homeButton:hover, .retryButton:hover {
-    background-image:linear-gradient(#505aeb, #ac88e5);
-  }
-  
-  .nextButton:disabled {
-    background-color: #adb5bd;
-    cursor: not-allowed;
-  }
-  
-  /* Loading State */
-  .loaderContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-  }
-  
-  .loader {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #228be6;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin-bottom: 20px;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
-  /* Error States */
-  .errorContainer {
-    text-align: center;
-    padding: 40px 20px;
-  }
-  
-  .errorMessage, .noQuestionsMessage {
-    color: #e03131;
     font-size: 18px;
-    margin-bottom: 20px;
   }
-  
-  /* Results Page */
-  .resultsContainer {
-    padding: 30px;
-  }
-  
-  .resultsTitle {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #212529;
-  }
-  
+
   .scoreCard {
-    display: flex;
-    align-items: center;
-    background-color: #f8f9fa;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 30px;
+    flex-direction: column;
+    text-align: center;
   }
-  
+
   .scoreCircle {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(to bottom right, #4dabf7, #228be6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 20px;
-    box-shadow: 0 4px 8px rgba(77, 171, 247, 0.2);
+    margin-right: 0;
+    margin-bottom: 15px;
   }
-  
-  .scoreValue {
-    font-size: 28px;
-    font-weight: bold;
-    color: white;
-  }
-  
-  .scoreDetails {
-    flex: 1;
-  }
-  
-  .performanceText {
-    font-size: 22px;
-    margin-bottom: 10px;
-    color: #212529;
-  }
-  
-  .scoreText {
-    color: #495057;
-    font-size: 16px;
-  }
-  
-  .questionReview {
-    margin-top: 30px;
-  }
-  
-  .reviewItem {
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-  }
-  
-  .reviewItem.correct {
-    border-left: 4px solid #40c057;
-  }
-  
-  .reviewItem.incorrect {
-    border-left: 4px solid #fa5252;
-  }
-  
-  .reviewHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .questionNumber {
-    font-weight: 600;
-    color: #495057;
-  }
-  
-  .statusBadge {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-  }
-  
-  .correctBadge {
-    background-color: #d3f9d8;
-    color: #2b8a3e;
-  }
-  
-  .incorrectBadge {
-    background-color: #ffe3e3;
-    color: #c92a2a;
-  }
-  
-  .reviewQuestion {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #212529;
-  }
-  
-  .answerDetail {
-    background-color: white;
-    padding: 10px;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  
+
   .actionButtons {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
+    flex-direction: column;
   }
-  
-  .retakeButton, .homeButton {
-    flex: 1;
-    margin-top: 0;
+  .quizContainer .questionImage {
+    width: 100%;
   }
-  
-  .homeButton {
-    background-color: #495057;
-  }
-  
-  .homeButton:hover {
-    background-color: #343a40;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
-    .quizContainer {
-      max-width: 90%;
-      overflow-y: auto;
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE and Edge */
-      
-      padding: 15px;
-      border-radius: 8px;
-    }
-    .quizContainer::-webkit-scrollbar {
-      display: none;
-  }
-    
-    .questionText {
-      font-size: 18px;
-    }
-    
-    .scoreCard {
-      flex-direction: column;
-      text-align: center;
-    }
-    
-    .scoreCircle {
-      margin-right: 0;
-      margin-bottom: 15px;
-    }
-    
-    .actionButtons {
-      flex-direction: column;
-    }
-    .quizContainer .questionImage {
-      width: 100%;
-    }
-  }
-    
+}
