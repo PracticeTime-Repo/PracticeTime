@@ -9,8 +9,14 @@ import { MdCheck } from "react-icons/md";
 import QuestionProgress from "./QuestionProgress";
 import { MdHelpOutline } from "react-icons/md";
 import { MdArrowBack, MdArrowForward } from "react-icons/md";
-import cloud from './cloud.png';
-import exicted from './exicted.png';
+import cloud from "./cloud.png";
+import exicted from "./exicted.png";
+import emoji1 from "./emoji1.png";
+import emoji2 from "./emoji2.png";
+import emoji3 from "./emoji3.png";
+import emoji4 from "./emoji4.png";
+import emoji5 from "./emoji5.png";
+import { FaCheck, FaTimes, FaForward } from "react-icons/fa";
 // import SignupImage from "./SignupImage.png";
 
 const Quiz = () => {
@@ -551,6 +557,39 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
       </div>
     );
   }
+  const getScoreDetails = (score) => {
+    if (score === 100) {
+      return {
+        emojiImg: emoji5, // Adjust path based on your project structure
+        color: "#f4b400",
+        title: "Perfect! You’re A Quiz Master!",
+      };
+    } else if (score >= 85) {
+      return {
+        emojiImg: emoji4,
+        color: "#4285f4",
+        title: "Awesome! You’re Doing Great!",
+      };
+    } else if (score >= 61) {
+      return {
+        emojiImg: emoji3,
+        color: "#34a853",
+        title: "Fantastic! You Are Pushing The Limits",
+      };
+    } else if (score >= 36) {
+      return {
+        emojiImg: emoji2,
+        color: "#fb8c00",
+        title: "Nice! You’re Learning Fast.",
+      };
+    } else {
+      return {
+        emojiImg: emoji1,
+        color: "#ea4335",
+        title: "It’s Okay! Let’s Try Again.",
+      };
+    }
+  };
 
   if (quizCompleted && quizResults) {
     return (
@@ -559,11 +598,49 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
           <h1 className="resultsTitle">Quiz Results</h1>
 
           <div className="scoreCard">
-            <div className="scoreCircle">
-              <div className="scoreValue">{quizResults.score}%</div>
+            <div className="progressRingWrapper">
+              <svg className="progressRing" width="100" height="100">
+                <circle
+                  className="progressBackground"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  strokeWidth="10"
+                  fill="none"
+                />
+                <circle
+                  className="progressCircle"
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  strokeWidth="10"
+                  fill="none"
+                  strokeDasharray="282.6"
+                  strokeDashoffset={282.6 - (282.6 * quizResults.score) / 100}
+                  style={{ stroke: getScoreDetails(quizResults.score).color }}
+                />
+              </svg>
+
+              {/* This is the center circle with the emoji */}
+              <div className="emojiCenterCircle">
+                <img
+                  src={getScoreDetails(quizResults.score).emojiImg}
+                  alt="Emoji"
+                  className="emojiImage"
+                />
+              </div>
             </div>
+
             <div className="scoreDetails">
-              <h2 className="performanceText">{quizResults.performance}</h2>
+              <div
+                className="scoreValue"
+                style={{ color: getScoreDetails(quizResults.score).color }}
+              >
+                {quizResults.score}%
+              </div>
+              <h2 className="performanceText">
+                {getScoreDetails(quizResults.score).title}
+              </h2>
               <p className="scoreText">
                 You answered {quizResults.correctAnswers} out of{" "}
                 {quizResults.totalQuestions} questions correctly.
@@ -573,67 +650,86 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
           <div className="questionReview">
             <h2>Question Review</h2>
+
             {quizResults.responses.map((response, index) => {
-              // Find the corresponding question
               const question =
                 questions.find((q) => q.id === response.questionId) ||
                 questions[index];
 
-              // Skip showing trivia questions in review
-              if (response.type === "TRIVIA") {
-                return null;
-              }
+              const isCorrect = response.isCorrect;
+              const isSkipped = response.skipped;
 
               return (
                 <div
                   key={index}
-                  className={`reviewItem ${
-                    response.skipped
-                      ? "skipped"
-                      : response.isCorrect
-                      ? "correct"
-                      : "incorrect"
+                  className={`question-container ${
+                    isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"
                   }`}
                 >
-                  <div className="reviewHeader">
-                    <span className="questionNumber">Question {index + 1}</span>
-                    <span
-                      className={`statusBadge ${
-                        response.skipped
-                          ? "skippedBadge"
-                          : response.isCorrect
-                          ? "correctBadge"
-                          : "incorrectBadge"
+                  <div className="question-header">
+                    <div>
+                      <span className="question-number">
+                        Question {index + 1} of {quizResults.totalQuestions}
+                      </span>
+                      <div className="category-name">Category Name</div>
+                    </div>
+                    <div
+                      className={`answer-status ${
+                        isCorrect
+                          ? "correct"
+                          : isSkipped
+                          ? "skipped"
+                          : "incorrect"
                       }`}
                     >
-                      {response.skipped
+                      <span
+                        className={`status-icon ${
+                          isCorrect
+                            ? "correct"
+                            : isSkipped
+                            ? "skipped"
+                            : "incorrect"
+                        }`}
+                      >
+                        {isCorrect ? (
+                          <FaCheck />
+                        ) : isSkipped ? (
+                          <FaForward />
+                        ) : (
+                          <FaTimes />
+                        )}
+                      </span>
+                      {isCorrect
+                        ? "Correct Answer"
+                        : isSkipped
                         ? "Skipped"
-                        : response.isCorrect
-                        ? "Correct"
-                        : "Incorrect"}
-                    </span>
+                        : "Incorrect Answer"}
+                    </div>
                   </div>
-                  <p className="reviewQuestion">
-                    {question
-                      ? isHTML(question.question)
-                        ? parse(question.question)
-                        : question.question
-                      : "Question not found"}
-                  </p>
-                  <div className="answerDetail">
-                    <p>
-                      <strong>Your answer:</strong>{" "}
-                      {response.userAnswer || "(No answer)"}
-                    </p>
-                    <p>
-                      <strong>Correct answer:</strong>{" "}
-                      {Array.isArray(response.correctAnswer)
-                        ? response.correctAnswer.join(", ")
-                        : typeof response.correctAnswer === "object" &&
-                          response.correctAnswer.text
-                        ? response.correctAnswer.text
-                        : response.correctAnswer}
-                    </p>
+                  <div className="question-body">
+                    <div className="question-content">
+                      <p>{question?.question}</p>
+                    </div>
+                    <div className="quiz-line"></div>
+                    <div className="answer-section">
+                      <p>
+                        <strong>Your Answer:</strong>{" "}
+                        <span className="user-answer">
+                          {response.userAnswer || "—"}
+                        </span>
+                      </p>
+                      <p className="correct-answer-box">
+                        <strong className="label">Correct Answer:</strong>
+                        <span className="answer-text">
+                          {Array.isArray(response.correctAnswer)
+                            ? response.correctAnswer.join(", ")
+                            : typeof response.correctAnswer === "object" &&
+                              response.correctAnswer.text
+                            ? response.correctAnswer.text
+                            : response.correctAnswer}
+                        </span>
+                      </p>
+                    </div>
                   </div>
                 </div>
               );
@@ -642,7 +738,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
           <div className="actionButtons">
             <button onClick={handleBackToHome} className="homeButton">
-              Hurray, Practice for today is Completed
+              {/* Hurray, Practice for today is Completed */}
+              Submit
             </button>
           </div>
         </div>
@@ -674,15 +771,26 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     <div className="container">
       <div className="quizContainer">
         <div className="quizHeader1">
-         <div className="quizIntro">
-  <h1>
-    Daily Quiz <img src={cloud} alt="quiz icon" style={{ width: 32, height: 32, verticalAlign: 'middle' }} className="quiz-icon"/>
-  </h1>
-  <p>
-    Time to test your skills! Let’s Go!{" "}
-    <img src={exicted} alt="excited icon" style={{ width: 20, height: 20, verticalAlign: 'middle' }} className="excited-icon" />
-  </p>
-</div>
+          <div className="quizIntro">
+            <h1>
+              Daily Quiz{" "}
+              <img
+                src={cloud}
+                alt="quiz icon"
+                style={{ width: 32, height: 32, verticalAlign: "middle" }}
+                className="quiz-icon"
+              />
+            </h1>
+            <p>
+              Time to test your skills! Let’s Go!{" "}
+              <img
+                src={exicted}
+                alt="excited icon"
+                style={{ width: 20, height: 20, verticalAlign: "middle" }}
+                className="excited-icon"
+              />
+            </p>
+          </div>
 
           <QuestionProgress
             currentQuestionIndex={currentQuestionIndex}
