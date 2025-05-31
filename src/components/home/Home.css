@@ -20,9 +20,15 @@ body {
 
 
 .container {
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: auto;
-  padding: 20px;
+  padding: 20px 50px;
+}
+@media (max-width: 600px) {
+  .container {
+    margin: auto;
+    padding: 15px 20px;
+  }
 }
 
 /* Header section */

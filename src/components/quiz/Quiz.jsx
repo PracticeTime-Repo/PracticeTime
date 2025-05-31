@@ -16,7 +16,8 @@ import emoji2 from "./emoji2.png";
 import emoji3 from "./emoji3.png";
 import emoji4 from "./emoji4.png";
 import emoji5 from "./emoji5.png";
-import { FaCheck, FaTimes, FaForward } from "react-icons/fa";
+import { FaCheck, FaTimes } from "react-icons/fa";
+import { IoPlaySkipForward } from "react-icons/io5";
 // import SignupImage from "./SignupImage.png";
 
 const Quiz = () => {
@@ -694,7 +695,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                         {isCorrect ? (
                           <FaCheck />
                         ) : isSkipped ? (
-                          <FaForward />
+                          <IoPlaySkipForward />
                         ) : (
                           <FaTimes />
                         )}

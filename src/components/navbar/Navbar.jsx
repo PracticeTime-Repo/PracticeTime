@@ -23,7 +23,7 @@ const Navbar = ({ onNavigate }) => {
     try {
       await signOut(auth);
       localStorage.removeItem("user");
-      onNavigate("login");
+      onNavigate("login");  
       setShowmenu(false);
     } catch (error) {
       console.error("Logout error:", error);

@@ -20,12 +20,13 @@
 }
 
 .nav-image {
-    margin-right: -5px;
+  margin-right: -5px;
   width: 32px;
   height: 32px;
   max-height: 32px;
   border-radius: 8px;
-  border: 1px solid #ccc; /* You can adjust the color */
+  border: 1px solid #ccc;
+  /* You can adjust the color */
   object-fit: cover;
   padding: 5px;
 }
@@ -37,6 +38,7 @@
   font-size: 14px;
   font-weight: 400;
 }
+
 .navbar-line {
   display: inline-block;
   width: 1px;
@@ -96,6 +98,7 @@
 .logout {
   color: #dc2626;
 }
+
 /* User dropdown */
 .user-dropdown {
   position: relative;
@@ -104,13 +107,15 @@
 .web-navbar {
   display: block;
 }
+
 .mobile-navbar {
   display: none;
 }
+
 .user-trigger {
   margin-left: -10px !important;
   cursor: pointer;
-    font-size: 14px;
+  font-size: 14px;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -149,6 +154,7 @@
   /* background-color: #fef2f2; */
   color: #dc2626;
 }
+
 .dropdown-header {
   display: flex;
   align-items: center;
@@ -186,9 +192,11 @@
   .web-navbar {
     display: none;
   }
+
   .mobile-navbar {
     display: block;
   }
+
   .navbar {
     display: flex;
     align-items: center;
@@ -200,6 +208,7 @@
     position: relative;
     z-index: 10;
   }
+
   .hamburger {
     margin-left: auto;
     background: transparent;
@@ -240,7 +249,8 @@
   .hamburger:hover,
   .hamburger:focus {
     background-color: white;
-    color: black; /* Prevent it from turning blue on click or focus */
+    color: black;
+    /* Prevent it from turning blue on click or focus */
   }
 
   .navbar-menu {
@@ -263,10 +273,12 @@
   }
 
   .navbar-menu ul {
-    display: flex; /* <-- Add this line */
+    display: flex;
+    /* <-- Add this line */
     flex-direction: column;
     gap: 1rem;
   }
+
   /* Emoji replacement image */
   .emoji-img {
     width: 25px;
@@ -274,12 +286,13 @@
     /* vertical-align: middle; */
     /* margin: 0 4px; */
   }
-  .hand-img{
-     width: 16px;
+
+  .hand-img {
+    width: 16px;
     height: 16px;
-     vertical-align: middle;
+    vertical-align: middle;
   }
-  
+
   /* Dropdown header styling */
   .dropdown-header {
     display: flex;
@@ -289,7 +302,7 @@
     margin-left: -15px;
   }
 
-  
+
 
   /* List item space-between layout */
   .navbar-menu ul li {
@@ -309,18 +322,19 @@
     color: #aaaaaa;
   }
 }
+
 @media (max-width: 768px) {
   .logout-modal {
-  background-color: white;
-  padding: 30px !important;
-  border-radius: 1rem;
-  text-align: center;
-  max-width: 450px;
-  width: 90%;
-  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
+    background-color: white;
+    padding: 30px !important;
+    border-radius: 1rem;
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
     border: 2px solid black;
-  box-shadow: 2px 2px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
-}
+    box-shadow: 2px 2px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+  }
 
 }
 
@@ -335,65 +349,59 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
+  
 
 }
 
 .logout-modal {
   background-color: white;
-  padding: 64px;
+  padding: 50px 64px;
   border-radius: 1rem;
   text-align: center;
   max-width: 450px;
-  width: 90%;
+  width: 100%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.logout-modal h3{
+.logout-modal h3 {
+  margin: 0px 40px;
   font-size: 20px;
   font-weight: 400 !important;
 }
 
-.logout-modal p{
-    font-size: 14px;
+.logout-modal p {
+  margin: 0px 35px;
+  font-size: 14px;
   font-weight: 300 !important;
   color: #999999;
 }
-
 .modal-buttons {
   display: flex;
+  flex-direction: row;
   justify-content: center;
+  align-items: stretch; /* makes buttons take same height */
   margin-top: 1rem;
   gap: 1rem;
-}
-.logout-btn{
-  padding: 0.6rem 1.5rem;
-  background: #FF5757;
-  color: black;
-  font-family: "Geologica", sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  border-radius: 12px;
-  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
-  cursor: pointer;
-  margin-top: 20px;
-  transition: all 0.3s ease;
-  border: 2px solid black !important;
-}
-.logout-btn:hover {
-  background-color: #FF5757;
-  box-shadow: none !important;
-}
-.cancel-btn{
-  padding: 0.6rem 1.5rem;
-  border-radius: 12px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-    background-color: #fff;
-  border: 1px solid #DDDDDD !important;
-  color: #333;
+  width: 100%;
 }
 
+.modal-buttons button {
+  flex: 1; /* full width for both buttons */
+  height: 3.5rem; /* or use 100% if inside a container with fixed height */
+}
+
+/* Cancel Button */
+.cancel-btn {
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #DDDDDD !important;
+  font-weight: bold;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: "Geologica", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
 .cancel-btn:hover {
   background-color: #fff;
@@ -401,3 +409,20 @@
   color: black;
 }
 
+/* Logout Button */
+.logout-btn {
+  background: #FF5757;
+  color: black;
+  font-weight: 500;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: "Geologica", sans-serif;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1.5px solid black;
+}
+
+.logout-btn:hover {
+  box-shadow: none;
+}
