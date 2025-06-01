@@ -91,16 +91,7 @@ function SubjectTabs() {
           align-items: center;
           gap: 12px;
         }
-        @media (max-width: 640px) {
-          .tabs-container {
-            display: block; /* Change from 'none' to 'block' to make tabs visible on mobile */
-            width: 100%;
-            text-align: center;
-          }
-          .subject-tab {
-            margin-bottom: 10px; /* Space between tabs on small screens */
-          }
-        }
+
         .subject-tab {
           display: flex;
           align-items: center;
@@ -158,11 +149,24 @@ function SubjectTabs() {
           cursor: pointer;
         }
         @media (max-width: 640px) {
-          .practice-button {
-            width: 100%;
-            margin-top: 10px;
-          }
-        }
+  .tabs-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+  }
+
+  .subject-tab {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .practice-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
       `}</style>
     </section>
   );

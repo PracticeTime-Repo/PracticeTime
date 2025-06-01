@@ -1,163 +1,194 @@
+.homeContainer {
+  width: 100%;
+  margin: 0 auto;
+  padding: 30px 20px;
+  background-color: #a8d3d3;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  border: #91cfd1 solid;
+}
 
-  .homeContainer {
-    width: 100%;
-    margin: 0 auto;
-    padding: 30px 20px;
-    background-color: #a8d3d3;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: 'Roboto', sans-serif;
-    border: #91cfd1 solid;
-  }
-  
+.quizHomeContainer {
+  background-color: #ffffff;
+  border: 1px solid #DDDDDD;
+  border-radius: 16px;
+  padding: 70px 24px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+
+.textWithArrow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* center horizontally */
+  gap: 8px;
+  flex-wrap: wrap;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.motivationalText {
+  font-size: 44px !important;
+  font-weight: bold;
+  line-height: 0.8;
+  margin: 0;
+}
+
+.motivationalLine {
+  margin: 4px 0;
+}
+
+.motivationalLine1 {
+  margin-left: -20px;
+}
+
+.highlightBlue {
+  color: #2196F3;
+}
+
+.motivationalArrow {
+  width: 110px;
+  height: 100px;
+  margin-bottom: 25px;
+  margin-left: -20px;
+}
+
+@media (max-width: 600px) {
   .quizHomeContainer {
     background-color: #ffffff;
     border: 1px solid #DDDDDD;
     border-radius: 16px;
-    padding: 32px 24px;
+    padding: 30px 24px;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   }
-  
-  
-  
-  .textWithArrow {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center; /* center horizontally */
-    gap: 8px;
-    flex-wrap: wrap;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .motivationalText {
-    font-size: 44px !important;
-    font-weight: bold;
-    line-height: 0.8;
-    margin: 0;
-  }
-  .motivationalLine {
-    margin: 4px 0;
-  }
-  .motivationalLine1{
-    margin-left: -20px;
-  }
-  
-  .highlightBlue {
-    color: #2196F3;
-  }
-  
-  .motivationalArrow {
-    width: 110px;
-    height: 100px;
-    margin-bottom: 25px;
-    margin-left: -20p;
-  }
-  
-  @media (max-width: 600px) {
-    .motivationalArrow {
-      display: none;
-    }
-  }
-  
-  
-  
-  .practiceImage {
-    max-width: 250px;
-    width: 100%;
-    height: auto;
-    margin: 20px auto;
-    display: block;
-    cursor: pointer;
-  }
-  
-  .starNote {
-    margin: 20px 0 10px;
-    font-size: 16px;
-    color: #555;
-    background: #FAFAFA;
-    padding: 10px;
-    border-radius: 8px;
-    display: inline-block;
-  }
-  
-  .quizReadyText {
-    font-size: 16px;
-    margin: 10px 0 25px;
-    color: #2c3e50;
-  }
-  
-  .highlightLink {
-    color: #3498db;
-    font-weight: 500;
-    cursor: pointer;
-  }
-  
-  .buttonContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .startQuizButton {
-    height: 48px;
-    max-height: 48px;
-    border-radius: 12px;
-    border: 1.5px solid #000000;
-    background: #fdbb3e;
-    padding: 12px 28px;
-    cursor: pointer;
-    color: black;
-    font-size: 16px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
-  }
-  
-  .startQuizButton:hover {
-    background-color: #fdbb3e;
-    box-shadow: none !important;
-  }
-  
-  .startQuizButton:focus,
-  .startQuizButton:active {
-    outline: none;
-    border: 1.5px solid #000000;
-    box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
-  }
-  
-  .startIcon {
-    font-size: 20px;
-  }
-  
-  
-  /* Responsive */
-  @media (max-width: 600px) {
-    .homeContainer {
-      padding: 15px;
-    }
-  
-    .motivationalText {
-      font-size: 20px;
-    }
 
-  
-    .practiceImage {
-      max-width: 80%;
-    }
+  .motivationalArrow {
+    display: none;
   }
-  .inline-icon1 {
-    width: 1.2rem;
-    height: 1.2rem;
-    margin-bottom: -3px;
-    margin-right: 0.3rem;
+}
+
+
+
+.practiceImage {
+  max-width: 450px;
+  width: 100%;
+  height: 400px;
+  margin: 20px auto;
+  display: block;
+  cursor: pointer;
+}
+
+.starNote {
+  margin: 20px 0 10px;
+  font-size: 16px;
+  color: #555;
+  background: #FAFAFA;
+  padding: 15px 25px;
+  border-radius: 12px;
+  display: inline-block;
+  border: 1px solid #DDDDDD;
+  box-shadow: 0px 4px 4px 0px #0000000A;
+
+}
+
+.quizReadyText {
+  font-size: 16px;
+  margin: 10px 0 25px;
+  color: #2c3e50;
+}
+
+.highlightLink {
+  color: #3498db;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.startQuizButton {
+  height: 48px;
+  max-height: 48px;
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background: #fdbb3e;
+  padding: 12px 28px;
+  cursor: pointer;
+  color: black;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+
+.startQuizButton:hover {
+  background-color: #fdbb3e;
+  box-shadow: none !important;
+}
+
+.startQuizButton:focus,
+.startQuizButton:active {
+  outline: none;
+  border: 1.5px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+
+.startIcon {
+  font-size: 20px;
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+  .homeContainer {
+    padding: 15px;
   }
-  .inline-icon {
-    width: 1.2rem;
-    height: 1.2rem;
-    vertical-align: middle;
-    margin-left: 0.3rem;
+
+  .motivationalText {
+    font-size: 30px !important;
   }
+
+
+  .practiceImage {
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .textWithArrow {
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+  }
+
+  .motivationalText {
+    text-align: left !important;
+  }
+  .motivationalLine1 {
+  margin-left: 0px;
+}
+
+}
+
+.inline-icon1 {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-bottom: -3px;
+  margin-right: 0.3rem;
+}
+
+.inline-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  vertical-align: middle;
+  margin-left: 0.3rem;
+}

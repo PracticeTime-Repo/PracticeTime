@@ -29,21 +29,20 @@ function Home() {
           flex-direction: column;
           align-items: center;
           width: 100%;
-          margin: 0 auto;
           background-color: #fff;
          background-image: radial-gradient(circle, #c8bebe 1px, transparent 1px);
           background-size: 20px 20px; /* Adjust this value to control the size of the dots */
         }
 
-        @media (max-width: 991px) {
-          .landing-container {
-            max-width: 991px;
-          }
-        }
+        // @media (max-width: 991px) {
+        //   .landing-container {
+        //     max-width: 991px;
+        //   }
+        // }
 
         @media (max-width: 640px) {
           .landing-container {
-            max-width: 640px;
+            width: 100%;
           }
         }
       `}</style>

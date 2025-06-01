@@ -101,23 +101,33 @@ function Header() {
 
         /* For mobile responsiveness */
         @media (max-width: 640px) {
-          .header-container {
-            gap: 15px; /* Adjust the space between elements */
-          }
+  .logo {
+    margin-bottom: 40px;
+    width: 80%;
+    height: auto;
+  }
 
-          .arrow-icon {
-            width: 80px;
-            height: 80px;
-            transform: translate(0, 10px); /* Adjust positioning on small screens */
-            
-          }
- 
-          .tagline {
-            font-size: 28px;
-            line-height: 36px;
-            text-align: center; /* Center text on small screens */
-          }
-        }
+  .header-container {
+    gap: 10px;
+    padding: 0 20px;
+  }
+
+  .tagline-container {
+    align-items: center;
+    text-align: center;
+  }
+
+  .tagline {
+    font-size: 26px;
+    line-height: 32px;
+    text-align: left;
+  }
+
+  .arrow-icon {
+    display: none;
+  }
+}
+
       `}</style>
     </header>
   );
