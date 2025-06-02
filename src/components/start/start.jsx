@@ -215,8 +215,8 @@ const start = ({ onNavigate }) => {
         </p>
 
         <div className="buttonContainer">
-          <button className='startQuizButton'>
-            Let’s Start <MdKeyboardArrowRight className="startIcon" />
+          <button className='startQuizButton' onClick={navigateToQuiz}>
+            Let’s Start <MdKeyboardArrowRight className="startIcon"/>
           </button>
         </div>
 
