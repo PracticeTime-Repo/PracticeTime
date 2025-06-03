@@ -9,7 +9,8 @@
 
 body {
   font-family: 'Geologica', 'Space Grotesk', sans-serif;
-  background-color: #f5f7fa;
+  background-color: #f0f8fd;
+
   color: #333;
   line-height: 1.6;
   
@@ -22,13 +23,41 @@ body {
 .container {
   /* max-width: 1200px; */
   margin: auto;
-  padding: 20px 50px;
+  padding: 20px 80px 30px 80px;
+
+  min-height: auto; /* Ensures full viewport height */
+  width: 100%;
+  background-image: url("../../assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #3498DB1A;
+  box-sizing: border-box;
+}
+.nav-container {
+  /* max-width: 1200px; */
+  margin: auto;
+  min-height: auto; /* Ensures full viewport height */
+  width: 100%;
+  background-image: url("../../assets/background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #3498DB1A;
+  box-sizing: border-box;
+  padding: 20px 80px 0px 80px;
+  
 }
 @media (max-width: 600px) {
   .container {
     margin: auto;
     padding: 15px 20px;
   }
+  .nav-container {
+  /* max-width: 1200px; */
+  margin: auto;
+ padding: 15px 20px;
+}
 }
 
 /* Header section */
@@ -281,7 +310,7 @@ body {
 /* Contact Section */
 
           .contact-section {
-  
+  /* background-color: #f0f8fd; */
   background-image: radial-gradient(circle, rgba(78, 77, 77, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
   padding: 40px 20px;

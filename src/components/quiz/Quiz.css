@@ -94,7 +94,6 @@
   overflow-y: auto;
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE and Edge */
-
   width: 100%;
   /* min-height: 550px;
     max-height: 800px; */
@@ -104,7 +103,7 @@
   justify-content: space-between;
 
   margin: 0 auto;
-  padding: 50px 80px;
+  padding: 40px 80px;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -171,7 +170,9 @@
 }
 
 /* Question Container */
-
+.questionContainer{
+  margin-top: -30px;
+}
 .questionText {
   font-size: 20px;
   margin-bottom: 20px;
@@ -239,7 +240,7 @@
 
 /* Fill in the blanks input */
 .fillBlankContainer {
-  margin: 20px 0;
+  margin: 15px 0;
 }
 
 .fillBlankInput {
@@ -264,7 +265,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 
 .leftButtons,
@@ -275,24 +276,27 @@
 /* Button container remains a flex layout */
 .buttonContainer {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between !important;
   align-items: center;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 5px;
   flex-wrap: wrap; /* Allows wrapping on smaller screens */
   gap: 10px; /* Optional spacing */
 }
 
 /* Common centering for all buttons */
-.previousButton,
+/* .previousButton,
 .skipButton,
 .filledButton {
-  display: flex;
-  align-items: center;
-  justify-content: center; /* Center text horizontally */
-  text-align: center; /* Center text inside the button */
-  white-space: nowrap; /* Prevent line breaks */
+ 
+} */
+ .errorTooltip {
+  color: red;
+  margin-top: 4px;
+  text-align: center;
+  font-size: 14px;
 }
+
 
 /* Responsive behavior */
 @media (max-width: 768px) {
@@ -344,10 +348,10 @@
   border: 1px solid #333;
   cursor: not-allowed;
 }
-.skipButton {
+.skipButton1 {
   display: flex;
   align-items: center;
-  /* padding: 10px 50px; */
+  padding: 10px 50px;
   font-size: 14px;
   font-weight: 500;
   background-color: white;
@@ -356,11 +360,17 @@
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+   display: flex;
+  align-items: center;
+  justify-content: center; /* Center text horizontally */
+  text-align: center; /* Center text inside the button */
+  white-space: nowrap; /* Prevent line breaks */
 }
-.skipButton:hover {
+.skipButton1:hover {
   background-color: white;
 }
 .filledButton {
+  padding: 10px 15px;
   display: flex;
   align-items: center;
   width: 100%;
@@ -382,14 +392,14 @@
   cursor: not-allowed;
 }
 .filledButton:hover {
-  background-color: #cb6be6;
+  background-color: #cb6be6 !important;
   box-shadow: none !important;
 }
 
 .filledButton:focus,
 .filledButton:active {
-  outline: none;
-  border: 1.5px solid #000000;
+  outline: none !important;
+  border: 1.5px solid #000000 !important;
   box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
 }
 @media (max-width: 768px) {
@@ -408,7 +418,7 @@
   }
 
   .previousButton,
-  .skipButton,
+  .skipButton1,
   .filledButton {
     width: 100%; /* Make buttons full width on smaller screens */
     max-width: 320px;
@@ -464,7 +474,7 @@
 .resultsContainer {
   margin: auto;
   padding: 3rem;
-  font-family: "Segoe UI", sans-serif;
+  /* font-family: "Segoe UI", sans-serif; */
 }
 
 .scoreCard {
@@ -517,6 +527,10 @@
 }
 
 @media (max-width: 600px) {
+  .resultsContainer {
+  margin: auto;
+  padding: 1rem !important;
+}
   .scoreCard {
     flex-direction: column;
     align-items: center;
@@ -738,6 +752,22 @@
     align-items: flex-start;
     gap: 0.4rem;
   }
+  .user-answer{
+  font-weight: 300;
+  font-size: 16px;
+  margin-left: 0px;
+  color: #999999; /* Or inherit based on design preference */
+}
+.correct-answer-box .answer-text {
+  margin-left: 0px !important;
+  color: #000; /* Or inherit based on design preference */
+}
+.resultsTitle {
+  margin-bottom: 32px;
+  color: black;
+  font-family: 500;
+  text-align: center;
+}
 }
 .resultsTitle {
   margin-bottom: 32px;
@@ -906,6 +936,7 @@
 
 .homeButton {
   width: auto;
+  padding: 12px 28px;
   border-radius: 12px;
   border: 1.5px solid #000000;
   background: #cb6be6;

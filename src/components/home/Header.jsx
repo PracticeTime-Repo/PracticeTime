@@ -27,7 +27,7 @@ function Header() {
       <svg
         width="100"
         height="100"
-        viewBox="0 0 180 180"
+        viewBox="0 0 185 180"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className="arrow-icon"
@@ -47,7 +47,7 @@ function Header() {
         </defs>
 
         <path
-          d="M1 27.3447C25.2017 10.5269 76.9959 15.4575 91.4948 37.4728C96.3756 44.8838 92.6925 57.4736 78.9832 52.9366C66.2483 48.722 65.096 29.7458 70.0428 17.7397C77.4662 -0.277324 99.1568 -1.16802 115.894 3.17802C193 52.9366 70.0428 127.857 32.8367 109.245"
+          d="M1 27.3447C25.2017 10.5269 76.9959 15.4575 91.4948 37.4728C96.3756 44.8838 92.6925 57.4736 78.9832 52.9366C66.2483 48.722 65.096 29.7458 70.0428 20.7397C77.4662 -0.277324 105.1568 -1.16802 115.894 3.17802C193 62.9366 70.0428 127.857 42.8367 125.245"
           stroke="black"
           strokeWidth="1.5"
           strokeLinecap="round"
@@ -94,11 +94,24 @@ function Header() {
         }
 
         .arrow-icon {
-           margin-left: 442px;
+           margin-left: 462px;
     margin-bottom: 3px;
     margin-top: -110px;
         }
+    @keyframes draw-arrow {
+    from {
+      stroke-dashoffset: 1000;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
 
+  .arrow-icon path {
+    // animation: draw-arrow 5s ease forwards;
+    stroke-dasharray: 12 6;
+    stroke-dashoffset: 1000;
+  }
         /* For mobile responsiveness */
         @media (max-width: 640px) {
   .logo {

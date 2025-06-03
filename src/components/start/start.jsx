@@ -214,7 +214,7 @@ const start = ({ onNavigate }) => {
           <img src={exicted} alt="brain" className="inline-icon" />
         </p>
 
-        <div className="buttonContainer">
+        <div className="buttonContainer1">
           <button className='startQuizButton' onClick={navigateToQuiz}>
             Let’s Start <MdKeyboardArrowRight className="startIcon"/>
           </button>

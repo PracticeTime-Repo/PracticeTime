@@ -29,7 +29,7 @@ function Home() {
           flex-direction: column;
           align-items: center;
           width: 100%;
-          background-color: #fff;
+          background-color: #f0f8fd;
          background-image: radial-gradient(circle, #c8bebe 1px, transparent 1px);
           background-size: 20px 20px; /* Adjust this value to control the size of the dots */
         }

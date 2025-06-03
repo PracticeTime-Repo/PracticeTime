@@ -83,7 +83,7 @@ function FeatureGrid() {
           .features-section {
             flex-direction: column;
             align-items: center;
-            padding: 24px 16px;
+            padding: 0px 16px;
             gap: 20px;
           }
         }

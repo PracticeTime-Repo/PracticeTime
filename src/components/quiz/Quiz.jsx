@@ -305,8 +305,31 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   const isAnswerCorrect = (userAnswer, correctAnswer) => {
     return fallbackVerification(userAnswer, correctAnswer);
   };
+  const [showAnswerError, setShowAnswerError] = useState(false);
+
+  const handleNextClick = () => {
+    if (
+      !isTriviaQuestion &&
+      (!selectedAnswers[currentQuestionIndex] ||
+        selectedAnswers[currentQuestionIndex].trim() === "")
+    ) {
+      setShowAnswerError(true);
+      return;
+    }
+
+    setShowAnswerError(false);
+     // If it's the last question, confirm before proceeding
+  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+
+  if (isLastQuestion) {
+    const confirmSubmit = window.confirm("Are you sure you want to complete the quiz?");
+    if (!confirmSubmit) return;
+  }
+    handleNextQuestion();
+  };
 
   const handleNextQuestion = async () => {
+    setShowAnswerError(false);
     const currentAnswer = selectedAnswers[currentQuestionIndex];
     const currentQuestion = questions[currentQuestionIndex];
 
@@ -372,6 +395,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   };
 
   const handleSkipQuestion = () => {
+    setShowAnswerError(false);
     const currentQuestion = questions[currentQuestionIndex];
 
     // Avoid duplicate entries in skippedQuestions
@@ -435,6 +459,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     try {
       // Calculate the results
       const results = calculateResults(responses);
+      console.log('results',results);
+      
       setQuizResults(results);
       setQuizCompleted(true);
 
@@ -653,6 +679,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
             <h2>Question Review</h2>
 
             {quizResults.responses.map((response, index) => {
+              console.log("Question response",response);
               const question =
                 questions.find((q) => q.id === response.questionId) ||
                 questions[index];
@@ -748,6 +775,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     );
   }
   const handlePreviousQuestion = () => {
+    setShowAnswerError(false);
     if (currentQuestionIndex > 0) {
       const prevIndex = currentQuestionIndex - 1;
       setCurrentQuestionIndex(prevIndex);
@@ -878,7 +906,9 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
             </div>
           )}
         </div>
-
+        {showAnswerError && (
+          <div className="errorTooltip">Please choose or fill the answer</div>
+        )}
         <div className="buttonContainer">
           {/* Left side - Previous Button */}
           <div className="leftButtons">
@@ -898,15 +928,16 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
             {!isTriviaQuestion && (
               <button
                 onClick={handleSkipQuestion}
-                className="skipButton"
+                className="skipButton1"
                 disabled={verifying}
               >
                 Skip
               </button>
             )}
             <button
-              onClick={handleNextQuestion}
-              disabled={!isTriviaQuestion && !hasSelectedAnswer && verifying}
+              onClick={handleNextClick}
+              // disabled={!isTriviaQuestion && !hasSelectedAnswer && verifying}
+              disabled={!isTriviaQuestion && verifying}
               className={`filledButton ${verifying ? "verifying" : ""}`}
             >
               {verifying ? (

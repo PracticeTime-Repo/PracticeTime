@@ -60,7 +60,7 @@ const Navbar = ({ onNavigate }) => {
   }, []);
 
   return (
-    <div className="container">
+    <div className="nav-container">
       {showLogoutModal && (
         <div className="logout-modal-overlay">
           <div className="logout-modal">
