@@ -1,11 +1,12 @@
 import React from "react";
+import logo from "../../assets/logo.png";
 
 function Header() {
   return (
     <header className="header-container">
       {/* Logo Image positioned above the taglines */}
       <img
-        src="https://cdn.builder.io/api/v1/image/assets/TEMP/f43d381667d23d1c01c38716cd6ae33939430d16?placeholderIfAbsent=true"
+        src={logo}
         alt="PracticeTime.ai"
         className="logo"
         onClick={() => window.appNavigate('home')} // Navigate to home when clicked

@@ -29,7 +29,7 @@ function FeatureCard({ image, altText, title, description, backgroundColor }) {
         }
 
         .image-container {
-          height: 260px;
+          height: auto;
           display: flex;
           justify-content: center;
           align-items: center;

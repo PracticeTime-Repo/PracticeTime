@@ -326,17 +326,49 @@
 @media (max-width: 768px) {
   .logout-modal {
     background-color: white;
-    padding: 30px !important;
+    padding: 20px 0px !important;
     border-radius: 1rem;
     text-align: center;
-    max-width: 400px;
-    width: 90%;
+    max-width: 350px !important;
+    width: 100% !important;
     /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
     border: 2px solid black;
     box-shadow: 2px 2px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
   }
 
 }
+@media (max-width: 768px) {
+  .modal-buttons {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0px 20px;
+  }
+
+  .modal-buttons .logout-btn {
+    order: 1;
+    width: 100%;
+  padding: 10px 0px !important;
+
+  }
+
+  .modal-buttons .cancel-btn {
+    order: 2;
+    width: 100%;
+  padding: 10px 0px !important;
+border: none !important;
+  }
+
+
+
+  .modal-buttons button {
+    height: 3.2rem;
+    font-size: 15px;
+  }
+}
+
+
 
 .logout-modal-overlay {
   position: fixed;

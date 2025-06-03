@@ -3,6 +3,7 @@ import styles from "./Section7.module.css";
 import SubjectButton from "./SubjectButton";
 import ContactForm from "./ContactForm1";
 import arrowImg from "./arrow.png";
+import logo from "../../assets/logo.png";
 import SignupImage from "./SignupImage.png";
 
 function Section7() {
@@ -19,13 +20,13 @@ function Section7() {
                   <div className={styles.logo}>
                     {" "}
                     <img
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/0442a517a403251d5959637b0e2a64010cc28ce9?placeholderIfAbsent=true&apiKey=771d35a4e8294f3083bdf0cbd6294e9e"
+                      src={logo}
                       alt="Decorative logo"
                       className={styles.img}
                     />
                   </div>
 
-                    {/* <div className={styles.leftCont3ent}>
+                  {/* <div className={styles.leftCont3ent}>
                     <div className={styles.motivationText}>
                       <h2>
                         <span className={styles.boldText}>the more you </span>
@@ -40,7 +41,6 @@ function Section7() {
                     </div>
                   </div> */}
                   <div className={styles.heroSection}>
-
                     <div className={styles.heroRow}>
                       <div className={styles.motivationText}>
                         <h2>

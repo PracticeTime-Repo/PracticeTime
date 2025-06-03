@@ -148,10 +148,35 @@
   gap: 8px;
   box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
 }
-
+.redButton{
+    height: 40px;
+  max-height: 40px;
+  border-radius: 12px;
+  border: 1.5px solid #AAAAAA;
+  background: #EEEEEE;
+  padding: 12px 28px;
+  cursor: pointer;
+  color: #AAAAAA;
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0px 0px #AAAAAA, inset 0px 8px 4px 0px #0000000A !important;
+}
+.redButton:hover {
+  background-color: #EEEEEE !important;
+  box-shadow: 4px 4px 0px 0px #AAAAAA, inset 0px 8px 4px 0px #0000000A !important;
+}
 .startQuizButton:hover {
   background-color: #fdbb3e;
   box-shadow: none !important;
+}
+.redButton:focus,
+.redButton:active {
+  outline: none !important;
+  border: 1.5px solid #AAAAAA !important;
+  box-shadow: 4px 4px 0px 0px #AAAAAA, inset 0px 8px 4px 0px #0000000A !important;
 }
 
 .startQuizButton:focus,

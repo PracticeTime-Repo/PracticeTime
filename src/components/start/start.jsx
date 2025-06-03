@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import firebaseServices from '../firebase/firebaseSetup';
-import './start.css';
-import practiceTime from '../../assets/practiceTime.jpg';
-import startImage from './startImage.png';
-import arrowImage from './arrow.png';
-import star from './star.png';
-import exicted from './exicted.png';
+import React, { useState, useEffect } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import firebaseServices from "../firebase/firebaseSetup";
+import "./start.css";
+import practiceTime from "../../assets/practiceTime.jpg";
+import startImage from "./startImage.png";
+import arrowImage from "./arrow.png";
+import star from "./star.png";
+import exicted from "./exicted.png";
 import { MdKeyboardArrowRight } from "react-icons/md";
 
 const start = ({ onNavigate }) => {
   const { db, ref, get } = firebaseServices;
   const [assignedQuizzes, setAssignedQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [dailyQuizSet, setDailyQuizSet] = useState('');
+  const [dailyQuizSet, setDailyQuizSet] = useState("");
   const [hasQuizzes, setHasQuizzes] = useState(false);
   const [user, setUser] = useState(null);
   const [totalStars, setTotalStars] = useState(0);
@@ -54,10 +54,13 @@ const start = ({ onNavigate }) => {
           let quizzes = [];
 
           // Handle different data structures
-          if (typeof assignedSetsData === 'object' && !Array.isArray(assignedSetsData)) {
+          if (
+            typeof assignedSetsData === "object" &&
+            !Array.isArray(assignedSetsData)
+          ) {
             quizzes = Object.keys(assignedSetsData);
           } else if (Array.isArray(assignedSetsData)) {
-            quizzes = assignedSetsData.filter(item => item); // Filter out null/undefined values
+            quizzes = assignedSetsData.filter((item) => item); // Filter out null/undefined values
           }
 
           console.log("Processed quizzes:", quizzes);
@@ -65,7 +68,7 @@ const start = ({ onNavigate }) => {
           // Check if there are valid quizzes
           if (quizzes.length > 0) {
             setAssignedQuizzes(quizzes);
-            setHasQuizzes(true);
+            // setHasQuizzes(true);
 
             // Get daily quiz set based on the date
             const dailySet = getDailyQuizSet(quizzes);
@@ -78,7 +81,8 @@ const start = ({ onNavigate }) => {
         } else {
           console.log("No assigned sets found");
           setAssignedQuizzes([]);
-          setHasQuizzes(false);
+          // setHasQuizzes(false);
+          setHasQuizzes(true);
         }
 
         // Fetch total stars earned
@@ -117,11 +121,13 @@ const start = ({ onNavigate }) => {
 
   // Function to determine the daily quiz set based on the date
   const getDailyQuizSet = (quizzes) => {
-    if (!quizzes || quizzes.length === 0) return '';
+    if (!quizzes || quizzes.length === 0) return "";
 
     // Use the day of the year to cycle through the quiz sets
     const today = new Date();
-    const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+    const dayOfYear = Math.floor(
+      (today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24)
+    );
 
     // Use modulo to ensure we get a valid index in the array
     const dailyIndex = dayOfYear % quizzes.length;
@@ -131,11 +137,11 @@ const start = ({ onNavigate }) => {
 
   const navigateToQuiz = () => {
     // Store the selected quiz set in localStorage instead of router state
-    localStorage.setItem('selectedQuizSet', dailyQuizSet);
+    localStorage.setItem("selectedQuizSet", dailyQuizSet);
 
     // Use the parent component's navigation function
     if (window.appNavigate) {
-      window.appNavigate('practice');
+      window.appNavigate("practice");
     }
   };
 
@@ -147,11 +153,12 @@ const start = ({ onNavigate }) => {
 
     // Create rows of stars
     const rows = [];
-    for (let i = 0; i < Math.min(maxRows, Math.ceil(visibleStars / starsPerRow)); i++) {
-      const rowStars = Math.min(
-        starsPerRow,
-        visibleStars - i * starsPerRow
-      );
+    for (
+      let i = 0;
+      i < Math.min(maxRows, Math.ceil(visibleStars / starsPerRow));
+      i++
+    ) {
+      const rowStars = Math.min(starsPerRow, visibleStars - i * starsPerRow);
 
       rows.push(
         <div key={`row-${i}`} className="stars-row">
@@ -160,7 +167,8 @@ const start = ({ onNavigate }) => {
               key={index}
               role="img"
               aria-label="star"
-              className="star-item">
+              className="star-item"
+            >
               ⭐
             </span>
           ))}
@@ -179,108 +187,121 @@ const start = ({ onNavigate }) => {
   };
 
   return (
-
-    <div className='container'>
-      <div className='quizHomeContainer'>
-        <div className='textWithArrow'>
-          <h1 className='motivationalText'>
-            <p className='motivationalLine1'>
-              the more you <span className='highlightBlue'>practice!</span>
+    <div className="container">
+      <div className="quizHomeContainer">
+        <div className="textWithArrow">
+          <h1 className="motivationalText">
+            <p className="motivationalLine1">
+              the more you <span className="highlightBlue">practice!</span>
             </p>
-            <p className='motivationalLine'>
-              the better you <span className='highlightBlue'>become!</span>
+            <p className="motivationalLine">
+              the better you <span className="highlightBlue">become!</span>
             </p>
           </h1>
 
-          <img src={arrowImage} alt="arrow" className='motivationalArrow' />
+          <img src={arrowImage} alt="arrow" className="motivationalArrow" />
         </div>
 
         <img
           src={startImage}
           // onClick={() => window.appNavigate?.('home')}
           alt="Practice Time"
-          className='practiceImage'
+          className="practiceImage"
         />
 
         {/* Achievement Note */}
-        <p className='starNote'>
+        <p className="starNote">
           <img src={star} alt="star" className="inline-icon1" />
-          Complete quizzes with a score above <strong>50%</strong> to earn stars!
+          Complete quizzes with a score above <strong>50%</strong> to earn
+          stars!
         </p>
 
         {/* Quiz Message */}
-        <p className='quizReadyText'>
-          Time to test your skills! <span className="highlightLink">Today quizzes are ready!</span>
-          <img src={exicted} alt="brain" className="inline-icon" />
-        </p>
+        {!hasQuizzes && (
+          <p className="quizReadyText">
+            Time to test your skills!{" "}
+            <span className="highlightLink">Today quizzes are ready!</span>
+            <img src={exicted} alt="brain" className="inline-icon" />
+          </p>
+        )}
+        {hasQuizzes && (
+          <div>
+            {" "}
+            <p className="quizReadyText">
+              You don’t have any Practice Sheet assigned yet.
+              <img src={exicted} alt="brain" className="inline-icon" />
+            </p>
+          </div>
+        )}
 
         <div className="buttonContainer1">
-          <button className='startQuizButton' onClick={navigateToQuiz}>
-            Let’s Start <MdKeyboardArrowRight className="startIcon"/>
+          {/* <button className="startQuizButton" onClick={navigateToQuiz}> */}
+          <button
+  className={`startQuizButton ${hasQuizzes ? "redButton" : ""}`}
+  onClick={navigateToQuiz} disabled={hasQuizzes}
+>
+            Let’s Practice <MdKeyboardArrowRight className="startIcon" />
           </button>
         </div>
-
-
       </div>
     </div>
-
   );
 };
 
 export default start;
 
-    // <div className='homeContainer'>
-    //   <div className='quizHomeContainer'>
-    //     <img 
-    //       src={practiceTime} 
-    //       onClick={() => {
-    //         if (window.appNavigate) {
-    //           window.appNavigate('home');   // <-- Navigate to the Home page
-    //         }
-    //       }} 
-    //       alt="Practice Time" 
-    //       style={{ cursor: 'pointer' }}  // Optional: makes it look clickable
-    //     />
-    //     <h1>The more you practice, the better you become</h1>
+// <div className='homeContainer'>
+//   <div className='quizHomeContainer'>
+//     <img
+//       src={practiceTime}
+//       onClick={() => {
+//         if (window.appNavigate) {
+//           window.appNavigate('home');   // <-- Navigate to the Home page
+//         }
+//       }}
+//       alt="Practice Time"
+//       style={{ cursor: 'pointer' }}  // Optional: makes it look clickable
+//     />
+//     <h1>The more you practice, the better you become</h1>
 
-    //     {/* Stars Achievement Display */}
-    //     <div className="achievement-section">
-    //       <h2>Your Stars</h2>
-    //       {totalStars > 0 ? (
-    //         <>
-    //           <StarDisplay totalStars={totalStars} maxVisibleStars={20} maxRows={2} />
-    //           <p className="achievement-text">You've earned {totalStars} stars so far!</p>
-    //         </>
-    //       ) : (
-    //         <p className="achievement-text">Complete quizzes with a score above 50% to earn stars!</p>
-    //       )}
-    //     </div>
+//     {/* Stars Achievement Display */}
+//     <div className="achievement-section">
+//       <h2>Your Stars</h2>
+//       {totalStars > 0 ? (
+//         <>
+//           <StarDisplay totalStars={totalStars} maxVisibleStars={20} maxRows={2} />
+//           <p className="achievement-text">You've earned {totalStars} stars so far!</p>
+//         </>
+//       ) : (
+//         <p className="achievement-text">Complete quizzes with a score above 50% to earn stars!</p>
+//       )}
+//     </div>
 
-    //     <hr />
+//     <hr />
 
-    //     {loading ? (
-    //       <div className="loadingIndicator">
-    //         <p>Loading your daily practice...</p>
-    //       </div>
-    //     ) : (
-    //       <div className='assignedQuizInfo'>
-    //         {hasQuizzes ? (
-    //           <>
-    //             <h2>Your daily practice is ready!</h2>
-    //             <button
-    //               onClick={navigateToQuiz}
-    //               className="startQuizButton"
-    //             >
-    //               Start today's practice
-    //             </button>
-    //           </>
-    //         ) : (
-    //           <div className="noQuizzesMessage">
-    //             <p>You don't have any PracticeSheet assigned yet.</p>
-    //             <button disabled className="disabledButton">Start PracticeSheet</button>
-    //           </div>
-    //         )}
-    //       </div>
-    //     )}
-    //   </div>
-    // </div>
+//     {loading ? (
+//       <div className="loadingIndicator">
+//         <p>Loading your daily practice...</p>
+//       </div>
+//     ) : (
+//       <div className='assignedQuizInfo'>
+//         {hasQuizzes ? (
+//           <>
+//             <h2>Your daily practice is ready!</h2>
+//             <button
+//               onClick={navigateToQuiz}
+//               className="startQuizButton"
+//             >
+//               Start today's practice
+//             </button>
+//           </>
+//         ) : (
+//           <div className="noQuizzesMessage">
+//             <p>You don't have any PracticeSheet assigned yet.</p>
+//             <button disabled className="disabledButton">Start PracticeSheet</button>
+//           </div>
+//         )}
+//       </div>
+//     )}
+//   </div>
+// </div>

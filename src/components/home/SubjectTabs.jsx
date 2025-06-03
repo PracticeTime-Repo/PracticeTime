@@ -1,4 +1,3 @@
-
 "use client";
 import React from "react";
 
@@ -71,13 +70,12 @@ function SubjectTabs() {
         <div className="subject-tab">English</div>
         <div className="subject-tab">Coding</div>
       </div>
-      <button 
-  className="practice-button" 
-  onClick={() => window.appNavigate('start')}
->
-  Let's Practice
-</button>
-
+      <button
+        className="practice-button"
+        onClick={() => window.appNavigate("start")}
+      >
+        Let's Practice
+      </button>
 
       <style jsx>{`
         .subject-section {
@@ -107,15 +105,15 @@ function SubjectTabs() {
           line-height: 24px;
           color: #000;
           position: relative;
-          background-color: #fff;
+          background-color:transparent;
           cursor: pointer;
           transition: background-color 0.3s ease;
         }
         .subject-tab:hover {
-          background-color:rgb(149, 233, 184); /* Hover color */
+          background-color: transparent; /* Hover color */
         }
         .subject-tab:active {
-          background-color: #e0e0e0; /* Active click color */
+          background-color: transparent; /* Active click color */
         }
         .math-tab {
           position: relative;
@@ -124,7 +122,7 @@ function SubjectTabs() {
           position: absolute;
           top: -10px;
           right: -10px;
-          transform: rotate(5deg);
+          transform: rotate(2deg);
         }
         .live-icon {
           width: 67px;
@@ -136,9 +134,7 @@ function SubjectTabs() {
           padding: 0 52px;
           border-radius: 12px;
           border: 2px solid #000;
-          box-shadow:
-            0px 8px 4px rgba(0, 0, 0, 0.04) inset,
-            4px 4px 0px #000;
+          box-shadow: 0px 8px 4px rgba(0, 0, 0, 0.04) inset, 4px 4px 0px #000;
           font-family: "Geologica", sans-serif;
           font-size: 16px;
           font-weight: 400;
@@ -148,25 +144,27 @@ function SubjectTabs() {
           background-color: #febd59;
           cursor: pointer;
         }
-        @media (max-width: 640px) {
-  .tabs-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    text-align: center;
-  }
-
-  .subject-tab {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-
-  .practice-button {
-    width: 100%;
-    margin-top: 10px;
-  }
+          .practice-button:hover {
+           box-shadow:none;
 }
+        @media (max-width: 640px) {
+          .tabs-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            text-align: center;
+          }
 
+          .subject-tab {
+            width: 100%;
+            margin-bottom: 10px;
+          }
+
+          .practice-button {
+            width: 100%;
+            margin-top: 10px;
+          }
+        }
       `}</style>
     </section>
   );
