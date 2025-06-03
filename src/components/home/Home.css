@@ -37,6 +37,7 @@ body {
 .nav-container {
   /* max-width: 1200px; */
   margin: auto;
+  /* max-width: 1440px; */
   min-height: auto; /* Ensures full viewport height */
   width: 100%;
   background-image: url("../../assets/background.png");

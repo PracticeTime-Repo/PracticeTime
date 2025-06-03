@@ -63,31 +63,30 @@ function FeatureGrid() {
         />
       ))}
 
-      <style jsx>{`
-        .features-section {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 32px;
-          padding: 40px 48px;
-        }
+     <style jsx>{`
+  .features-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns by default (desktop) */
+    gap: 32px;
+    padding: 40px 48px;
+  }
 
-        @media (max-width: 1024px) {
-          .features-section {
-            padding: 32px 24px;
-            gap: 24px;
-          }
-        }
+  @media (max-width: 1024px) {
+    .features-section {
+      grid-template-columns: 1fr; /* 1 column for tablet/mobile */
+      gap: 24px;
+      padding: 32px 24px;
+    }
+  }
 
-        @media (max-width: 640px) {
-          .features-section {
-            flex-direction: column;
-            align-items: center;
-            padding: 0px 16px;
-            gap: 20px;
-          }
-        }
-      `}</style>
+  @media (max-width: 640px) {
+    .features-section {
+      padding: 16px;
+      gap: 20px;
+    }
+  }
+`}</style>
+
     </section>
   );
 }

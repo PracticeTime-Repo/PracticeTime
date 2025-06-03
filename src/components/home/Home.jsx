@@ -22,7 +22,8 @@ function Home() {
 
       <style jsx>{`
         .landing-container {
-          max-width: 1440px;
+
+          // max-width: 1440px;
           margin-left: auto;
           margin-right: auto;
           display: flex;
@@ -31,7 +32,7 @@ function Home() {
           width: 100%;
           background-color: #f0f8fd;
          background-image: radial-gradient(circle, #c8bebe 1px, transparent 1px);
-          background-size: 20px 20px; /* Adjust this value to control the size of the dots */
+          background-size: 20px 20px; /
         }
 
         // @media (max-width: 991px) {
