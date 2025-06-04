@@ -32,7 +32,11 @@ body {
   margin: auto;
   padding: 20px 80px 30px 80px;
 
-  min-height: auto; /* Ensures full viewport height */
+  min-height: auto; 
+   /* min-height: 100vh;  */
+   /* display: flex;
+  justify-content: center;
+  align-items: center; */
   width: 100%;
   /* background-image: url("../../assets/background.png");
   background-size: cover;

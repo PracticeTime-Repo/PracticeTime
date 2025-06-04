@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import emailjs from "emailjs-com"; // ✅ Don't forget this
 import "./ContactForm.css";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
@@ -26,11 +26,14 @@ function ContactForm() {
     const parent = document.getElementById("parent-name").value.trim();
     const child = document.getElementById("child-name").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.trim();
+    const city = document.getElementById("city").value.trim();
+    const email = document.getElementById("email").value.trim();
 
     if (
       !parent ||
       !child ||
       !whatsapp ||
+      !email ||
       selectedBoard === "" ||
       selectedGrade === "Your child grade"
     ) {
@@ -46,7 +49,8 @@ function ContactForm() {
       parent_name: parent,
       grade: selectedGrade,
       phone: whatsapp,
-      email: "parent@example.com",
+      city: city,
+      email: email,
       board: selectedBoard,
 
       // email: "parent@example.com",
@@ -183,6 +187,15 @@ function ContactForm() {
               ))}
             </div>
           </div>
+          <div className="form-group1">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-input1"
+              id="email"
+              placeholder="Enter Your Email"
+            />
+          </div>
 
           <div className="form-group1">
             <label className="form-label">City</label>
@@ -190,7 +203,7 @@ function ContactForm() {
               type="text"
               className="form-input1"
               id="city"
-              placeholder="Enter Your city"
+              placeholder="Enter Your City"
             />
           </div>
 

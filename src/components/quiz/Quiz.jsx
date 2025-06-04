@@ -37,6 +37,7 @@ const Quiz = () => {
   const [quizResults, setQuizResults] = useState(null);
   const [verifying, setVerifying] = useState(false);
   const [skippedQuestions, setSkippedQuestions] = useState([]);
+  const [shownAnswers, setShownAnswers] = useState({});
 
   //gemini api key
   const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -318,13 +319,13 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     }
 
     setShowAnswerError(false);
-     // If it's the last question, confirm before proceeding
-  const isLastQuestion = currentQuestionIndex === questions.length - 1;
+    // If it's the last question, confirm before proceeding
+    const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
-  if (isLastQuestion) {
-    const confirmSubmit = window.confirm("Are you sure you want to complete the quiz?");
-    if (!confirmSubmit) return;
-  }
+    // if (isLastQuestion) {
+    // const confirmSubmit = window.confirm("Are you sure you want to complete the quiz?");
+    // if (!confirmSubmit) return;
+    // }
     handleNextQuestion();
   };
 
@@ -459,8 +460,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     try {
       // Calculate the results
       const results = calculateResults(responses);
-      console.log('results',results);
-      
+      console.log("results", results);
+
       setQuizResults(results);
       setQuizCompleted(true);
 
@@ -560,8 +561,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
       <div className="container">
         <div className="quizContainer">
           <div className="errorContainer">
-            <p className="errorMessage">{error}</p>
-            <button onClick={handleBackToHome} className="retryButton">
+            <p className="errorMessage1">{error}</p>
+            <button onClick={handleBackToHome} className="filledButton1">
               Hurray, Practice for today is Completed
             </button>
           </div>
@@ -616,6 +617,12 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
         title: "It’s Okay! Let’s Try Again.",
       };
     }
+  };
+  const toggleAnswer = (index) => {
+    setShownAnswers((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
   };
 
   if (quizCompleted && quizResults) {
@@ -679,7 +686,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
             <h2>Question Review</h2>
 
             {quizResults.responses.map((response, index) => {
-              console.log("Question response",response);
+              console.log("Question response", response);
               const question =
                 questions.find((q) => q.id === response.questionId) ||
                 questions[index];
@@ -746,7 +753,35 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                           {response.userAnswer || "—"}
                         </span>
                       </p>
-                      <p className="correct-answer-box">
+
+                      <button
+                        className="show-answer-button"
+                        onClick={() => toggleAnswer(index)}
+                      >
+                        {shownAnswers[index] ? "Hide Answer" : "Show Answer"}
+                      </button>
+                    </div>
+
+                      {/* Conditionally show correct answer */}
+                      {shownAnswers[index] && (
+                        <p className="correct-answer-box">
+                          <strong className="label">Correct Answer:</strong>
+                          <span className="answer-text">
+                            {Array.isArray(response.correctAnswer)
+                              ? response.correctAnswer.join(", ")
+                              : typeof response.correctAnswer === "object" &&
+                                response.correctAnswer.text
+                              ? response.correctAnswer.text
+                              : response.correctAnswer}
+                          </span>
+                        </p>
+                      )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          {/* <p className="correct-answer-box">
                         <strong className="label">Correct Answer:</strong>
                         <span className="answer-text">
                           {Array.isArray(response.correctAnswer)
@@ -756,20 +791,15 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                             ? response.correctAnswer.text
                             : response.correctAnswer}
                         </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+                      </p> */}
+          {/* Show/Hide Answer Button */}
+          {/* Hurray, Practice for today is Completed */}
 
-          <div className="actionButtons">
+          {/* <div className="actionButtons">
             <button onClick={handleBackToHome} className="homeButton">
-              {/* Hurray, Practice for today is Completed */}
               Submit
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     );
@@ -790,6 +820,10 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const hasSelectedAnswer = selectedAnswers[currentQuestionIndex] !== undefined;
+  const displayQuestionIndex =
+    questions
+      .slice(0, currentQuestionIndex + 1)
+      .filter((q) => q.type !== "TRIVIA").length - 1;
   const isTriviaQuestion = currentQuestion.type === "TRIVIA";
 
   // Calculate progress percentage
@@ -845,10 +879,16 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
         ) : null}
 
         <div className="questionContainer">
-          <div className="questionNumberStyled">
+          {/* <div className="questionNumberStyled">
             <MdHelpOutline size={24} className="questionIcon" />
             <span>Question No: {currentQuestionIndex + 1}</span>
-          </div>
+          </div> */}
+          {!isTriviaQuestion && (
+            <div className="questionNumberStyled">
+              <MdHelpOutline size={24} className="questionIcon" />
+              <span>Question No: {displayQuestionIndex + 1}</span>
+            </div>
+          )}
           <h2 className="questionText">
             {isTriviaQuestion && <span className="triviaTag">Trivia</span>}
             {isHTML(currentQuestion.question)
@@ -949,8 +989,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                 </>
               ) : (
                 <>
-                  Done, Next{" "}
-                  <MdArrowForward size={18} style={{ marginLeft: 8 }} />
+                  Next <MdArrowForward size={18} style={{ marginLeft: 8 }} />
                 </>
               )}
             </button>

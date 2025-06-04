@@ -177,6 +177,7 @@ const start = ({ onNavigate }) => {
     }
 
     return (
+      
       <div className="stars-container">
         {rows}
         {hiddenStars > 0 && (

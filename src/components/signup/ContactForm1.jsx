@@ -28,11 +28,13 @@ function ContactForm() {
     const child = document.getElementById("child-name").value.trim();
     const whatsapp = document.getElementById("whatsapp").value.trim();
     const city = document.getElementById("city").value.trim();
+    const email = document.getElementById("email").value.trim();
 
     if (
       !parent ||
       !child ||
       !whatsapp ||
+      !email ||
       selectedBoard === "" ||
       selectedGrade === "Your child grade"
     ) {
@@ -49,7 +51,7 @@ function ContactForm() {
       grade: selectedGrade,
       phone: whatsapp,
       city: city,
-      email: "parent@example.com",
+      email: email,
       board: selectedBoard,
     };
 
@@ -174,6 +176,15 @@ function ContactForm() {
             ))}
           </div>
         </div>
+         <div className="form-group1">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              className="form-input1"
+              id="email"
+              placeholder="Enter Your Email"
+            />
+          </div>
 
         <div className="form-group1">
           <label className="form-label">City</label>

@@ -193,7 +193,7 @@
   /* max-width: 600px; */
   /* margin: auto; */
 
-  margin-top: 160px !important;
+  margin-top: 140px !important;
   margin-bottom: 20px;
   margin-right: 20px;
 }
@@ -202,7 +202,7 @@
   font-size: 16px;
   text-align: center;
   margin: 0px 60px;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   /* padding-left: 70px !important; */
   font-weight: 500;
 }
@@ -364,7 +364,7 @@
 .radio-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px !important;
+  gap: 8px !important;
   margin-top: 10px;
 }
 

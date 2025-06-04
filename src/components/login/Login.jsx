@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import firebaseServices from "../firebase/firebaseSetup";
 import { FaArrowRight } from "react-icons/fa";
-
+import { useNavigate } from "react-router-dom";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 
 const Login = ({ onLoginSuccess }) => {
@@ -18,7 +18,7 @@ const Login = ({ onLoginSuccess }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate();
   const handleUsernamePasswordAuth = async (e) => {
     e.preventDefault();
     setError("");
@@ -103,38 +103,43 @@ const Login = ({ onLoginSuccess }) => {
   return (
     <div className="loginWrapper">
       <div className="loginContainer">
-        <img src={PracticeTime} alt="Practice Time" />
-
+        {/* <img src={PracticeTime} alt="Practice Time" /> */}
+        <img
+          src={PracticeTime}
+          alt="Practice Time"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }} // Optional: change cursor to pointer
+        />
 
         <form onSubmit={handleUsernamePasswordAuth} className="loginForm">
           <div className="login-text-box">
-        {error && <div className="errorMessage">{error}</div>}
+            {error && <div className="errorMessage">{error}</div>}
 
-          <div className="formGroup">
-            <input
-              type="text"
-              placeholder="Enter User Name or Phone Number"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              disabled={loading}
-            />
-          </div>
+            <div className="formGroup">
+              <input
+                type="text"
+                placeholder="Enter User Name or Phone Number"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                disabled={loading}
+              />
+            </div>
 
-          <div className="formGroup">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Enter Your Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-            />
-            <span
-              className="eyeIcon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
-            </span>
-          </div>
+            <div className="formGroup">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter Your Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
+              <span
+                className="eyeIcon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+              </span>
+            </div>
           </div>
 
           <button type="submit" className="loginButton" disabled={loading}>

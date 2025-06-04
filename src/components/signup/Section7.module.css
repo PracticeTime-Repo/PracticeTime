@@ -39,7 +39,7 @@
 .column {
   flex-direction: column;
   align-items: stretch;
-  width: 60%;
+  width: 59%;
   margin-left: 0;
   line-height: normal;
   display: flex;
@@ -191,6 +191,7 @@
   .subjectWrapper {
     margin-top: 10px;
     gap: 10px 6px;
+    width: 95% !important;
     justify-content: center;
   }
   .divider {
@@ -210,6 +211,7 @@
   .subjectWrapper {
     margin-top: 10px;
     gap: 10px 6px;
+    width: 92%;
     justify-content: center;
   }
   .divider {
@@ -346,7 +348,7 @@
 
 .div4 {
   background-color: #fff;
-  border: 2px solid #000;
+  border: 1.5px solid #000;
   border-radius: 52px;
   justify-content: center;
   align-self: stretch;
@@ -358,7 +360,7 @@
   margin-top: auto;
   margin-bottom: auto;
   padding: 14px 24px;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   display: flex;
   position: relative;
 }
@@ -425,7 +427,7 @@
 .english {
   color: #999;
   background-color: #fff;
-  border: 2px solid #9996;
+  border: 1.5px solid #9996;
   border-radius: 52px;
   align-self: stretch;
   gap: 8px;
@@ -435,6 +437,7 @@
   margin-top: auto;
   margin-bottom: auto;
   padding: 14px 24px;
+  font-weight: 500 !important;
   padding-left: 50px;
 }
 @media (width<=991px) {
@@ -456,7 +459,7 @@
 .coding {
   color: #999;
   background-color: #fff;
-  border: 2px solid #9996;
+  border: 1.5px solid #9996;
   border-radius: 52px;
   align-self: stretch;
   gap: 8px;
@@ -465,6 +468,7 @@
   min-height: 52px;
   margin-top: auto;
   margin-bottom: auto;
+  font-weight: 500 !important;
   padding: 14px 24px;
   padding-left: 50px;
 }

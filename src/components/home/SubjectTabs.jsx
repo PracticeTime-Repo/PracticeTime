@@ -105,15 +105,15 @@ function SubjectTabs() {
           line-height: 24px;
           color: #000;
           position: relative;
-          background-color:transparent;
+          background-color:white;
           cursor: pointer;
           transition: background-color 0.3s ease;
         }
         .subject-tab:hover {
-          background-color: transparent; /* Hover color */
+          background-color: white; /* Hover color */
         }
         .subject-tab:active {
-          background-color: transparent; /* Active click color */
+          background-color: white; /* Active click color */
         }
         .math-tab {
           position: relative;

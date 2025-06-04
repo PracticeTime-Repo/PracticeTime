@@ -5,7 +5,7 @@ import rocket from "./rocket.png";
 import graph from "./graph.png";
 import star from "./star.png";
 import medal from "./medal.png";
-
+import emoji1 from "./emoji1.png";
 //Adding Function for Daily streak
 const calculateDailyStreak = (quizResults) => {
   const dateToAttempts = {};
@@ -457,6 +457,7 @@ const Progress = () => {
 
   if (error) {
     return (
+      <div className="container">
       <div className="progress-container">
         <div className="error-box">
           <h3>Error</h3>
@@ -485,6 +486,7 @@ const Progress = () => {
             Retry Loading
           </button>
         </div>
+      </div>
       </div>
     );
   }
@@ -687,7 +689,7 @@ const Progress = () => {
                       {hasStar(quiz) ? (
                         <img src={star} alt="star" className="star-img" />
                       ) : (
-                        "-"
+                        <img src={emoji1} alt="star" className="star-img" />
                       )}
                     </td>
                   </tr>

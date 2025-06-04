@@ -369,6 +369,43 @@
 .skipButton1:hover {
   background-color: white;
 }
+.filledButton1 {
+  padding: 10px 15px;
+  width: 35%;
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background: #cb6be6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  color: black;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+
+  /* Center horizontally */
+  margin: 0 auto;
+}
+
+
+.filledButton1:disabled {
+  background-color: #ccc;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.filledButton1:hover {
+  background-color: #cb6be6 !important;
+  box-shadow: none !important;
+}
+
+.filledButton1:focus,
+.filledButton1:active {
+  outline: none !important;
+  border: 1.5px solid #000000 !important;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
 .filledButton {
   padding: 10px 15px;
   display: flex;
@@ -959,3 +996,52 @@
   box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
 }
 
+
+.answer-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  row-gap: 8px;
+  column-gap: 12px;
+}
+
+.user-answer {
+  margin-left: 4px;
+  color: #333;
+}
+
+/* .show-answer-button {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-top: -20px;
+}
+
+.show-answer-button:hover {
+  background-color: #0056b3;
+} */
+
+        .show-answer-button {
+          width: auto;
+          margin-top: -20px;
+          /* height: 52px; */
+          padding: 5px 10px;
+          border-radius: 12px;
+          border: 2px solid #000;
+          box-shadow: 0px 8px 4px rgba(0, 0, 0, 0.04) inset, 4px 4px 0px #000;
+          font-family: "Geologica", sans-serif;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 24px;
+          color: #000;
+          background-color: #febd59;
+          cursor: pointer;
+        }
+          .show-answer-button:hover {
+           box-shadow:none;
+}

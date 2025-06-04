@@ -138,7 +138,7 @@ const Navbar = ({ onNavigate }) => {
                   <span>
                     Hi, <img src={hand} alt="wave" className="emoji-img" />{" "}
                     &nbsp;
-                    <span>User Name</span>
+                    {/* <span>User Name</span> */}
                   </span>
                   <FaChevronDown size={12} className="navbar-arrow" />
                 </div>
