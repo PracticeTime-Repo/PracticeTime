@@ -743,7 +743,10 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                   </div>
                   <div className="question-body">
                     <div className="question-content">
-                      <p>{question?.question}</p>
+                      {/* <p>{question?.question}</p> */}
+                       <p
+      dangerouslySetInnerHTML={{ __html: question?.question }}
+    ></p>
                     </div>
                     <div className="quiz-line"></div>
                     <div className="answer-section">
