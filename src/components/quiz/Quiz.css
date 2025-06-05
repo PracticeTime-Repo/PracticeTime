@@ -58,9 +58,7 @@
   align-items: center;
   flex-wrap: wrap;
 }
-.quizIntro {
-  /* background-color: red; */
-}
+
 
 .quizIntro h1 {
   color: #000;
@@ -440,6 +438,25 @@
   box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
 }
 @media (max-width: 768px) {
+  .filledButton1 {
+  padding: 10px 15px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background: #cb6be6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  color: black;
+  font-size: 16px;
+  font-weight: 600;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+
+  /* Center horizontally */
+  margin: 0 auto;
+}
   .buttonContainer {
     flex-direction: column;
     align-items: center;

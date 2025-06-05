@@ -45,6 +45,7 @@ const Quiz = () => {
   // Get quiz set from localStorage on component mount
   useEffect(() => {
     const storedQuizSet = localStorage.getItem("selectedQuizSet");
+    console.log("storedQuizSet",storedQuizSet)
     if (storedQuizSet) {
       setSelectedQuizSet(storedQuizSet);
     } else {
@@ -107,7 +108,8 @@ const Quiz = () => {
               ...result.snapshot.val(),
             }))
             .sort((a, b) => a.order - b.order); // Sort by the order field
-
+          console.log('loadedQuestions',loadedQuestions);
+          
           setQuestions(loadedQuestions);
 
           // Initialize empty user responses array
@@ -320,7 +322,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
     setShowAnswerError(false);
     // If it's the last question, confirm before proceeding
-    const isLastQuestion = currentQuestionIndex === questions.length - 1;
+    // const isLastQuestion = currentQuestionIndex === questions.length - 1;
 
     // if (isLastQuestion) {
     // const confirmSubmit = window.confirm("Are you sure you want to complete the quiz?");
