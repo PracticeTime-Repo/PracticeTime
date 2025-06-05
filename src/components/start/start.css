@@ -84,6 +84,7 @@
     border: 1px solid #DDDDDD;
     border-radius: 16px;
     padding: 30px 24px;
+    height: auto !important; 
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   }
