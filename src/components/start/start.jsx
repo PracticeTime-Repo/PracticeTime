@@ -35,7 +35,6 @@ const start = ({ onNavigate }) => {
     const fetchAssignedQuizzes = async () => {
       try {
         if (!user) {
-          setLoading(false);
           setHasQuizzes(false);
           return;
         }
@@ -64,9 +63,12 @@ const start = ({ onNavigate }) => {
           }
 
           console.log("Processed quizzes:", quizzes);
+          quizzes.reverse();
 
           // Check if there are valid quizzes
           if (quizzes.length > 0) {
+            setLoading(false);
+
             setAssignedQuizzes(quizzes);
             // setHasQuizzes(true);
 
@@ -75,12 +77,15 @@ const start = ({ onNavigate }) => {
             setDailyQuizSet(dailySet);
             console.log("Daily quiz set:", dailySet);
           } else {
+            setLoading(false);
+
             setAssignedQuizzes([]);
             setHasQuizzes(false);
           }
         } else {
           console.log("No assigned sets found");
           setAssignedQuizzes([]);
+          setLoading(false);
           // setHasQuizzes(false);
           setHasQuizzes(true);
         }
@@ -144,6 +149,18 @@ const start = ({ onNavigate }) => {
       window.appNavigate("practice");
     }
   };
+  if (loading) {
+    return (
+      <div className="container">
+        <div className="quizContainer">
+          <div className="loaderContainer">
+            <div className="loader"></div>
+            <p>Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Render stars with max visible stars, rows and overflow indicator
   const StarDisplay = ({ totalStars, maxVisibleStars = 10, maxRows = 2 }) => {
@@ -177,7 +194,7 @@ const start = ({ onNavigate }) => {
     }
 
     return (
-      
+
       <div className="stars-container">
         {rows}
         {hiddenStars > 0 && (
@@ -218,32 +235,31 @@ const start = ({ onNavigate }) => {
         </p>
 
         {/* Quiz Message */}
-        {!hasQuizzes && (
-          <p className="quizReadyText">
-            Time to test your skills!{" "}
-            <span className="highlightLink">Today quizzes are ready!</span>
-            <img src={exicted} alt="brain" className="inline-icon" />
-          </p>
-        )}
-        {hasQuizzes && (
-          <div>
-            {" "}
+        <div>
+          {!hasQuizzes ? (
+            <p className="quizReadyText">
+              Time to test your skills!{" "}
+              <span className="highlightLink">Today quizzes are ready!</span>
+              <img src={exicted} alt="brain" className="inline-icon" />
+            </p>
+          ) : (
             <p className="quizReadyText">
               You don’t have any Practice Sheet assigned yet.
               <img src={exicted} alt="brain" className="inline-icon" />
             </p>
-          </div>
-        )}
+          )}
 
-        <div className="buttonContainer1">
-          {/* <button className="startQuizButton" onClick={navigateToQuiz}> */}
-          <button
-  className={`startQuizButton ${hasQuizzes ? "redButton" : ""}`}
-  onClick={navigateToQuiz} disabled={hasQuizzes}
->
-            Let’s Practice <MdKeyboardArrowRight className="startIcon" />
-          </button>
+          <div className="buttonContainer1">
+            <button
+              className={`startQuizButton ${hasQuizzes ? "redButton" : ""}`}
+              onClick={navigateToQuiz}
+              disabled={hasQuizzes}
+            >
+              Let’s Practice <MdKeyboardArrowRight className="startIcon" />
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   );
