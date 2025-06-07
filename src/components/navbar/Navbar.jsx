@@ -99,7 +99,7 @@ const Navbar = ({ onNavigate }) => {
         {/* <button1 className="hamburger" onClick={handleHamburger}>
           {showmenu ? <RxCross2 /> : <RxHamburgerMenu />}
         </button1> */}
-        <button1 className="hamburger" onClick={handleHamburger}>
+        <button className="hamburger" onClick={handleHamburger}>
           {showmenu ? (
             <RxCross2 className="menu-icon" />
           ) : (
@@ -108,12 +108,12 @@ const Navbar = ({ onNavigate }) => {
               <span></span>
             </div>
           )}
-        </button1>
+        </button>
 
         <div className="web-navbar">
           <nav className={`navbar-menu ${showmenu ? "open" : ""}`}>
             <ul>
-              <li onClick={() => handleNavigation("home")}>
+              <li onClick={() => handleNavigation("home")}> 
                 <img src={home} alt="Home" className="nav-image" />
               </li>
 

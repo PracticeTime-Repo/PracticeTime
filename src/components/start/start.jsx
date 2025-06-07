@@ -53,17 +53,28 @@ const start = ({ onNavigate }) => {
           let quizzes = [];
 
           // Handle different data structures
-          if (
-            typeof assignedSetsData === "object" &&
-            !Array.isArray(assignedSetsData)
-          ) {
-            quizzes = Object.keys(assignedSetsData);
-          } else if (Array.isArray(assignedSetsData)) {
-            quizzes = assignedSetsData.filter((item) => item); // Filter out null/undefined values
-          }
+          // if (
+          //   typeof assignedSetsData === "object" &&
+          //   !Array.isArray(assignedSetsData)
+          // ) {
+          //   quizzes = Object.keys(assignedSetsData);
+          // } else if (Array.isArray(assignedSetsData)) {
+          //   quizzes = assignedSetsData.filter((item) => item); // Filter out null/undefined values
+          // }
 
-          console.log("Processed quizzes:", quizzes);
-          quizzes.reverse();
+          // console.log("Processed quizzes:", quizzes);
+          // quizzes.reverse();
+          if (typeof assignedSetsData === "object") {
+          quizzes = Object.entries(assignedSetsData)
+            .map(([quizId, quizData]) => ({
+              id: quizId,
+              attachedAt: quizData.attachedAt || "", // fallback in case it's missing
+            }))
+            .sort((a, b) => new Date(a.attachedAt) - new Date(b.attachedAt)) // ascending order
+            .map((item) => item.id);
+        }
+        console.log("Sorted quizzes by attachedAt:", quizzes);
+
 
           // Check if there are valid quizzes
           if (quizzes.length > 0) {
@@ -73,7 +84,8 @@ const start = ({ onNavigate }) => {
             // setHasQuizzes(true);
 
             // Get daily quiz set based on the date
-            const dailySet = getDailyQuizSet(quizzes);
+            // const dailySet = getDailyQuizSet(quizzes);
+            const dailySet = quizzes[quizzes.length - 1];
             setDailyQuizSet(dailySet);
             console.log("Daily quiz set:", dailySet);
           } else {
