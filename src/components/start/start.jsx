@@ -85,7 +85,7 @@ const start = ({ onNavigate }) => {
 
             // Get daily quiz set based on the date
             // const dailySet = getDailyQuizSet(quizzes);
-            const dailySet = quizzes[quizzes.length - 1];
+            const dailySet = quizzes[0]; 
             setDailyQuizSet(dailySet);
             console.log("Daily quiz set:", dailySet);
           } else {
