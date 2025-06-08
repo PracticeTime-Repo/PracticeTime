@@ -783,12 +783,12 @@ Explanation:
                         Question {index + 1} of {quizResults.totalQuestions}
                       </span> */}
                       {!isTrivia && (
-              <span className="question-number">
-                Question {visibleIndex} of {
-                  quizResults.responses.filter(r => r.type !== "TRIVIA").length
-                }
-              </span>
-            )}
+                        <span className="question-number">
+                          Question {visibleIndex} of {
+                            quizResults.responses.filter(r => r.type !== "TRIVIA").length
+                          }
+                        </span>
+                      )}
                       <div className="category-name">
                         {question?.type === "TRIVIA" ? "Trivia" : "Category Name"}
                       </div>
@@ -875,7 +875,7 @@ Explanation:
                     {shownAnswers[index] && (
                       <div className="explanation">
                         <p className="explanation-text">
-                          <p>🧮 Step-by-Step Solution:</p>
+                          {/* <p>🧮 Step-by-Step Solution:</p> */}
                           {!explanations[index] ? (
                             <p>⏳ Loading explanation...</p>
                           ) : (
