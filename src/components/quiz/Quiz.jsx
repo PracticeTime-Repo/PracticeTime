@@ -18,6 +18,7 @@ import emoji4 from "./emoji4.png";
 import emoji5 from "./emoji5.png";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { IoPlaySkipForward } from "react-icons/io5";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 // import SignupImage from "./SignupImage.png";
 
 const Quiz = () => {
@@ -38,14 +39,16 @@ const Quiz = () => {
   const [verifying, setVerifying] = useState(false);
   const [skippedQuestions, setSkippedQuestions] = useState([]);
   const [shownAnswers, setShownAnswers] = useState({});
+  const [explanations, setExplanations] = useState({});
+
 
   //gemini api key
-  const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+  const GEMINI_API_KEY = "AIzaSyAhC4gJXrvbM7UOTPBiu_a3qHl7TG83MPU";
 
   // Get quiz set from localStorage on component mount
   useEffect(() => {
     const storedQuizSet = localStorage.getItem("selectedQuizSet");
-    console.log("storedQuizSet",storedQuizSet)
+    console.log("storedQuizSet", storedQuizSet)
     if (storedQuizSet) {
       setSelectedQuizSet(storedQuizSet);
     } else {
@@ -108,8 +111,8 @@ const Quiz = () => {
               ...result.snapshot.val(),
             }))
             .sort((a, b) => a.order - b.order); // Sort by the order field
-          console.log('loadedQuestions',loadedQuestions);
-          
+          console.log('loadedQuestions', loadedQuestions);
+
           setQuestions(loadedQuestions);
 
           // Initialize empty user responses array
@@ -209,19 +212,17 @@ const Quiz = () => {
     correctAnswer,
     userAnswer
   ) => {
+    if (!GEMINI_API_KEY) {
+      console.error("Gemini API key is missing");
+      return { isCorrect: false, explanation: "API key missing" };
+    }
+
     try {
       console.log("Verifying answer with Gemini:");
       console.log("Question:", question);
       console.log("Correct answer:", correctAnswer);
       console.log("User answer:", userAnswer);
 
-      // Handle empty user answers
-      if (!userAnswer || userAnswer.trim() === "") {
-        console.log("Empty user answer, marking as incorrect");
-        return false;
-      }
-
-      // Format correctAnswer for the prompt
       let formattedCorrectAnswer = correctAnswer;
       if (Array.isArray(correctAnswer)) {
         formattedCorrectAnswer = correctAnswer.join(" OR ");
@@ -229,21 +230,23 @@ const Quiz = () => {
         formattedCorrectAnswer = correctAnswer.text;
       }
 
-      // Create a more structured prompt for Gemini
       const prompt = `
-Task: Verify if the user's answer is semantically equivalent to the correct answer.
+You are a quiz evaluator.
 
 Question: "${question}"
 Correct answer: "${formattedCorrectAnswer}"
-User answer: "${userAnswer}"
+User's answer: "${userAnswer || "The user skipped the question."}"
 
 Instructions:
-1. Compare the semantic meaning, not just exact text.
-2. Ignore case, spacing, and minor punctuation differences.
-3. Recognize numerical equivalence (e.g., "12" and "twelve").
-4. Account for synonyms and equivalent expressions.
-
-Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
+1. Determine whether the user's answer is correct or incorrect based on meaning (not exact text).
+2. Even if skipped, assume the user doesn't know and explain the correct answer anyway.
+3. Provide a clear and **step-by-step explanation** for the correct answer.
+4. Respond in the format:
+Verdict: correct/incorrect
+Explanation:
+...
+...
+...
 `;
 
       const response = await fetch(
@@ -260,49 +263,55 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
               },
             ],
             generationConfig: {
-              temperature: 0.1,
-              maxOutputTokens: 20,
+              temperature: 0.3,
+              maxOutputTokens: 500,
             },
           }),
         }
       );
 
-      // Check if response is valid
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Gemini API error:", errorData);
-        // Fallback to direct comparison
-        return fallbackVerification(userAnswer, correctAnswer);
+        return {
+          isCorrect: fallbackVerification(userAnswer, correctAnswer),
+          explanation: "Failed to fetch explanation from Gemini.",
+        };
       }
 
       const data = await response.json();
+      const resultText = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
 
-      // Extract and validate the result
-      if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-        const result = data.candidates[0].content.parts[0].text
-          .trim()
-          .toLowerCase();
-        console.log("Gemini response:", result);
-
-        if (result.includes("correct") && !result.includes("incorrect")) {
-          return true;
-        } else if (result.includes("incorrect")) {
-          return false;
-        } else {
-          console.log(
-            "Ambiguous Gemini response, falling back to direct comparison"
-          );
-          return fallbackVerification(userAnswer, correctAnswer);
-        }
-      } else {
-        console.error("Unexpected Gemini API response format:", data);
-        return fallbackVerification(userAnswer, correctAnswer);
+      if (!resultText) {
+        console.error("Empty Gemini response");
+        return {
+          isCorrect: fallbackVerification(userAnswer, correctAnswer),
+          explanation: "No explanation received from Gemini.",
+        };
       }
+
+      console.log("Gemini response:\n", resultText);
+
+      const verdictMatch = resultText.match(/Verdict:\s*(correct|incorrect)/i);
+      const explanationMatch = resultText.match(/Explanation:\s*([\s\S]*)/i); // Match multiline explanation
+
+      const verdict = verdictMatch ? verdictMatch[1].toLowerCase() : null;
+      const explanation = explanationMatch ? explanationMatch[1].trim() : "No explanation provided.";
+
+      return {
+        isCorrect: verdict === "correct",
+        explanation,
+      };
+
     } catch (error) {
       console.error("Error verifying with Gemini:", error);
-      return fallbackVerification(userAnswer, correctAnswer);
+      return {
+        isCorrect: fallbackVerification(userAnswer, correctAnswer),
+        explanation: "Error while contacting Gemini.",
+      };
     }
   };
+
 
   // Legacy answer verification function (kept for backward compatibility)
   const isAnswerCorrect = (userAnswer, correctAnswer) => {
@@ -346,21 +355,38 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
     try {
       // Check answer using Gemini for text answers
       let isCorrect = false;
+      let explanation = "";
+      // if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
+      //   console.log("Verifying fill-in-the-blanks answer");
 
+      //   isCorrect = await verifyAnswerWithGemini(
+      //     currentQuestion.question,
+      //     currentQuestion.correctAnswer,
+      //     currentAnswer
+      //   );
+
+      //   console.log(
+      //     "Final verification result:",
+      //     isCorrect ? "Correct" : "Incorrect"
+      //   );
+      // } 
       if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
         console.log("Verifying fill-in-the-blanks answer");
 
-        isCorrect = await verifyAnswerWithGemini(
+        const result = await verifyAnswerWithGemini(
           currentQuestion.question,
           currentQuestion.correctAnswer,
           currentAnswer
         );
 
-        console.log(
-          "Final verification result:",
-          isCorrect ? "Correct" : "Incorrect"
-        );
-      } else if (currentQuestion.type === "MCQ" && currentAnswer) {
+        isCorrect = result.isCorrect;
+        explanation = result.explanation;
+
+        console.log("Final verification result:", isCorrect ? "Correct" : "Incorrect");
+        console.log("Explanation:", explanation);
+      }
+
+      else if (currentQuestion.type === "MCQ" && currentAnswer) {
         // For MCQ, use regular comparison
         isCorrect = isAnswerCorrect(
           currentAnswer,
@@ -379,6 +405,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
         correctAnswer: currentQuestion.correctAnswer,
         isCorrect: isCorrect,
         type: currentQuestion.type,
+        explanation: explanation,
       };
 
       setUserResponses(updatedResponses);
@@ -460,6 +487,8 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
   const handleQuizComplete = async (responses) => {
     try {
+      console.log("final responses", responses);
+
       // Calculate the results
       const results = calculateResults(responses);
       console.log("results", results);
@@ -620,12 +649,48 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
       };
     }
   };
+  // const toggleAnswer = (index) => {
+  //   setShownAnswers((prev) => ({
+  //     ...prev,
+  //     [index]: !prev[index],
+  //   }));
+  // };
   const toggleAnswer = (index) => {
-    setShownAnswers((prev) => ({
+    setShownAnswers(prev => ({
       ...prev,
       [index]: !prev[index],
     }));
+
+    const response = userResponses[index];
+    const question = questions[index];
+
+    if (!shownAnswers[index] && !explanations[index]) {
+      // Only fetch if explanation isn't already fetched
+      fetchExplanation(question, response.correctAnswer, response.userAnswer, index);
+    }
   };
+
+  const fetchExplanation = async (question, correctAnswer, userAnswer, index) => {
+    try {
+      const result = await verifyAnswerWithGemini(
+        question.question,
+        correctAnswer,
+        userAnswer === "(Skipped)" ? "No answer provided by the user." : userAnswer
+      );
+
+      setExplanations(prev => ({
+        ...prev,
+        [index]: result.explanation || "No explanation provided."
+      }));
+    } catch (error) {
+      console.error("Failed to fetch explanation:", error);
+      setExplanations(prev => ({
+        ...prev,
+        [index]: "Error fetching explanation."
+      }));
+    }
+  };
+
 
   if (quizCompleted && quizResults) {
     return (
@@ -686,6 +751,12 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
           <div className="questionReview">
             <h2>Question Review</h2>
+            {quizResults.responses
+              .filter((response) => response.type !== "TRIVIA") // ⚠️ Exclude TRIVIA from total count
+              .map((_, index) => (
+                <></> // just mapping to calculate total count
+              ))}
+
 
             {quizResults.responses.map((response, index) => {
               console.log("Question response", response);
@@ -695,38 +766,48 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
 
               const isCorrect = response.isCorrect;
               const isSkipped = response.skipped;
+              const isTrivia = response.type === "TRIVIA";
+              const visibleIndex = quizResults.responses
+                .filter((r, i) => i <= index && r.type !== "TRIVIA").length;
+
 
               return (
                 <div
                   key={index}
-                  className={`question-container ${
-                    isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"
-                  }`}
+                  className={`question-container ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"
+                    }`}
                 >
                   <div className="question-header">
                     <div>
-                      <span className="question-number">
+                      {/* <span className="question-number">
                         Question {index + 1} of {quizResults.totalQuestions}
-                      </span>
-                      <div className="category-name">Category Name</div>
+                      </span> */}
+                      {!isTrivia && (
+              <span className="question-number">
+                Question {visibleIndex} of {
+                  quizResults.responses.filter(r => r.type !== "TRIVIA").length
+                }
+              </span>
+            )}
+                      <div className="category-name">
+                        {question?.type === "TRIVIA" ? "Trivia" : "Category Name"}
+                      </div>
                     </div>
                     <div
-                      className={`answer-status ${
-                        isCorrect
-                          ? "correct"
-                          : isSkipped
+                      className={`answer-status ${isCorrect
+                        ? "correct"
+                        : isSkipped
                           ? "skipped"
                           : "incorrect"
-                      }`}
+                        }`}
                     >
                       <span
-                        className={`status-icon ${
-                          isCorrect
-                            ? "correct"
-                            : isSkipped
+                        className={`status-icon ${isCorrect
+                          ? "correct"
+                          : isSkipped
                             ? "skipped"
                             : "incorrect"
-                        }`}
+                          }`}
                       >
                         {isCorrect ? (
                           <FaCheck />
@@ -739,16 +820,16 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                       {isCorrect
                         ? "Correct Answer"
                         : isSkipped
-                        ? "Skipped"
-                        : "Incorrect Answer"}
+                          ? "Skipped"
+                          : "Incorrect Answer"}
                     </div>
                   </div>
                   <div className="question-body">
                     <div className="question-content">
                       {/* <p>{question?.question}</p> */}
-                       <p
-      dangerouslySetInnerHTML={{ __html: question?.question }}
-    ></p>
+                      <p
+                        dangerouslySetInnerHTML={{ __html: question?.question }}
+                      ></p>
                     </div>
                     <div className="quiz-line"></div>
                     <div className="answer-section">
@@ -758,29 +839,69 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                           {response.userAnswer || "—"}
                         </span>
                       </p>
+                    </div>
+
+                    {/* Conditionally show correct answer */}
+                    <div className="correct-answer-row">
+                      <p className="correct-answer-box1">
+                        <strong className="label">Correct Answer:</strong>
+                        <span className="answer-text">
+                          {Array.isArray(response.correctAnswer)
+                            ? response.correctAnswer.join(", ")
+                            : typeof response.correctAnswer === "object" && response.correctAnswer.text
+                              ? response.correctAnswer.text
+                              : response.correctAnswer}
+                        </span>
+                      </p>
 
                       <button
-                        className="show-answer-button"
+                        className={`show-answer-button ${shownAnswers[index] ? 'active' : ''}`}
                         onClick={() => toggleAnswer(index)}
                       >
-                        {shownAnswers[index] ? "Hide Answer" : "Show Answer"}
+                        {shownAnswers[index] ? (
+                          <>
+                            <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
+                            Hide Explanation?
+                          </>
+                        ) : (
+                          <>
+                            <FaEye size={20} style={{ marginRight: "5px" }} />
+                            Show Explanation?
+                          </>
+                        )}
                       </button>
                     </div>
 
-                      {/* Conditionally show correct answer */}
-                      {shownAnswers[index] && (
-                        <p className="correct-answer-box">
-                          <strong className="label">Correct Answer:</strong>
-                          <span className="answer-text">
+                    {shownAnswers[index] && (
+                      <div className="explanation">
+                        <p className="explanation-text">
+                          <p>🧮 Step-by-Step Solution:</p>
+                          {!explanations[index] ? (
+                            <p>⏳ Loading explanation...</p>
+                          ) : (
+                            explanations[index]
+                              .split('\n')
+                              .filter(Boolean)
+                              .map((line, idx) => (
+                                <p key={idx}>{line}</p>
+                              ))
+                          )}
+                        </p>
+                        {question?.type !== "TRIVIA" && (
+                          <p className="final-answer">
+                            ✅ <strong>Final Answer:</strong>{" "}
                             {Array.isArray(response.correctAnswer)
                               ? response.correctAnswer.join(", ")
                               : typeof response.correctAnswer === "object" &&
                                 response.correctAnswer.text
-                              ? response.correctAnswer.text
-                              : response.correctAnswer}
-                          </span>
-                        </p>
-                      )}
+                                ? response.correctAnswer.text
+                                : response.correctAnswer}
+                          </p>
+                        )}
+                      </div>
+                    )}
+
+
                   </div>
                 </div>
               );
@@ -796,7 +917,7 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                             ? response.correctAnswer.text
                             : response.correctAnswer}
                         </span>
-                      </p> */}
+                      </p>  */}
           {/* Show/Hide Answer Button */}
           {/* Hurray, Practice for today is Completed */}
 
@@ -896,10 +1017,12 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
           )}
           <h2 className="questionText">
             {isTriviaQuestion && <span className="triviaTag">Trivia</span>}
+            <br />
             {isHTML(currentQuestion.question)
               ? parse(currentQuestion.question)
               : currentQuestion.question}
           </h2>
+
 
           {currentQuestion.type === "FILL_IN_THE_BLANKS" ? (
             <div className="fillBlankContainer">
@@ -920,11 +1043,10 @@ Is the user's answer correct? Respond with ONLY "correct" or "incorrect".
                   .map((option, index) => (
                     <li
                       key={index}
-                      className={`optionItem ${
-                        selectedAnswers[currentQuestionIndex] === option.text
-                          ? "selected"
-                          : ""
-                      }`}
+                      className={`optionItem ${selectedAnswers[currentQuestionIndex] === option.text
+                        ? "selected"
+                        : ""
+                        }`}
                       onClick={() => handleAnswerSelect(option.text)}
                     >
                       {option.image && (

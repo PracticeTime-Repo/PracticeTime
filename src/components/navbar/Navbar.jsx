@@ -161,8 +161,7 @@ const Navbar = ({ onNavigate }) => {
             <div className="dropdown-header">
               <img src={emojiHappy} alt="smile" className="emoji-img" />
               <span className="greeting">
-                Hi <img src={hand} alt="wave" className="hand-img" />, @User
-                Name
+                Hi <img src={hand} alt="wave" className="hand-img" />
               </span>
             </div>
             <hr />

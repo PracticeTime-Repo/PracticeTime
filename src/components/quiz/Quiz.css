@@ -581,6 +581,10 @@
 }
 
 @media (max-width: 600px) {
+    .explanation {
+  padding: 0px !important;
+  border-radius: 6px;
+}
   .resultsContainer {
   margin: auto;
   padding: 1rem !important;
@@ -801,6 +805,16 @@
 
 /* Responsive */
 @media (max-width: 600px) {
+  .answer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 30px !important;
+  padding: 5px 0px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
   .reviewHeader {
     flex-direction: column;
     align-items: flex-start;
@@ -978,6 +992,7 @@
   .quizContainer .questionImage {
     width: 100%;
   }
+
 }
 
 .actionButtons {
@@ -1028,37 +1043,54 @@
   color: #333;
 }
 
-/* .show-answer-button {
-  padding: 6px 12px;
-  background-color: #007bff;
-  color: white;
+.correct-answer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  background-color: #e6f4ea;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+  border-left: 5px solid #2e7d32; 
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.correct-answer-box1 {
+  margin: 0 !important;
+  color: #1b5e20;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.label {
+  font-weight: bold;
+  margin-right: 6px;
+}
+
+.answer-text {
+  font-weight: 500;
+}
+
+.show-answer-button {
+  background: none;
   border: none;
-  border-radius: 6px;
+  color: #000;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
   cursor: pointer;
-  white-space: nowrap;
-  margin-top: -20px;
+  text-decoration: underline; 
 }
 
 .show-answer-button:hover {
-  background-color: #0056b3;
-} */
+  text-decoration: underline; 
+}
 
-        .show-answer-button {
-          width: auto;
-          margin-top: -20px;
-          /* height: 52px; */
-          padding: 5px 10px;
-          border-radius: 12px;
-          border: 2px solid #000;
-          box-shadow: 0px 8px 4px rgba(0, 0, 0, 0.04) inset, 4px 4px 0px #000;
-          font-family: "Geologica", sans-serif;
-          font-size: 16px;
-          font-weight: 400;
-          line-height: 24px;
-          color: #000;
-          background-color: #febd59;
-          cursor: pointer;
-        }
-          .show-answer-button:hover {
-           box-shadow:none;
+.explanation {
+  border-radius: 6px;
+}
+.explanation-text {
+  color: #00000099;
 }
