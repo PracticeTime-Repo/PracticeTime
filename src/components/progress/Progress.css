@@ -541,6 +541,12 @@
   background-color: #dddddd;
   /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
 }
+.table-container2 {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #dddddd;
+  /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+}
 
 .streak-container {
   display: flex;
@@ -639,8 +645,11 @@
 }
 
 
-  .table-container {
+  .table-container,.table-container2 {
     overflow-x: auto;
+  }
+  .table-container2{
+    margin-top: 20px;
   }
 }
   
@@ -824,9 +833,24 @@
 
 .section-label {
   position: absolute;
-  top: -1.2rem;
+  top: -1.3rem;
   left: 1.5rem;
   width: 280px;
+  background-color: #fef08a;
+  padding: 10px 20px;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 12px;
+  border: 2px solid black;
+  box-shadow: 3px 3px 0 black;
+  margin-bottom: 1rem;
+}
+.section-label3 {
+  position: absolute;
+  top: -1.3rem;
+  left: 1.5rem;
+  width: 380px;
   background-color: #fef08a;
   padding: 10px 20px;
   font-size: 1rem;
@@ -892,9 +916,24 @@
 }
   .section-label {
   position: absolute;
-  top: -1.2rem;
+  top: -1.3rem;
   left: 1.5rem;
   width: auto;
+  background-color: #fef08a;
+  text-align: center;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 12px;
+  border: 2px solid black;
+  box-shadow: 3px 3px 0 black;
+  margin-bottom: 1rem;
+}
+  .section-label3 {
+  position: absolute;
+  top: -2rem !important;
+  left: 1.5rem;
+  width: 87%;
   background-color: #fef08a;
   text-align: center;
   padding: 10px 20px;
@@ -911,7 +950,7 @@
     font-size: 0.9rem;
   }
 
-  .section-label {
+  .section-label.section-label3 {
     font-size: 0.9rem;
     padding: 8px 14px;
   }

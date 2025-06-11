@@ -655,9 +655,9 @@ const Progress = () => {
 
       {/* Recent Quiz Results */}
       <div className="progress-section3">
-        <h2 class="section-label">Recent Quiz Results</h2>
+        <h2 className="section-label3">Details of PracticeSheets Attempted</h2>
 
-        <div className="table-container">
+        <div className="table-container2">
           <table className="results-table">
             <thead>
               <tr>
