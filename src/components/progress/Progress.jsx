@@ -550,11 +550,11 @@ const Progress = () => {
         <div className="card-grid">
           <div className="stat-box orange">
             <p className="stat-value">{overallProgress.attempted}</p>
-            <p className="stat-label">Total PracticeSheet Attempted</p>
+            <p className="stat-label">Total Questions Attempted</p>
           </div>
           <div className="stat-box green">
             <p className="stat-value">{overallProgress.correct}</p>
-            <p className="stat-label">PracticeSheet Answered Correctly</p>
+            <p className="stat-label">Questions Answered Correctly</p>
           </div>
           <div className="stat-box blue">
             <p className="stat-value">{overallProgress.percentage}%</p>
