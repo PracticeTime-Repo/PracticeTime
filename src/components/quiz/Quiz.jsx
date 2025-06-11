@@ -831,7 +831,10 @@ Explanation:
                         dangerouslySetInnerHTML={{ __html: question?.question }}
                       ></p>
                     </div>
+                     {!isTrivia && (
                     <div className="quiz-line"></div>
+                    )}
+                     {!isTrivia && (
                     <div className="answer-section">
                       <p>
                         <strong>Your Answer:</strong>{" "}
@@ -840,8 +843,11 @@ Explanation:
                         </span>
                       </p>
                     </div>
+                     )}
 
                     {/* Conditionally show correct answer */}
+                     {!isTrivia && (
+                     
                     <div className="correct-answer-row">
                       <p className="correct-answer-box1">
                         <strong className="label">Correct Answer:</strong>
@@ -871,7 +877,7 @@ Explanation:
                         )}
                       </button>
                     </div>
-
+ )}
                     {shownAnswers[index] && (
                       <div className="explanation">
                         <p className="explanation-text">

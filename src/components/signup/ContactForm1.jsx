@@ -83,7 +83,7 @@ function ContactForm() {
         Complete the form and our team will get in touch
       </p>
 
-      <form className="contact-form-container" onSubmit={handleSubmit}>
+      <form className="contact-form-container1" onSubmit={handleSubmit}>
         <div className="form-row">
           <div className="form-group1">
             <label className="form-label">Parent Name</label>

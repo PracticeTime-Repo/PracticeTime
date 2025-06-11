@@ -5,7 +5,7 @@ function SubjectTabs() {
   return (
     <section className="subject-section">
       <div className="tabs-container">
-        <div className="subject-tab math-tab">
+        <div className="subject-tab1 math-tab">
           <span>Math</span>
           <div className="live-badge">
             <svg
@@ -89,8 +89,27 @@ function SubjectTabs() {
           align-items: center;
           gap: 12px;
         }
+          .subject-tab {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 152px;
+          height: 52px;
+          padding: 12px 24px;
+          border-radius: 52px;
+          border: 1.5px solid #9996;
+          font-family: "Geologica", sans-serif;
+          font-size: 16px;
+          font-weight: 500;
+          line-height: 24px;
+          color: #999;
+          position: relative;
+          background-color:white;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
 
-        .subject-tab {
+        .subject-tab1 {
           display: flex;
           align-items: center;
           justify-content: center;

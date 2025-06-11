@@ -451,6 +451,7 @@ const Progress = () => {
         return new Date(quizB.completedAt) - new Date(quizA.completedAt);
       })
     : [];
+  console.log("sortedQuizResults", sortedQuizResults);
 
   if (loading)
     return <div className="loading-message">Loading user progress...</div>;
@@ -458,35 +459,37 @@ const Progress = () => {
   if (error) {
     return (
       <div className="container">
-      <div className="progress-container">
-        <div className="error-box">
-          <h3>Error</h3>
-          <p>{error}</p>
-        </div>
-        <div className="debug-box">
-          <h3>Debugging Information</h3>
-          <ul>
-            <li>User ID: {debugInfo.userId}</li>
-            <li>Authentication Status: {debugInfo.authStatus}</li>
-            <li>Data Path: {debugInfo.dataPath}</li>
-          </ul>
-          <div className="solutions">
-            <p>Possible solutions:</p>
-            <ol>
-              <li>Make sure you're signed in.</li>
-              <li>Check that you've completed at least one quiz.</li>
-              <li>Verify your database rules allow reading from this path.</li>
-              <li>Check that the data structure matches what's expected.</li>
-            </ol>
+        <div className="progress-container">
+          <div className="error-box">
+            <h3>Error</h3>
+            <p>{error}</p>
           </div>
-          <button
-            onClick={() => window.location.reload()}
-            className="retry-button"
-          >
-            Retry Loading
-          </button>
+          <div className="debug-box">
+            <h3>Debugging Information</h3>
+            <ul>
+              <li>User ID: {debugInfo.userId}</li>
+              <li>Authentication Status: {debugInfo.authStatus}</li>
+              <li>Data Path: {debugInfo.dataPath}</li>
+            </ul>
+            <div className="solutions">
+              <p>Possible solutions:</p>
+              <ol>
+                <li>Make sure you're signed in.</li>
+                <li>Check that you've completed at least one quiz.</li>
+                <li>
+                  Verify your database rules allow reading from this path.
+                </li>
+                <li>Check that the data structure matches what's expected.</li>
+              </ol>
+            </div>
+            <button
+              onClick={() => window.location.reload()}
+              className="retry-button"
+            >
+              Retry Loading
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     );
   }
@@ -547,11 +550,11 @@ const Progress = () => {
         <div className="card-grid">
           <div className="stat-box orange">
             <p className="stat-value">{overallProgress.attempted}</p>
-            <p className="stat-label">Total Quizzes Attempted</p>
+            <p className="stat-label">Total PracticeSheet Attempted</p>
           </div>
           <div className="stat-box green">
             <p className="stat-value">{overallProgress.correct}</p>
-            <p className="stat-label">Quizzes Answered Correctly</p>
+            <p className="stat-label">PracticeSheet Answered Correctly</p>
           </div>
           <div className="stat-box blue">
             <p className="stat-value">{overallProgress.percentage}%</p>
@@ -560,8 +563,8 @@ const Progress = () => {
         </div>
       </div>
 
-      <div class="progress-section3">
-        <h2 class="achievements-heading">Stars & Achievements</h2>
+      <div className="progress-section3">
+        <h2 className="achievements-heading">Stars & Achievements</h2>
 
         <div className="achievements-grid">
           <div className="achievement-card">
@@ -584,22 +587,18 @@ const Progress = () => {
                 </>
               ) : (
                 <>
-                  :( <img src={medal} alt="medal" className="model-item-header" />
+                  :({" "}
+                  <img src={medal} alt="medal" className="model-item-header" />
                 </>
               )}
             </p>
-            <p className="achievement-title">Today's Achievements!</p>
+            <p className="achievement-title">Today&apos;s Achievements!</p>
 
             {dailyStars > 0 ? (
               <>
                 <div className="stars-container">
                   {Array.from({ length: dailyStars }, (_, i) => (
-                    <img
-                      key={i}
-                      src={star}
-                      alt="star"
-                      className="star-item"
-                    />
+                    <img key={i} src={star} alt="star" className="star-item" />
                   ))}
                 </div>
                 <p>{`(${dailyStars}x sets completed above 50% today)`}</p>
@@ -614,7 +613,6 @@ const Progress = () => {
         </div>
       </div>
 
-     
       {/* Category Progress */}
       {/* <div className="progress-section">
         <h2>Progress by Category</h2> */}
@@ -711,6 +709,8 @@ const Progress = () => {
                               {quiz.responses.map((response, index) => {
                                 const questionData =
                                   questionDetails[response.questionId] || {};
+                                const isTrivia = response.type === "TRIVIA";
+
                                 return (
                                   <React.Fragment key={index}>
                                     <tr
@@ -736,19 +736,34 @@ const Progress = () => {
                                           "Loading..."
                                         )}
                                       </td>
-                                      <td>{response.userAnswer}</td>
-                                      <td>{response.correctAnswer.text}</td>
-                                      <td
-                                        style={{
-                                          color: response.isCorrect
-                                            ? "green"
-                                            : "red",
-                                        }}
-                                      >
-                                        {response.isCorrect
-                                          ? "Correct"
-                                          : "Incorrect"}
-                                      </td>
+
+                                      {/* Render empty cells for TRIVIA to preserve layout */}
+                                      {isTrivia ? (
+                                        <>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <td>{response.userAnswer}</td>
+                                          <td>
+                                            {response.correctAnswer?.text ||
+                                              "N/A"}
+                                          </td>
+                                          <td
+                                            style={{
+                                              color: response.isCorrect
+                                                ? "green"
+                                                : "red",
+                                            }}
+                                          >
+                                            {response.isCorrect
+                                              ? "Correct"
+                                              : "Incorrect"}
+                                          </td>
+                                        </>
+                                      )}
                                     </tr>
                                   </React.Fragment>
                                 );
@@ -771,9 +786,11 @@ const Progress = () => {
 
 export default Progress;
 
-
- {/* Overall Progress */}
-      {/* <div className="progress-section">
+{
+  /* Overall Progress */
+}
+{
+  /* <div className="progress-section">
         <h2>Overall Progress</h2>
         <div className="stat-card">
           <div className="metrics-grid">
@@ -820,11 +837,15 @@ export default Progress;
                 No stars earned yet. Complete a set above 50% to earn a star!
               </p>
             )}
-          </div> */}
+          </div> */
+}
 
-      {/* Here Adding daily streak   */}
+{
+  /* Here Adding daily streak   */
+}
 
-      {/* <div className="daily-streak">
+{
+  /* <div className="daily-streak">
             <h3>Daily Streak 🔥</h3>
             {dailyStreak > 0 ? (
               <div className="streak-container">
@@ -846,10 +867,14 @@ export default Progress;
             ) : (
               <p>No streak yet. Keep practicing daily to build your streak!</p>
             )}
-          </div> */}
+          </div> */
+}
 
-      {/* Replace the existing Daily Stars section with this */}
-      {/* <div className="daily-stars">
+{
+  /* Replace the existing Daily Stars section with this */
+}
+{
+  /* <div className="daily-stars">
             <h3>Today's Achievements</h3>
             {dailyStars > 0 ? (
               <>
@@ -873,6 +898,9 @@ export default Progress;
                 star!
               </p>
             )}
-          </div> */}
-      {/* </div>
-      </div> */}
+          </div> */
+}
+{
+  /* </div>
+      </div> */
+}
