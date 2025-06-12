@@ -294,26 +294,32 @@ const Progress = () => {
   }, [userData]);
 
   const calculateOverallProgress = () => {
-    if (!userData || !userData.quizResults)
-      return { attempted: 0, correct: 0, percentage: 0 };
+  console.log("userData", userData);
 
-    let totalAttempted = 0;
-    let totalCorrect = 0;
+  if (!userData || !userData.quizResults)
+    return { attempted: 0, correct: 0, percentage: 0, totalQuestions: 0 };
 
-    Object.values(userData.quizResults).forEach((quiz) => {
-      if (quiz.totalQuestions) totalAttempted += parseInt(quiz.totalQuestions);
-      if (quiz.correctAnswers) totalCorrect += parseInt(quiz.correctAnswers);
-    });
+  let totalAttempted = 0;
+  let totalCorrect = 0;
 
-    return {
-      attempted: totalAttempted,
-      correct: totalCorrect,
-      percentage:
-        totalAttempted > 0
-          ? Math.round((totalCorrect / totalAttempted) * 100)
-          : 0,
-    };
+  Object.values(userData.quizResults).forEach((quiz) => {
+    if (quiz.totalQuestions) totalAttempted += parseInt(quiz.totalQuestions);
+    if (quiz.correctAnswers) totalCorrect += parseInt(quiz.correctAnswers);
+  });
+
+  const totalQuestions = Object.keys(userData.quizResults).length;
+
+  return {
+    attempted: totalAttempted,
+    correct: totalCorrect,
+    percentage:
+      totalAttempted > 0
+        ? Math.round((totalCorrect / totalAttempted) * 100)
+        : 0,
+    totalQuestions, // <- new field
   };
+};
+
 
   const calculateTotalStars = () => {
     if (!userData || !userData.quizResults) return 0;
@@ -548,6 +554,10 @@ const Progress = () => {
         <h2 className="overview-heading">Overview</h2>
 
         <div className="card-grid">
+          <div className="stat-box pink">
+            <p className="stat-value">{overallProgress.totalQuestions}</p>
+            <p className="stat-label">Number of PracticeSheets</p>
+          </div>
           <div className="stat-box orange">
             <p className="stat-value">{overallProgress.attempted}</p>
             <p className="stat-label">Total Questions Attempted</p>
@@ -617,7 +627,7 @@ const Progress = () => {
       {/* <div className="progress-section">
         <h2>Progress by Category</h2> */}
       <div className="progress-section3">
-        <h2 class="section-label">Progress by Category</h2>
+        <h2 className="section-label">Progress by Category</h2>
 
         {questionDetailsLoading ? (
           <div className="loading-message">Loading category progress...</div>
@@ -657,7 +667,7 @@ const Progress = () => {
       <div className="progress-section3">
         <h2 className="section-label3">Details of PracticeSheets Attempted</h2>
 
-        <div className="table-container2">
+        <div className="table-container">
           <table className="results-table">
             <thead>
               <tr>
