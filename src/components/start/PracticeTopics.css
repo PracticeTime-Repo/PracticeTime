@@ -1,0 +1,181 @@
+.practice-wrapper {
+  /* padding: 2rem; */
+  /* max-width: 900px; */
+  padding: 30px;
+  background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #dddddd;
+  border-radius: 16px;
+}
+
+.practice-header {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.practice-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.highlighted {
+  color: #a855f7;
+}
+
+.practice-header p {
+  color: #6b7280;
+}
+
+.tab-bar {
+  display: flex;
+  justify-content: left;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.tab {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.3rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.tab.selected {
+  background-color: #dbeafe;
+  color: #2563eb;
+  border: none;
+}
+
+.close-icon {
+  font-size: 1rem;
+  color: #6b7280;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  transition: color 0.2s;
+}
+
+.close-icon:hover {
+  color: #ef4444;
+}
+
+.topic-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.topic-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+  gap: 1rem;
+}
+
+.topic-card:hover {
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.topic-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+/* Pill around icon + title */
+.topic-label {
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+/* Circular icon */
+.topic-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Title text */
+.topic-title {
+  font-size: 1rem;
+  color: #111827;
+  margin: 0;
+}
+
+/* Description */
+.topic-desc {
+  padding: 0px 20px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* Right section */
+.topic-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.skill-text {
+  color: #10b981;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.arrow-icon {
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+/* Pill background colors */
+.bg-yellow { background-color: #fef9c3; }
+.bg-red { background-color: #fee2e2; }
+.bg-green { background-color: #d1fae5; }
+.bg-blue { background-color: #dbeafe; }
+.bg-purple { background-color: #f3e8ff; }
+.bg-teal { background-color: #ccfbf1; }
+.bg-cyan { background-color: #cffafe; }
+
+/* Icon circle colors */
+.icon-yellow { background-color: #facc15; }
+.icon-red { background-color: #f87171; }
+.icon-green { background-color: #34d399; }
+.icon-blue { background-color: #60a5fa; }
+.icon-purple { background-color: #a855f7; }
+.icon-teal { background-color: #14b8a6; }
+.icon-cyan { background-color: #06b6d4; }
+
+/* Responsive layout */
+@media (max-width: 640px) {
+  .topic-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .topic-right {
+    align-self: flex-end;
+  }
+}

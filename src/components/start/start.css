@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk&display=swap");
+
 .homeContainer {
   width: 100%;
   margin: 0 auto;
@@ -5,23 +7,26 @@
   background-color: #a8d3d3;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   border: #91cfd1 solid;
 }
-
+.helpCard h1,
+.topicCard h1 {
+  font-family: "Space Grotesk", sans-serif !important;
+}
 .quizHomeContainer {
   background-color: #ffffff;
-  border: 1px solid #DDDDDD;
+  border: 1px solid #dddddd;
   border-radius: 16px;
   padding: 30px 24px !important;
-   height: 85vh !important; 
-   overflow: hidden !important;
-   box-sizing: border-box !important;
-   width: 100%;
+  height: auto !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  width: 100%;
   text-align: center;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
- /* .quizHomeContainer {
+/* .quizHomeContainer {
   background-color: #ffffff;
   border: 1px solid #DDDDDD;
   border-radius: 16px;
@@ -37,8 +42,6 @@
   justify-content: center; 
 }
  */
-
-
 
 .textWithArrow {
   display: flex;
@@ -67,7 +70,7 @@
 }
 
 .highlightBlue {
-  color: #2196F3;
+  color: #2196f3;
 }
 
 .motivationalArrow {
@@ -81,10 +84,10 @@
 @media (max-width: 600px) {
   .quizHomeContainer {
     background-color: #ffffff;
-    border: 1px solid #DDDDDD;
+    border: 1px solid #dddddd;
     border-radius: 16px;
     padding: 30px 24px;
-    height: auto !important; 
+    height: auto !important;
     text-align: center;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   }
@@ -92,27 +95,23 @@
   .motivationalArrow {
     display: none;
   }
-    .starNote {
-  /* margin: 10px 0 10px; */
-  margin-top: 0px !important;
-  font-size: 16px;
-  color: #555;
-  background: #FAFAFA;
-  padding: 5px 15px;
-  border-radius: 12px;
-  display: inline-block;
-  border: 1px solid #DDDDDD;
-  box-shadow: 0px 4px 4px 0px #0000000A;
-
+  .starNote {
+    /* margin: 10px 0 10px; */
+    margin-top: 0px !important;
+    font-size: 16px;
+    color: #555;
+    background: #fafafa;
+    padding: 5px 15px;
+    border-radius: 12px;
+    display: inline-block;
+    border: 1px solid #dddddd;
+    box-shadow: 0px 4px 4px 0px #0000000a;
+  }
 }
-
-}
-
-
 
 .practiceImage {
   margin-top: -30px !important;
-  max-width: 300px;
+  max-width: 280px;
   width: 100%;
   height: auto;
   margin: 0px auto;
@@ -122,16 +121,15 @@
 
 .starNote {
   /* margin: 10px 0 10px; */
-  margin-top: -25px;
+  /* margin-top: -25px; */
   font-size: 16px;
   color: #555;
-  background: #FAFAFA;
+  background: #fafafa;
   padding: 5px 15px;
   border-radius: 12px;
   display: inline-block;
-  border: 1px solid #DDDDDD;
-  box-shadow: 0px 4px 4px 0px #0000000A;
-
+  border: 1px solid #dddddd;
+  box-shadow: 0px 4px 4px 0px #0000000a;
 }
 
 .quizReadyText {
@@ -153,9 +151,35 @@
   align-items: center;
 }
 
-.startQuizButton {
+.redButton {
   height: 40px;
   max-height: 40px;
+  border-radius: 12px;
+  border: 1.5px solid #aaaaaa;
+  background: #eeeeee;
+  padding: 12px 28px;
+  cursor: pointer;
+  color: #aaaaaa;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0px 0px #aaaaaa, inset 0px 8px 4px 0px #0000000a !important;
+}
+.redButton:hover {
+  background-color: #eeeeee !important;
+  box-shadow: 4px 4px 0px 0px #aaaaaa, inset 0px 8px 4px 0px #0000000a !important;
+}
+.redButton:focus,
+.redButton:active {
+  outline: none !important;
+  border: 1.5px solid #aaaaaa !important;
+  box-shadow: 4px 4px 0px 0px #aaaaaa, inset 0px 8px 4px 0px #0000000a !important;
+}
+.startQuizButton {
+  /* height: 40px;
+  max-height: 40px; */
   border-radius: 12px;
   border: 1.5px solid #000000;
   background: #fdbb3e;
@@ -163,41 +187,15 @@
   cursor: pointer;
   color: black;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   display: flex;
   align-items: center;
   gap: 8px;
   box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
 }
-.redButton{
-    height: 40px;
-  max-height: 40px;
-  border-radius: 12px;
-  border: 1.5px solid #AAAAAA;
-  background: #EEEEEE;
-  padding: 12px 28px;
-  cursor: pointer;
-  color: #AAAAAA;
-  font-size: 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 4px 4px 0px 0px #AAAAAA, inset 0px 8px 4px 0px #0000000A !important;
-}
-.redButton:hover {
-  background-color: #EEEEEE !important;
-  box-shadow: 4px 4px 0px 0px #AAAAAA, inset 0px 8px 4px 0px #0000000A !important;
-}
 .startQuizButton:hover {
   background-color: #fdbb3e;
   box-shadow: none !important;
-}
-.redButton:focus,
-.redButton:active {
-  outline: none !important;
-  border: 1.5px solid #AAAAAA !important;
-  box-shadow: 4px 4px 0px 0px #AAAAAA, inset 0px 8px 4px 0px #0000000A !important;
 }
 
 .startQuizButton:focus,
@@ -211,22 +209,19 @@
   font-size: 20px;
 }
 
-
 /* Responsive */
 @media (max-width: 600px) {
   .homeContainer {
     padding: 15px;
   }
 
-
   .motivationalText {
-  font-size: 28px !important;
-  font-weight: bold;
-  line-height: 1.0;
-  margin: 0;
-  text-align: left !important;
-}
-
+    font-size: 28px !important;
+    font-weight: bold;
+    line-height: 1;
+    margin: 0;
+    text-align: left !important;
+  }
 
   .practiceImage {
     max-width: 100%;
@@ -238,15 +233,13 @@
     align-items: center;
     text-align: left;
   }
-.motivationalLine {
-  margin-top: -15px;
-}
-
+  .motivationalLine {
+    margin-top: -15px;
+  }
 
   .motivationalLine1 {
-  margin-left: 0px;
-}
-
+    margin-left: 0px;
+  }
 }
 
 .inline-icon1 {
@@ -261,4 +254,164 @@
   height: 1.2rem;
   vertical-align: middle;
   margin-left: 0.3rem;
+}
+
+.cardsLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.practice-header {
+  text-align: center;
+}
+
+.practice-brain-icon {
+  width: 60px;
+  margin-bottom: 0.5rem;
+}
+
+.practice-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.bold-text {
+  color: #000;
+}
+
+.highlight-text {
+  color: #24aaff;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #444;
+  margin-top: 0.4rem;
+}
+
+.rightCards .card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border: 1px solid #dddddd;
+}
+
+.leftCard {
+  background-color: #eaf6ff;
+}
+
+.helpCard {
+  background-color: #f0fff0;
+  margin-bottom: 1.5rem;
+}
+
+.topicCard {
+  background-color: #f9f0ff;
+}
+
+.rightCards {
+  display: flex;
+  flex-direction: column;
+}
+.highlightGreen {
+  color: #7ed956;
+}
+.highlightPurple {
+  color: #cb6be6;
+}
+/* Buttons */
+.parentContainer {
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;
+}
+.helpButton {
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background: #7ed956;
+  padding: 12px 28px;
+  cursor: pointer;
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+.helpButton:hover {
+  background-color: #7ed956;
+  box-shadow: none !important;
+}
+
+.helpButton:focus,
+.helpButton:active {
+  outline: none;
+  border: 1.5px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+
+.topicButton {
+  border-radius: 12px;
+  border: 1.5px solid #000000;
+  background: #cb6be6;
+  padding: 12px 28px;
+  cursor: pointer;
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+.topicButton:hover {
+  background-color: #cb6be6;
+  box-shadow: none !important;
+}
+
+.topicButton:focus,
+.topicButton:active {
+  outline: none;
+  border: 1.5px solid #000000;
+  box-shadow: 4px 4px 0px 0px #000000, inset 0px 8px 4px 0px #0000000a !important;
+}
+
+/* Responsive Layout for larger screens */
+@media (min-width: 768px) {
+  .cardsLayout {
+    flex-direction: row;
+  }
+
+  .leftCard {
+    width: 50%;
+  }
+
+  .rightCards {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .rightCards .card {
+    flex: 1;
+  }
+}
+
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
