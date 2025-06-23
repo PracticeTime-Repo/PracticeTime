@@ -45,6 +45,10 @@
   /* max-width: 80%; */
   word-wrap: break-word;
 }
+.bot-bubble p{
+color: #000 !important;
+margin-bottom: 0px !important;
+}
 
 .bot-bubble-wrapper {
   display: flex;

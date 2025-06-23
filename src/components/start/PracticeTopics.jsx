@@ -24,7 +24,7 @@ const topicsData = {
       title: "Shapes & Geometry",
       color: "green",
       description:
-        "Counting objects, inside and outside, longer and shorter, letter names, rhyming words and more.",
+        "Counting objects, inside and outside, longer and shorter, letter names, rhyming words and more.Counting objects, inside and outside, longer and shorter, letter names, rhyming words and more.",
     },
   ],
   English: [
@@ -66,7 +66,7 @@ export default function PracticeTopics() {
   return (
     <div className="container">
       <div className="practice-wrapper">
-        <div className="practice-header">
+        <div className="topic-header">
           <h1>
             Select Practice <span className="highlighted">Topic!</span>
           </h1>
@@ -102,8 +102,10 @@ export default function PracticeTopics() {
                     <span className="topic-title">{topic.title}</span>
                   </div>
                 </div>
-                <p className="topic-desc">{topic.description}</p>
 
+                <div className="topic-center">
+                  <p className="topic-desc">{topic.description}</p>
+                </div>
                 <div className="topic-right">
                   <span className="skill-text">20+ Skills Available</span>
                   <FaChevronRight className="arrow-icon" />

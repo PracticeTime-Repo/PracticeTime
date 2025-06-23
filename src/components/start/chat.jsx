@@ -17,11 +17,11 @@ const Chat = () => {
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
   const [conversation, setConversation] = useState([
-        {
-          question: "",
-          answer: "Hi there, how can I help you?",
-        },
-      ]);
+    {
+      question: "",
+      answer: "Hi there, how can I help you?",
+    },
+  ]);
   const [isChatStarted, setIsChatStarted] = useState(true);
   const [showUploadOptions, setShowUploadOptions] = useState(false);
   const extractTextFromImage = async (file) => {
@@ -148,6 +148,8 @@ const Chat = () => {
   };
 
   const fileInputRef = useRef(null);
+  const inputRef = useRef(null);
+
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -157,9 +159,10 @@ const Chat = () => {
     if (file) {
       setImage(file);
       setShowUploadOptions(false);
+      inputRef.current?.focus();
     }
   };
-  
+
   const [copiedIndex, setCopiedIndex] = useState(null);
 
   const handleCopyToClipboard = (text, index) => {
@@ -232,27 +235,27 @@ const Chat = () => {
               </div>
             )} */}
             <div className="inputWithPreview">
-                {image && (
-                  <div className="previewContainer">
-                    <img
-                      src={URL.createObjectURL(image)}
-                      className="imagePreview"
-                      alt="preview"
-                    />
-                    <button className="closeBtn" onClick={() => setImage(null)}>
-                      <RxCross1 size={14} />
-                    </button>
-                  </div>
-                )}
+              {image && (
+                <div className="previewContainer">
+                  <img
+                    src={URL.createObjectURL(image)}
+                    className="imagePreview"
+                    alt="preview"
+                  />
+                  <button className="closeBtn" onClick={() => setImage(null)}>
+                    <RxCross1 size={14} />
+                  </button>
+                </div>
+              )}
 
-                <input
-                  className="input11"
-                  type="text"
-                  placeholder="Ask anything..."
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                />
-              </div>
+              <input
+                className="input11"
+                type="text"
+                placeholder="Ask anything..."
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+              />
+            </div>
 
             <div className="actionRow">
               <div className="leftActions">
@@ -371,7 +374,12 @@ const Chat = () => {
                   {/* Bot response on left */}
                   <div className="message-row bot-row">
                     <div className="bot-bubble-wrapper">
-                      <div className="bot-bubble">{item.answer}</div>
+                      {/* <div className="bot-bubble">{item.answer}</div> */}
+                      <div className="bot-bubble">
+                        {item.answer.split("\n").map((step, index) => (
+                          <p key={index}>{step}</p>
+                        ))}
+                      </div>
                       <button
                         onClick={() => handleCopyToClipboard(item.answer, idx)}
                         title="Copy to clipboard"
@@ -449,11 +457,22 @@ const Chat = () => {
                 )}
 
                 <input
+                ref={inputRef}
                   className="input11"
                   type="text"
                   placeholder="Ask anything..."
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "Enter" &&
+                      (question.trim() || image) &&
+                      !loading
+                    ) {
+                      e.preventDefault(); // Prevent newline or default form behavior
+                      handleClick();
+                    }
+                  }}
                 />
               </div>
 
@@ -549,93 +568,92 @@ const Chat = () => {
   );
 };
 
-
 // const prompt = `
-  // You are an expert elementary math tutor. Explain the solution to this grade 1-5 math question in simple,
-  // step-by-step terms suitable for a child. Break down each logical step clearly and use the exact format specified.
+// You are an expert elementary math tutor. Explain the solution to this grade 1-5 math question in simple,
+// step-by-step terms suitable for a child. Break down each logical step clearly and use the exact format specified.
 
-  // QUESTION: ${question}
+// QUESTION: ${question}
 
-  // RESPONSE FORMAT:
-  // Explanation:
-  // Step 1: <Start with initial information>
-  // Step 2: <Describe what happens>
-  // Step 3: <Do the math or logic>
-  // Step 4: <State the result>
-  // ✅ So, the correct answer is <Correct Option Letter>. <Option Text>
+// RESPONSE FORMAT:
+// Explanation:
+// Step 1: <Start with initial information>
+// Step 2: <Describe what happens>
+// Step 3: <Do the math or logic>
+// Step 4: <State the result>
+// ✅ So, the correct answer is <Correct Option Letter>. <Option Text>
 
-  // IMPORTANT RULES:
-  // 1. Always use exactly 4 steps
-  // 2. End with the ✅ emoji and correct answer
-  // 3. For fill-in-the-blank questions, provide the answer in the final step
-  // 4. For order questions, list the correct order
-  // 5. Keep explanations simple and clear;`;
-  //   return (
-  //     <div className="container">
-  //       <div style={styles.chatcontainer}>
-  //         <h1>
-  //           <b>
-  //             Ask for <span style={{ color: "green" }}>Help!</span>
-  //           </b>
-  //         </h1>
-  //         <p>Upload or share a question and get hints, steps, and help!</p>
+// IMPORTANT RULES:
+// 1. Always use exactly 4 steps
+// 2. End with the ✅ emoji and correct answer
+// 3. For fill-in-the-blank questions, provide the answer in the final step
+// 4. For order questions, list the correct order
+// 5. Keep explanations simple and clear;`;
+//   return (
+//     <div className="container">
+//       <div style={styles.chatcontainer}>
+//         <h1>
+//           <b>
+//             Ask for <span style={{ color: "green" }}>Help!</span>
+//           </b>
+//         </h1>
+//         <p>Upload or share a question and get hints, steps, and help!</p>
 
-  //         <div style={styles.card}>
-  //           <input
-  //             style={styles.input}
-  //             type="text"
-  //             placeholder="Ask anything..."
-  //             value={question}
-  //             onChange={(e) => setQuestion(e.target.value)}
-  //           />
-  //           <input
-  //             type="file"
-  //             accept="image/*"
-  //             onChange={(e) => {
-  //               setImage(e.target.files[0]);
-  //               setQuestion(""); // Clear previous question
-  //               setResponse(""); // Clear previous response
-  //             }}
-  //             style={{ margin: "10px 0" }}
-  //           />
+//         <div style={styles.card}>
+//           <input
+//             style={styles.input}
+//             type="text"
+//             placeholder="Ask anything..."
+//             value={question}
+//             onChange={(e) => setQuestion(e.target.value)}
+//           />
+//           <input
+//             type="file"
+//             accept="image/*"
+//             onChange={(e) => {
+//               setImage(e.target.files[0]);
+//               setQuestion(""); // Clear previous question
+//               setResponse(""); // Clear previous response
+//             }}
+//             style={{ margin: "10px 0" }}
+//           />
 
-  //           <div style={styles.buttonRow}>
-  //             <button style={styles.uploadBtn}>+ Upload</button>
-  //             <button onClick={handleClick} style={styles.hintBtn}>
-  //               💡 Get Hint!
-  //             </button>
-  //           </div>
-  //         </div>
+//           <div style={styles.buttonRow}>
+//             <button style={styles.uploadBtn}>+ Upload</button>
+//             <button onClick={handleClick} style={styles.hintBtn}>
+//               💡 Get Hint!
+//             </button>
+//           </div>
+//         </div>
 
-  //         {loading && <p>⏳ Loading answer...</p>}
-  //         {/* {response && (
-  //             <div style={styles.chatBox}>
-  //             <h3>🤖 Gemini AI:</h3>
-  //             <pre style={{ whiteSpace: "pre-wrap" }}>{response}</pre>
-  //             </div>
-  //         )} */}
-  //         {conversation.length > 0 && (
-  //           <div style={styles.chatBox}>
-  //             <h3>🧠 Conversation History</h3>
-  //             {conversation.map((item, idx) => (
-  //               <div key={idx} style={{ marginBottom: "20px" }}>
-  //                 <p>
-  //                   <b>🧒 You:</b> {item.question}
-  //                 </p>
-  //                 <p>
-  //                   <b>🤖 Gemini:</b>
-  //                 </p>
-  //                 <pre style={{ whiteSpace: "pre-wrap" }}>{item.answer}</pre>
-  //                 <hr />
-  //               </div>
-  //             ))}
-  //           </div>
-  //         )}
-  //       </div>
-  //     </div>
-  //   );
-  {
-    /* <div style={styles.card}>
+//         {loading && <p>⏳ Loading answer...</p>}
+//         {/* {response && (
+//             <div style={styles.chatBox}>
+//             <h3>🤖 Gemini AI:</h3>
+//             <pre style={{ whiteSpace: "pre-wrap" }}>{response}</pre>
+//             </div>
+//         )} */}
+//         {conversation.length > 0 && (
+//           <div style={styles.chatBox}>
+//             <h3>🧠 Conversation History</h3>
+//             {conversation.map((item, idx) => (
+//               <div key={idx} style={{ marginBottom: "20px" }}>
+//                 <p>
+//                   <b>🧒 You:</b> {item.question}
+//                 </p>
+//                 <p>
+//                   <b>🤖 Gemini:</b>
+//                 </p>
+//                 <pre style={{ whiteSpace: "pre-wrap" }}>{item.answer}</pre>
+//                 <hr />
+//               </div>
+//             ))}
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+{
+  /* <div style={styles.card}>
     <div style={{ position: "relative" }}>
       <div style={styles.chatInputWrapper}>
         <input
@@ -681,240 +699,239 @@ const Chat = () => {
       </div>
     </div>
   </div> */
-  }
-  //   return (
-  //     <div
-  //       className="container">
-  //       {!isChatStarted ? (
-  //         <div style={styles.chatcontainer}>
-  //           <h1>
-  //             <b>
-  //               Ask for <span style={{ color: "green" }}>Help!</span>
-  //             </b>
-  //           </h1>
-  //           <p>Upload or share a question and get hints, steps, and help!</p>
+}
+//   return (
+//     <div
+//       className="container">
+//       {!isChatStarted ? (
+//         <div style={styles.chatcontainer}>
+//           <h1>
+//             <b>
+//               Ask for <span style={{ color: "green" }}>Help!</span>
+//             </b>
+//           </h1>
+//           <p>Upload or share a question and get hints, steps, and help!</p>
 
-  //           <div style={styles.card1}>
-  //             {/* Input row */}
-  //             <div style={styles.inputRow}>
-  //               <input
-  //                 style={styles.input11}
-  //                 type="text"
-  //                 placeholder="Type your question..."
-  //                 value={question}
-  //                 onChange={(e) => setQuestion(e.target.value)}
-  //               />
-  //             </div>
+//           <div style={styles.card1}>
+//             {/* Input row */}
+//             <div style={styles.inputRow}>
+//               <input
+//                 style={styles.input11}
+//                 type="text"
+//                 placeholder="Type your question..."
+//                 value={question}
+//                 onChange={(e) => setQuestion(e.target.value)}
+//               />
+//             </div>
 
-  //             {/* Button row with Upload and Right Controls */}
-  //             <div style={styles.actionRow}>
-  //               <div>
-  //                 {showUploadOptions && (
-  //                   <div style={styles.dropdown}>
-  //                     <div
-  //                       style={styles.dropdownItem}
-  //                       //   onClick={handleGoogleDriveUpload}
-  //                     >
-  //                       ☁️ Upload from drive
-  //                     </div>
-  //                     <div
-  //                       style={styles.dropdownItem}
-  //                       onClick={() => fileInputRef.current.click()}
-  //                     >
-  //                       📷 Add photos and files
-  //                     </div>
-  //                   </div>
-  //                 )}
+//             {/* Button row with Upload and Right Controls */}
+//             <div style={styles.actionRow}>
+//               <div>
+//                 {showUploadOptions && (
+//                   <div style={styles.dropdown}>
+//                     <div
+//                       style={styles.dropdownItem}
+//                       //   onClick={handleGoogleDriveUpload}
+//                     >
+//                       ☁️ Upload from drive
+//                     </div>
+//                     <div
+//                       style={styles.dropdownItem}
+//                       onClick={() => fileInputRef.current.click()}
+//                     >
+//                       📷 Add photos and files
+//                     </div>
+//                   </div>
+//                 )}
 
-  //                 <button
-  //                   style={styles.uploadMainBtn}
-  //                   onClick={() => setShowUploadOptions(!showUploadOptions)}
-  //                 >
-  //                   + Upload
-  //                 </button>
-  //               </div>
+//                 <button
+//                   style={styles.uploadMainBtn}
+//                   onClick={() => setShowUploadOptions(!showUploadOptions)}
+//                 >
+//                   + Upload
+//                 </button>
+//               </div>
 
-  //               <div style={styles.rightActions}>
-  //                 <button style={styles.hintBtn}>💡 Get Hint!</button>
-  //                 <button
-  //                   onClick={handleClick}
-  //                   style={styles.sendBtn}
-  //                   disabled={loading}
-  //                 >
-  //                   {loading ? "⏳" : "➤"}
-  //                 </button>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </div>
-  //       ) : (
-  //         <div
-  //           style={{
-  //             flex: 1,
-  //             display: "flex",
-  //             flexDirection: "column",
-  //             justifyContent: "space-between",
-  //           }}
-  //         >
-  //           {/* <div style={styles.chatBox}>
-  //             {conversation.map((item, idx) => (
-  //               <div key={idx}>
-  //                 <div style={{ textAlign: "right", margin: "10px" }}>
-  //                   <span style={styles.userBubble}>🧒 {item.question}</span>
-  //                 </div>
-  //                 <div style={{ textAlign: "left", margin: "10px" }}>
-  //                   <span style={styles.botBubble}>🤖 {item.answer}</span>
-  //                 </div>
-  //               </div>
-  //             ))}
-  //             {loading && <p>⏳ Thinking...</p>}
-  //           </div> */}
-  //           <div style={styles.chatBox}>
-  //             {conversation.map((item, idx) => (
-  //               <div key={idx}>
-  //                 {/* User Question */}
-  //                 <div style={{ textAlign: "right", margin: "10px" }}>
-  //                   <span style={styles.userBubble}>{item.question}</span>
-  //                 </div>
+//               <div style={styles.rightActions}>
+//                 <button style={styles.hintBtn}>💡 Get Hint!</button>
+//                 <button
+//                   onClick={handleClick}
+//                   style={styles.sendBtn}
+//                   disabled={loading}
+//                 >
+//                   {loading ? "⏳" : "➤"}
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       ) : (
+//         <div
+//           style={{
+//             flex: 1,
+//             display: "flex",
+//             flexDirection: "column",
+//             justifyContent: "space-between",
+//           }}
+//         >
+//           {/* <div style={styles.chatBox}>
+//             {conversation.map((item, idx) => (
+//               <div key={idx}>
+//                 <div style={{ textAlign: "right", margin: "10px" }}>
+//                   <span style={styles.userBubble}>🧒 {item.question}</span>
+//                 </div>
+//                 <div style={{ textAlign: "left", margin: "10px" }}>
+//                   <span style={styles.botBubble}>🤖 {item.answer}</span>
+//                 </div>
+//               </div>
+//             ))}
+//             {loading && <p>⏳ Thinking...</p>}
+//           </div> */}
+//           <div style={styles.chatBox}>
+//             {conversation.map((item, idx) => (
+//               <div key={idx}>
+//                 {/* User Question */}
+//                 <div style={{ textAlign: "right", margin: "10px" }}>
+//                   <span style={styles.userBubble}>{item.question}</span>
+//                 </div>
 
-  //                 {/* Bot Response */}
-  //                 <div
-  //                   style={{
-  //                     textAlign: "left",
-  //                     margin: "10px",
-  //                     display: "flex",
-  //                     alignItems: "center",
-  //                     gap: "5px",
-  //                   }}
-  //                 >
-  //                   <span style={styles.botBubble}>{item.answer}</span>
-  //                   <button
-  //                     onClick={() => navigator.clipboard.writeText(item.answer)}
-  //                     title="Copy"
-  //                     style={styles.copyButton}
-  //                   >
-  //                     📋
-  //                   </button>
-  //                 </div>
-  //               </div>
-  //             ))}
-  //             {loading && <p>⏳ Thinking...</p>}
-  //           </div>
+//                 {/* Bot Response */}
+//                 <div
+//                   style={{
+//                     textAlign: "left",
+//                     margin: "10px",
+//                     display: "flex",
+//                     alignItems: "center",
+//                     gap: "5px",
+//                   }}
+//                 >
+//                   <span style={styles.botBubble}>{item.answer}</span>
+//                   <button
+//                     onClick={() => navigator.clipboard.writeText(item.answer)}
+//                     title="Copy"
+//                     style={styles.copyButton}
+//                   >
+//                     📋
+//                   </button>
+//                 </div>
+//               </div>
+//             ))}
+//             {loading && <p>⏳ Thinking...</p>}
+//           </div>
 
-  //           <div style={styles.chatInputWrapper}>
-  //             <input
-  //               style={styles.input11}
-  //               type="text"
-  //               placeholder="Type your question..."
-  //               value={question}
-  //               onChange={(e) => setQuestion(e.target.value)}
-  //             />
-  //             {/* {showUploadOptions && (
-  //               <div style={styles.dropdown}>
-  //                 <div onClick={() => fileInputRef.current.click()}>
-  //                   📁 Upload from Drive
-  //                 </div>
-  //                 <div onClick={() => handleImageUpload}>
-  //                   📷 Add photos and files
-  //                 </div>
-  //               </div>
-  //             )} */}
-  //             {showUploadOptions && (
-  //               <div style={styles.dropdown}>
-  //                 <div
-  //                   style={styles.dropdownItem}
-  //                   onClick={() => handleImageUpload}
-  //                 >
-  //                   <span style={{ marginRight: "8px" }}>☁️</span> Upload from
-  //                   Drive
-  //                 </div>
-  //                 <div
-  //                   style={styles.dropdownItem}
-  //                   onClick={() => handleImageUpload}
-  //                 >
-  //                   <span style={{ marginRight: "8px" }}>📷</span> Add photos and
-  //                   files
-  //                 </div>
-  //               </div>
-  //             )}
+//           <div style={styles.chatInputWrapper}>
+//             <input
+//               style={styles.input11}
+//               type="text"
+//               placeholder="Type your question..."
+//               value={question}
+//               onChange={(e) => setQuestion(e.target.value)}
+//             />
+//             {/* {showUploadOptions && (
+//               <div style={styles.dropdown}>
+//                 <div onClick={() => fileInputRef.current.click()}>
+//                   📁 Upload from Drive
+//                 </div>
+//                 <div onClick={() => handleImageUpload}>
+//                   📷 Add photos and files
+//                 </div>
+//               </div>
+//             )} */}
+//             {showUploadOptions && (
+//               <div style={styles.dropdown}>
+//                 <div
+//                   style={styles.dropdownItem}
+//                   onClick={() => handleImageUpload}
+//                 >
+//                   <span style={{ marginRight: "8px" }}>☁️</span> Upload from
+//                   Drive
+//                 </div>
+//                 <div
+//                   style={styles.dropdownItem}
+//                   onClick={() => handleImageUpload}
+//                 >
+//                   <span style={{ marginRight: "8px" }}>📷</span> Add photos and
+//                   files
+//                 </div>
+//               </div>
+//             )}
 
-  //             <button
-  //               style={styles.uploadMainBtn}
-  //               onClick={() => setShowUploadOptions(!showUploadOptions)}
-  //             >
-  //               + Upload
-  //             </button>
+//             <button
+//               style={styles.uploadMainBtn}
+//               onClick={() => setShowUploadOptions(!showUploadOptions)}
+//             >
+//               + Upload
+//             </button>
 
-  //             <button style={styles.hintBtn}>💡 Get Hint!</button>
-  //             <button style={styles.micBtn}>🎤</button>
-  //             <button
-  //               onClick={handleClick}
-  //               style={styles.sendBtn}
-  //               disabled={loading}
-  //             >
-  //               {loading ? "⏳" : "➤"}
-  //             </button>
-  //           </div>
+//             <button style={styles.hintBtn}>💡 Get Hint!</button>
+//             <button style={styles.micBtn}>🎤</button>
+//             <button
+//               onClick={handleClick}
+//               style={styles.sendBtn}
+//               disabled={loading}
+//             >
+//               {loading ? "⏳" : "➤"}
+//             </button>
+//           </div>
 
-  //           {/* <div style={styles.chatInputBar}>
-  //             <input
-  //               style={styles.input}
-  //               type="text"
-  //               placeholder="Type your question..."
-  //               value={question}
-  //               onChange={(e) => setQuestion(e.target.value)}
-  //             />
-  //   {image && (
-  //     <div style={styles.previewContainer}>
-  //       <img
-  //         src={URL.createObjectURL(image)}
-  //         style={styles.imagePreview}
-  //       />
-  //       <button style={styles.closeBtn} onClick={() => setImage(null)}>
-  //         ❌
-  //       </button>
-  //     </div>
-  //   )}
+//           {/* <div style={styles.chatInputBar}>
+//             <input
+//               style={styles.input}
+//               type="text"
+//               placeholder="Type your question..."
+//               value={question}
+//               onChange={(e) => setQuestion(e.target.value)}
+//             />
+//   {image && (
+//     <div style={styles.previewContainer}>
+//       <img
+//         src={URL.createObjectURL(image)}
+//         style={styles.imagePreview}
+//       />
+//       <button style={styles.closeBtn} onClick={() => setImage(null)}>
+//         ❌
+//       </button>
+//     </div>
+//   )}
 
-  //             <div style={{ position: "relative" }}>
-  //               <button
-  //                 onClick={() => setShowUploadOptions(!showUploadOptions)}
-  //                 style={styles.uploadMainBtn}
-  //               >
-  //                 + Upload
-  //               </button>
+//             <div style={{ position: "relative" }}>
+//               <button
+//                 onClick={() => setShowUploadOptions(!showUploadOptions)}
+//                 style={styles.uploadMainBtn}
+//               >
+//                 + Upload
+//               </button>
 
-  //               <input
-  //                 ref={fileInputRef}
-  //                 type="file"
-  //                 accept="image/*"
-  //                 onChange={handleImageUpload}
+//               <input
+//                 ref={fileInputRef}
+//                 type="file"
+//                 accept="image/*"
+//                 onChange={handleImageUpload}
 
-  //                 style={{ display: "none" }}
-  //               />
-  //             </div>
+//                 style={{ display: "none" }}
+//               />
+//             </div>
 
-  //             <div style={styles.buttonRow}>
+//             <div style={styles.buttonRow}>
 
-  //               <button
-  //                 onClick={handleClick}
-  //                 style={{
-  //                   ...styles.sendBtn,
-  //                   backgroundColor: loading ? "#ccc" : "#fcd34d",
-  //                   cursor: loading ? "not-allowed" : "pointer",
-  //                 }}
-  //                 disabled={loading}
-  //               >
-  //                 {loading ? "⏳" : "➤"}
-  //               </button>
-  //             </div>
-  //           </div> */}
-  //         </div>
-  //       )}
-  //     </div>
-  //   );
+//               <button
+//                 onClick={handleClick}
+//                 style={{
+//                   ...styles.sendBtn,
+//                   backgroundColor: loading ? "#ccc" : "#fcd34d",
+//                   cursor: loading ? "not-allowed" : "pointer",
+//                 }}
+//                 disabled={loading}
+//               >
+//                 {loading ? "⏳" : "➤"}
+//               </button>
+//             </div>
+//           </div> */}
+//         </div>
+//       )}
+//     </div>
+//   );
 
-  
 {
   /* <div className="chat-input-wrapper">
               <input

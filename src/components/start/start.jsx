@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebaseServices from "../firebase/firebaseSetup";
 import "./start.css";
-import practiceTime from "../../assets/practiceTime.jpg";
+// import practiceTime from "../../assets/practiceTime.jpg";
 import startImage from "./startImage.png";
 import question from "./question.png";
 import topic from "./topic.png";

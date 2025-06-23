@@ -1,6 +1,4 @@
 .practice-wrapper {
-  /* padding: 2rem; */
-  /* max-width: 900px; */
   padding: 30px;
   background-color: #fff;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
@@ -8,12 +6,12 @@
   border-radius: 16px;
 }
 
-.practice-header {
+.topic-header {
   text-align: left;
   margin-bottom: 2rem;
 }
 
-.practice-header h1 {
+.topic-header h1 {
   font-size: 2rem;
   font-weight: bold;
 }
@@ -22,7 +20,7 @@
   color: #a855f7;
 }
 
-.practice-header p {
+.topic-header p {
   color: #6b7280;
 }
 
@@ -63,7 +61,6 @@
 .close-icon:hover {
   color: #ef4444;
 }
-
 .topic-list {
   display: flex;
   flex-direction: column;
@@ -73,14 +70,32 @@
 .topic-card {
   background: white;
   border-radius: 12px;
-  padding: 1rem;
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
   box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
   transition: box-shadow 0.3s ease;
   gap: 1rem;
 }
+
+.topic-center {
+  flex: 2;
+  display: flex;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.topic-desc {
+  color: #6b7280;
+  font-size: 0.875rem;
+  text-align: left;
+  margin: 0;
+  display: flex;
+  align-items: center !important;
+}
+
 
 .topic-card:hover {
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
@@ -91,20 +106,27 @@
   flex-direction: column;
   gap: 0.5rem;
   flex: 1;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-/* Pill around icon + title */
+.topic-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
 .topic-label {
   display: flex;
   align-items: center;
-  padding: 0.4rem 0.75rem;
   border-radius: 9999px;
   font-weight: 600;
   gap: 0.5rem;
   width: fit-content;
 }
 
-/* Circular icon */
 .topic-icon {
   width: 36px;
   height: 36px;
@@ -117,27 +139,13 @@
   justify-content: center;
 }
 
-/* Title text */
 .topic-title {
+  padding-right: 1rem;
   font-size: 1rem;
   color: #111827;
   margin: 0;
 }
 
-/* Description */
-.topic-desc {
-  padding: 0px 20px;
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
-/* Right section */
-.topic-right {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
 
 .skill-text {
   color: #10b981;
@@ -150,7 +158,6 @@
   font-size: 0.85rem;
 }
 
-/* Pill background colors */
 .bg-yellow { background-color: #fef9c3; }
 .bg-red { background-color: #fee2e2; }
 .bg-green { background-color: #d1fae5; }
@@ -159,7 +166,6 @@
 .bg-teal { background-color: #ccfbf1; }
 .bg-cyan { background-color: #cffafe; }
 
-/* Icon circle colors */
 .icon-yellow { background-color: #facc15; }
 .icon-red { background-color: #f87171; }
 .icon-green { background-color: #34d399; }
@@ -168,7 +174,6 @@
 .icon-teal { background-color: #14b8a6; }
 .icon-cyan { background-color: #06b6d4; }
 
-/* Responsive layout */
 @media (max-width: 640px) {
   .topic-card {
     flex-direction: column;
@@ -177,5 +182,65 @@
 
   .topic-right {
     align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+
+  .topic-desc {
+    padding: 0;
   }
 }
+
+@media (max-width: 640px) {
+  .topic-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .topic-center {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0.5rem 0;
+  }
+
+  .topic-right {
+    align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  
+  .topic-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .topic-left{
+    display: flex;
+    align-items: center;
+  }
+
+  .topic-left,
+  .topic-center,
+  .topic-right {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 0rem;
+  }
+
+  .topic-center {
+    padding: 0rem 1rem;
+  }
+
+  .topic-desc {
+    text-align: center;
+    padding: 0;
+  }
+
+  .topic-right {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+

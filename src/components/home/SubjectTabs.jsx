@@ -177,7 +177,7 @@ function SubjectTabs() {
           .subject-tab {
             width: 100%;
           }
-            .subject-tab1 {
+          .subject-tab1 {
             width: 100%;
           }
 
