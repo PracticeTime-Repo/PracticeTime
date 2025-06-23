@@ -89,7 +89,7 @@ function SubjectTabs() {
           align-items: center;
           gap: 12px;
         }
-          .subject-tab {
+        .subject-tab {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -104,7 +104,7 @@ function SubjectTabs() {
           line-height: 24px;
           color: #999;
           position: relative;
-          background-color:white;
+          background-color: white;
           cursor: pointer;
           transition: background-color 0.3s ease;
         }
@@ -124,7 +124,7 @@ function SubjectTabs() {
           line-height: 24px;
           color: #000;
           position: relative;
-          background-color:white;
+          background-color: white;
           cursor: pointer;
           transition: background-color 0.3s ease;
         }
@@ -163,9 +163,9 @@ function SubjectTabs() {
           background-color: #febd59;
           cursor: pointer;
         }
-          .practice-button:hover {
-           box-shadow:none;
-}
+        .practice-button:hover {
+          box-shadow: none;
+        }
         @media (max-width: 640px) {
           .tabs-container {
             display: flex;
@@ -176,7 +176,9 @@ function SubjectTabs() {
 
           .subject-tab {
             width: 100%;
-            margin-bottom: 10px;
+          }
+            .subject-tab1 {
+            width: 100%;
           }
 
           .practice-button {
