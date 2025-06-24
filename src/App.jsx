@@ -12,6 +12,7 @@ import Start from './components/start/start';
 import firebaseServices from './components/firebase/firebaseSetup';
 import Chat from './components/start/chat';
 import PracticeTopics from './components/start/PracticeTopics';
+import ClassCard from './components/start/ClassCard';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("user");
@@ -43,6 +44,7 @@ const AppContent = () => {
   <Route path="*" element={<Navigate to="/" />} />
   <Route path="/chat" element={<ProtectedRoute><Chat/></ProtectedRoute>} />
   <Route path="/PracticeTopics" element={<ProtectedRoute><PracticeTopics/></ProtectedRoute>} />
+  <Route path="/Class" element={<ProtectedRoute><ClassCard/></ProtectedRoute>} />
 </Routes>
 
     </>

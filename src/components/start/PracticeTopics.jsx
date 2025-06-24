@@ -82,9 +82,9 @@ export default function PracticeTopics() {
                 onClick={() => setSelectedSubject(subject)}
               >
                 {subject}
-                {selectedSubject === subject && (
+                {/* {selectedSubject === subject && (
                   <IoClose className="close-icon" onClick={handleClose} />
-                )}
+                )} */}
               </button>
             ))}
           </div>
@@ -93,7 +93,7 @@ export default function PracticeTopics() {
         {selectedSubject && (
           <div className="topic-list">
             {topicsData[selectedSubject].map((topic, idx) => (
-              <div key={topic.id} className="topic-card">
+              <div key={topic.id} className={`topic-card bg-${topic.color}`}>
                 <div className="topic-left">
                   <div className={`topic-label bg-${topic.color}`}>
                     <div className={`topic-icon icon-${topic.color}`}>
@@ -102,9 +102,8 @@ export default function PracticeTopics() {
                     <span className="topic-title">{topic.title}</span>
                   </div>
                 </div>
-
-                <div className="topic-center">
-                  <p className="topic-desc">{topic.description}</p>
+                 <div className="topic-center">
+                  <div className="topic-desc">{topic.description}</div>
                 </div>
                 <div className="topic-right">
                   <span className="skill-text">20+ Skills Available</span>

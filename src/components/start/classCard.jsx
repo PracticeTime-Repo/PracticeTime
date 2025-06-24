@@ -1,6 +1,5 @@
-
 import React, { useState } from "react";
-import "./PracticeTopics.css";
+import "./classCard.css";
 
 const subjectTopics = {
   Maths: [
@@ -17,8 +16,7 @@ const subjectTopics = {
       id: 2,
       className: "Class 2",
       color: "#FFCBCB",
-      description:
-        "Simple addition, subtraction, skip counting, and shapes.",
+      description: "Simple addition, subtraction, skip counting, and shapes.",
       skills: "20+ Skills Available",
       icon: "II",
     },
@@ -35,8 +33,7 @@ const subjectTopics = {
       id: 4,
       className: "Class 4",
       color: "#FFCBCB",
-      description:
-        "Simple addition, subtraction, skip counting, and shapes.",
+      description: "Simple addition, subtraction, skip counting, and shapes.",
       skills: "20+ Skills Available",
       icon: "IV",
     },
@@ -53,8 +50,7 @@ const subjectTopics = {
       id: 6,
       className: "Class 6",
       color: "#FFCBCB",
-      description:
-        "Simple addition, subtraction, skip counting, and shapes.",
+      description: "Simple addition, subtraction, skip counting, and shapes.",
       skills: "20+ Skills Available",
       icon: "VI",
     },
@@ -84,8 +80,7 @@ const subjectTopics = {
       id: 1,
       className: "Class 1",
       color: "#E4C1F9",
-      description:
-        "Basic logic building using blocks, introduction to loops.",
+      description: "Basic logic building using blocks, introduction to loops.",
       skills: "10+ Skills Available",
       icon: "I",
     },
@@ -93,57 +88,59 @@ const subjectTopics = {
       id: 2,
       className: "Class 2",
       color: "#A9DEF9",
-      description:
-        "Scratch programming, events, and interactive stories.",
+      description: "Scratch programming, events, and interactive stories.",
       skills: "12+ Skills Available",
       icon: "II",
     },
   ],
 };
 
-const PracticeTopics = () => {
+const ClassCard = () => {
   const [selectedSubject, setSelectedSubject] = useState("Maths");
   const subjects = Object.keys(subjectTopics);
 
   return (
     <div className="container">
-    <div className="practice-container">
-      <h2 className="title">
-        Select Practice <span className="highlight">Topic!</span>
-      </h2>
+      <div className="practice-container">
+        <h2 className="title">
+          Select Practice <span className="highlight">Topic!</span>
+        </h2>
 
-      <div className="subject-buttons">
-        {subjects.map((sub) => (
-          <button
-            key={sub}
-            onClick={() => setSelectedSubject(sub)}
-            className={`subject-btn ${
-              selectedSubject === sub ? "active" : ""
-            }`}
-          >
-            {sub}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid-container">
-        {subjectTopics[selectedSubject].map((topic) => (
-          <div className="card" key={topic.id}>
-            <div
-              className="icon-circle"
-              style={{ backgroundColor: topic.color }}
+        <div className="subject-buttons">
+          {subjects.map((sub) => (
+            <button
+              key={sub}
+              onClick={() => setSelectedSubject(sub)}
+              className={`subject-btn ${
+                selectedSubject === sub ? "active" : ""
+              }`}
             >
-              {topic.icon}
+              {sub}
+            </button>
+          ))}
+        </div>
+
+        <div className="grid-container">
+          {subjectTopics[selectedSubject].map((topic) => (
+            <div className="classcard" key={topic.id}>
+              <div className="class-row">
+                <div
+                  className="icon-circle"
+                  style={{ backgroundColor: topic.color }}
+                >
+                  {topic.icon}
+                </div>
+                <span className="class-label">{topic.className}</span>
+              </div>
+
+              <p className="description">{topic.description}</p>
+              <div className="skills">{topic.skills}</div>
             </div>
-            <h3 className="class-name">{topic.className}</h3>
-            <p className="description">{topic.description}</p>
-            <div className="skills">{topic.skills}</div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
     </div>
   );
 };
 
-export default PracticeTopics;
+export default ClassCard;

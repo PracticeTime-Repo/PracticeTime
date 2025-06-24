@@ -4,6 +4,7 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     border: 1px solid #dddddd;
   border-radius: 16px;
+  min-height: 80vh;
 }
 
 .topic-header {
@@ -47,7 +48,7 @@
 .tab.selected {
   background-color: #dbeafe;
   color: #2563eb;
-  border: none;
+  border: 1px solid #2563eb;
 }
 
 .close-icon {
@@ -68,20 +69,57 @@
 }
 
 .topic-card {
-  background: white;
-  border-radius: 12px;
-  padding: 0 1rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  position: relative;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s ease;
-  gap: 1rem;
+  justify-content: space-between;
+  background-color: white !important;
+  border-radius: 20px;
+  padding: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid #0000001A;
+  cursor: pointer;
+}
+.topic-card:hover {
+  background-color: var(--hover-bg-color) !important;
+  border-color: var(--hover-border-color);
+}
+.topic-card.bg-yellow:hover {
+  --hover-bg-color: #fffcde; /* lighter than #fef9c3 */
+  --hover-border-color: #facc15;
+}
+
+.topic-card.bg-red:hover {
+  --hover-bg-color: #fff5f5; /* lighter than #fee2e2 */
+  --hover-border-color: #f87171;
+}
+
+.topic-card.bg-green:hover {
+  --hover-bg-color: #ecfdf5; /* lighter than #d1fae5 */
+  --hover-border-color: #34d399;
+}
+
+.topic-card.bg-blue:hover {
+  --hover-bg-color: #eff6ff; /* lighter than #dbeafe */
+  --hover-border-color: #60a5fa;
+}
+
+.topic-card.bg-purple:hover {
+  --hover-bg-color: #faf5ff; /* lighter than #f3e8ff */
+  --hover-border-color: #a855f7;
+}
+
+.topic-card.bg-teal:hover {
+  --hover-bg-color: #e0fdfa; /* lighter than #ccfbf1 */
+  --hover-border-color: #14b8a6;
+}
+
+.topic-card.bg-cyan:hover {
+  --hover-bg-color: #e0fcff; /* lighter than #cffafe */
+  --hover-border-color: #06b6d4;
 }
 
 .topic-center {
-  flex: 2;
+  flex: 2.5;
   display: flex;
   text-align: center;
   box-sizing: border-box;
@@ -97,9 +135,7 @@
 }
 
 
-.topic-card:hover {
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-}
+
 
 .topic-left {
   display: flex;
@@ -137,6 +173,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 4px solid white;
 }
 
 .topic-title {
@@ -175,6 +212,14 @@
 .icon-cyan { background-color: #06b6d4; }
 
 @media (max-width: 640px) {
+  .practice-wrapper {
+  padding: 30px;
+  background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #dddddd;
+  border-radius: 16px;
+  min-height: auto;
+}
   .topic-card {
     flex-direction: column;
     align-items: flex-start;
@@ -186,7 +231,7 @@
   }
 
   .topic-desc {
-    padding: 0;
+    padding: 20px 0 !important;
   }
 }
 
