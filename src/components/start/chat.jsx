@@ -4,6 +4,7 @@ import { FaArrowUp, FaSpinner } from "react-icons/fa";
 import light from "./Frame.png";
 import { FiChevronRight } from "react-icons/fi";
 import copy from "./copy.png";
+import upload from "./upload.png";
 import { FiPlus } from "react-icons/fi";
 import copyIcon from "./copyText.png";
 import { FaCheckCircle } from "react-icons/fa";
@@ -266,7 +267,7 @@ const Chat = () => {
                       onClick={() => console.log("Upload from Drive")}
                     >
                       <img
-                        src={copy}
+                        src={upload}
                         alt="Upload from Drive"
                         className="dropdownIcon"
                       />
@@ -486,7 +487,7 @@ const Chat = () => {
                         onClick={() => console.log("Upload from Drive")}
                       >
                         <img
-                          src={copy}
+                          src={upload}
                           alt="Upload from Drive"
                           className="dropdownIcon"
                         />

@@ -6,7 +6,9 @@
   border-radius: 16px;
   min-height: 80vh;
 }
-
+.topic-header-content{
+padding-left: 20px;
+}
 .topic-header {
   text-align: left;
   margin-bottom: 2rem;
@@ -18,11 +20,48 @@
 }
 
 .highlighted {
-  color: #a855f7;
+  color: #CB6BE6;
 }
 
 .topic-header p {
   color: #6b7280;
+}
+.tab-bar {
+  display: flex;
+  gap: 12px; /* spacing between buttons */
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* space between icon and text */
+  padding: 10px 16px;
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.tab.selected {
+  background-color: #d0e6ff; /* or any highlight color */
+}
+
+.subject-icon {
+  font-size: 18px; /* adjust as needed */
+}
+.icon3 {
+  padding: 1px;
+  border: 1.5px solid black;
+  border-radius: 2px; /* optional, for rounded border */
+}
+
+.tab.selected .icon3 {
+  border: 1.5px solid #2563eb;
+}
+.subject-label {
+  font-size: 16px;
 }
 
 .tab-bar {
@@ -118,11 +157,13 @@
   --hover-border-color: #06b6d4;
 }
 
+
 .topic-center {
   flex: 2.5;
   display: flex;
   text-align: center;
   box-sizing: border-box;
+  padding-right: 40px;
 }
 
 .topic-desc {
@@ -164,8 +205,8 @@
 }
 
 .topic-icon {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   font-size: 0.85rem;
   color: white;
@@ -178,14 +219,15 @@
 
 .topic-title {
   padding-right: 1rem;
-  font-size: 1rem;
+  font-size:14px;
+  font-weight: 400;
   color: #111827;
   margin: 0;
 }
 
 
 .skill-text {
-  color: #10b981;
+  color: black;
   font-weight: 500;
   font-size: 0.9rem;
 }
@@ -193,6 +235,15 @@
 .arrow-icon {
   color: #6b7280;
   font-size: 0.85rem;
+}
+
+.green-circle {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #7ED956;
+  border-radius: 50%;
+  vertical-align: middle;
 }
 
 .bg-yellow { background-color: #fef9c3; }
@@ -211,7 +262,18 @@
 .icon-teal { background-color: #14b8a6; }
 .icon-cyan { background-color: #06b6d4; }
 
+.arrow-icon-yellow { color: #facc15; }
+.arrow-icon-red { color: #f87171; }
+.arrow-icon-green { color: #34d399; }
+.arrow-icon-blue { color: #60a5fa; }
+.arrow-icon-purple { color: #a855f7; }
+.arrow-icon-teal { color: #14b8a6; }
+.arrow-icon-cyan { color: #06b6d4; }
+
 @media (max-width: 640px) {
+  .topic-header-content{
+padding-left: 0px;
+}
   .practice-wrapper {
   padding: 30px;
   background-color: #fff;
@@ -245,6 +307,7 @@
     width: 100%;
     justify-content: flex-start;
     padding: 0.5rem 0;
+     padding-right: 0px;
   }
 
   .topic-right {
@@ -276,6 +339,7 @@
 
   .topic-center {
     padding: 0rem 1rem;
+    padding-right: 0px;
   }
 
   .topic-desc {

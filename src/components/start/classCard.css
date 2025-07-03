@@ -51,11 +51,48 @@
   padding: 1.2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
   transition: transform 0.2s ease;
+    display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 2px solid transparent;
+}
+.classcard:hover {
+  border-color: var(--topic-color); /* On hover, show border color */
+}
+.skills-arrow {
+  transition: all 0.3s ease;
+  border-radius: 50%;
+  display: inline-flex; /* Ensure icon stays visible */
+  align-items: center;
+  justify-content: center;
+}
+.classcard:hover .skills-arrow {
+  background-color: var(--topic-color);
+  color: white; /* Show white icon over colored background */
+  padding: 8px; /* Reasonable padding */
+}
+.classcard:hover .skills-arrow {
+  background-color: var(--topic-color);
+  color: var(--topic-color);
+  padding: 15px;
 }
 
-.classcard:hover {
-  transform: translateY(-5px);
+.skills-row {
+  margin-top: auto; /* pushes this row to the bottom */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
+.skills-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.arrow-icon {
+  margin-left: 0.5rem;
+}
+
+
 
 .class-row {
   display: flex;
@@ -104,8 +141,8 @@
 }
 
 .skills {
-  font-weight: 600;
-  color: #7B61FF;
+  font-weight: 400;
+  color: black;
 }
 
 .grid-container {

@@ -1,6 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./classCard.css";
+import { TbMathSymbols } from "react-icons/tb";
+import { RiEnglishInput } from "react-icons/ri";
+import { LuCodeXml } from "react-icons/lu";
+import { FaArrowRight } from "react-icons/fa";
 
+
+const subjectIcons = {
+  Maths: <TbMathSymbols size={18} />,
+  English: <RiEnglishInput size={18} />,
+  Coding: <LuCodeXml size={18} />,
+};
 const subjectTopics = {
   Maths: [
     {
@@ -25,7 +35,7 @@ const subjectTopics = {
       className: "Class 3",
       color: "#FFE39F",
       description:
-        "Counting objects, inside and outside, longer and shorter, letter names, rhyming words and more.",
+        "Counting objects, inside and outside, longer and shorter, letter names, rhyming words and more.Counting objects, inside and outside, longer and shorter, letter names, rhyming words and more.",
       skills: "20+ Skills Available",
       icon: "III",
     },
@@ -122,7 +132,7 @@ const ClassCard = () => {
 
         <div className="grid-container">
           {subjectTopics[selectedSubject].map((topic) => (
-            <div className="classcard" key={topic.id}>
+            <div className="classcard" key={topic.id} style={{ "--topic-color": topic.color }}>
               <div className="class-row">
                 <div
                   className="icon-circle"
@@ -134,7 +144,15 @@ const ClassCard = () => {
               </div>
 
               <p className="description">{topic.description}</p>
-              <div className="skills">{topic.skills}</div>
+            <div className="skills-row">
+  <div className="skills-left">
+    <span className="green-circle" />
+    <div className="skills">{topic.skills}</div>
+  </div>
+  {/* <FaArrowRight size={14} style={{ color: topic.color }} /> */}
+  <FaArrowRight className="skills-arrow"  style={{ color: topic.color }} />
+</div>
+
             </div>
           ))}
         </div>
