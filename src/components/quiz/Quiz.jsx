@@ -793,6 +793,7 @@ Explanation:
                         {question?.type === "TRIVIA" ? "Trivia" : "Category Name"}
                       </div>
                     </div>
+                    {!isTrivia && (
                     <div
                       className={`answer-status ${isCorrect
                         ? "correct"
@@ -823,6 +824,7 @@ Explanation:
                           ? "Skipped"
                           : "Incorrect Answer"}
                     </div>
+                    )}
                   </div>
                   <div className="question-body">
                     <div className="question-content">
