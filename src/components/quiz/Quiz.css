@@ -290,7 +290,7 @@
 } */
  .errorTooltip {
   color: red;
-  margin-top: 4px;
+  margin-bottom: 4px;
   text-align: center;
   font-size: 14px;
 }

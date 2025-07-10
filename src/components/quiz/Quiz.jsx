@@ -77,46 +77,93 @@ const Quiz = () => {
         // Set the current quiz set
         setCurrentSet(selectedQuizSet);
 
-        // Fetch question IDs for this specific set
+        // // Fetch question IDs for this specific set
+        // const setRef = ref(db, `attachedQuestionSets/${selectedQuizSet}`);
+        // const setSnapshot = await get(setRef);
+
+        // if (setSnapshot.exists()) {
+        //   const setData = setSnapshot.val();
+        //   // Extract question IDs from the set data
+        //   const questionIds = Object.keys(setData);
+
+        //   // Fetch each question with their order information
+        //   const questionPromises = questionIds.map((id) =>
+        //     get(ref(db, `questions/${id}`)).then((snap) => {
+        //       // Get the order from the set data
+        //       const order = setData[id]?.order || 0;
+
+        //       return {
+        //         snapshot: snap,
+        //         order: order,
+        //         id: id,
+        //       };
+        //     })
+        //   );
+
+        //   const questionResults = await Promise.all(questionPromises);
+
+        //   // Filter out questions that don't exist and sort by order
+        //   const loadedQuestions = questionResults
+        //     .filter((result) => result.snapshot.exists())
+        //     .map((result) => ({
+        //       id: result.id,
+        //       order: result.order,
+        //       ...result.snapshot.val(),
+        //     }))
+        //     .sort((a, b) => a.order - b.order); // Sort by the order field
+        //   console.log('loadedQuestions', loadedQuestions);
+
+        //   setQuestions(loadedQuestions);
+
+        //   // Initialize empty user responses array
+        //   setUserResponses(new Array(loadedQuestions.length).fill(null));
         const setRef = ref(db, `attachedQuestionSets/${selectedQuizSet}`);
         const setSnapshot = await get(setRef);
 
         if (setSnapshot.exists()) {
           const setData = setSnapshot.val();
-          // Extract question IDs from the set data
+          console.log("setData", setData);
+
           const questionIds = Object.keys(setData);
+          console.log("questionIds", questionIds);
 
-          // Fetch each question with their order information
-          const questionPromises = questionIds.map((id) =>
-            get(ref(db, `questions/${id}`)).then((snap) => {
-              // Get the order from the set data
-              const order = setData[id]?.order || 0;
+          const fetchQuestions = questionIds.map(async (id) => {
+            const order = setData[id]?.order || 0;
 
+            const [singleSnap, multiSnap] = await Promise.all([
+              get(ref(db, `questions/${id}`)),
+              get(ref(db, `multiQuestions/${id}`)),
+            ]);
+
+            if (singleSnap.exists()) {
               return {
-                snapshot: snap,
-                order: order,
-                id: id,
+                id,
+                order,
+                ...singleSnap.val(),
               };
-            })
-          );
+            } else if (multiSnap.exists()) {
+              return {
+                id,
+                order,
+                ...multiSnap.val(),
+              };
+            } else {
+              return null;
+            }
+          });
 
-          const questionResults = await Promise.all(questionPromises);
+          const questionResults = await Promise.all(fetchQuestions);
 
-          // Filter out questions that don't exist and sort by order
+          // Filter out nulls and sort by order
           const loadedQuestions = questionResults
-            .filter((result) => result.snapshot.exists())
-            .map((result) => ({
-              id: result.id,
-              order: result.order,
-              ...result.snapshot.val(),
-            }))
-            .sort((a, b) => a.order - b.order); // Sort by the order field
-          console.log('loadedQuestions', loadedQuestions);
+            .filter((q) => q !== null)
+            .sort((a, b) => a.order - b.order);
+
+          console.log("loadedQuestions", loadedQuestions);
 
           setQuestions(loadedQuestions);
-
-          // Initialize empty user responses array
           setUserResponses(new Array(loadedQuestions.length).fill(null));
+
         } else {
           setError(`No questions found in set: ${selectedQuizSet}`);
         }
@@ -320,102 +367,247 @@ Explanation:
   const [showAnswerError, setShowAnswerError] = useState(false);
 
   const handleNextClick = () => {
-    if (
+    const currentAnswer = selectedAnswers[currentQuestionIndex];
+
+    const isEmptyAnswer =
       !isTriviaQuestion &&
-      (!selectedAnswers[currentQuestionIndex] ||
-        selectedAnswers[currentQuestionIndex].trim() === "")
-    ) {
+      (
+        currentAnswer === undefined ||
+        currentAnswer === null ||
+        (typeof currentAnswer === "string" && currentAnswer.trim() === "") ||
+        (Array.isArray(currentAnswer) && currentAnswer.every(ans => typeof ans !== "string" || ans.trim() === ""))
+      );
+
+    if (isEmptyAnswer) {
       setShowAnswerError(true);
       return;
     }
 
     setShowAnswerError(false);
-    // If it's the last question, confirm before proceeding
-    // const isLastQuestion = currentQuestionIndex === questions.length - 1;
-
-    // if (isLastQuestion) {
-    // const confirmSubmit = window.confirm("Are you sure you want to complete the quiz?");
-    // if (!confirmSubmit) return;
-    // }
     handleNextQuestion();
   };
 
+
+  // const handleNextQuestion = async () => {
+  //   setShowAnswerError(false);
+  //   const currentAnswer = selectedAnswers[currentQuestionIndex];
+  //   const currentQuestion = questions[currentQuestionIndex];
+
+  //   if (!currentAnswer && currentQuestion.type !== "TRIVIA") {
+  //     return; // Prevent proceeding without an answer for non-trivia questions
+  //   }
+
+  //   // Set verifying state to show loading indicator
+  //   setVerifying(true);
+
+  //   try {
+  //     // Check answer using Gemini for text answers
+  //     let isCorrect = false;
+  //     let explanation = "";
+  //     // if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
+  //     //   console.log("Verifying fill-in-the-blanks answer");
+
+  //     //   isCorrect = await verifyAnswerWithGemini(
+  //     //     currentQuestion.question,
+  //     //     currentQuestion.correctAnswer,
+  //     //     currentAnswer
+  //     //   );
+
+  //     //   console.log(
+  //     //     "Final verification result:",
+  //     //     isCorrect ? "Correct" : "Incorrect"
+  //     //   );
+  //     // } 
+  //     if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
+  //       console.log("Verifying fill-in-the-blanks answer");
+
+  //       const result = await verifyAnswerWithGemini(
+  //         currentQuestion.question,
+  //         currentQuestion.correctAnswer,
+  //         currentAnswer
+  //       );
+
+  //       isCorrect = result.isCorrect;
+  //       explanation = result.explanation;
+
+  //       console.log("Final verification result:", isCorrect ? "Correct" : "Incorrect");
+  //       console.log("Explanation:", explanation);
+  //     }
+
+  //     else if (currentQuestion.type === "MCQ" && currentAnswer) {
+  //       // For MCQ, use regular comparison
+  //       isCorrect = isAnswerCorrect(
+  //         currentAnswer,
+  //         currentQuestion.correctAnswer
+  //       );
+  //     } else if (currentQuestion.type === "TRIVIA") {
+  //       // Trivia questions are just for information, no correct/incorrect
+  //       isCorrect = null;
+  //     }
+
+  //     // Save the current answer to user responses
+  //     const updatedResponses = [...userResponses];
+  //     updatedResponses[currentQuestionIndex] = {
+  //       questionId: currentQuestion.id,
+  //       userAnswer: currentAnswer || "(Skipped)",
+  //       correctAnswer: currentQuestion.correctAnswer,
+  //       isCorrect: isCorrect,
+  //       type: currentQuestion.type,
+  //       explanation: explanation,
+  //     };
+
+  //     setUserResponses(updatedResponses);
+
+  //     if (currentQuestionIndex < questions.length - 1) {
+  //       setCurrentQuestionIndex(currentQuestionIndex + 1);
+  //     } else {
+  //       // Handle quiz completion
+  //       handleQuizComplete(updatedResponses);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error processing answer:", error);
+  //     setError("There was a problem processing your answer. Please try again.");
+  //   } finally {
+  //     setVerifying(false);
+  //   }
+  // };
   const handleNextQuestion = async () => {
     setShowAnswerError(false);
     const currentAnswer = selectedAnswers[currentQuestionIndex];
     const currentQuestion = questions[currentQuestionIndex];
 
-    if (!currentAnswer && currentQuestion.type !== "TRIVIA") {
-      return; // Prevent proceeding without an answer for non-trivia questions
-    }
+    console.log("Current Question Index:", currentQuestionIndex);
+    console.log("Current Question:", currentQuestion);
+    console.log("Current Answer:", currentAnswer);
 
-    // Set verifying state to show loading indicator
+    if (!currentAnswer && currentQuestion.type !== "TRIVIA") return;
+
     setVerifying(true);
 
     try {
-      // Check answer using Gemini for text answers
       let isCorrect = false;
       let explanation = "";
-      // if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
-      //   console.log("Verifying fill-in-the-blanks answer");
 
-      //   isCorrect = await verifyAnswerWithGemini(
-      //     currentQuestion.question,
-      //     currentQuestion.correctAnswer,
-      //     currentAnswer
-      //   );
+      if (currentQuestion.mainQuestion && Array.isArray(currentQuestion.subQuestions)) {
+        console.log("Handling sub-questions...");
+        // Check if all sub-question answers are filled
+  const allAnswered = currentQuestion.subQuestions.every((sub, i) => {
+    const userAns = currentAnswer?.[i];
+    return userAns !== undefined && userAns !== null && userAns !== "";
+  });
 
-      //   console.log(
-      //     "Final verification result:",
-      //     isCorrect ? "Correct" : "Incorrect"
-      //   );
-      // } 
-      if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
-        console.log("Verifying fill-in-the-blanks answer");
+  if (!allAnswered) {
+    setShowAnswerError(true);
+    setVerifying(false);
+    return;
+  }
 
-        const result = await verifyAnswerWithGemini(
-          currentQuestion.question,
-          currentQuestion.correctAnswer,
-          currentAnswer
+        const subResults = await Promise.all(
+          currentQuestion.subQuestions.map(async (sub, i) => {
+            const userAns = currentAnswer?.[i];
+            const correctAns = sub.correctAnswer;
+
+            console.log(`Sub-question ${i + 1}:`, sub);
+            console.log(`User Answer:`, userAns);
+            console.log(`Correct Answer:`, correctAns);
+
+            if (sub.type === "FILL_IN_THE_BLANKS") {
+              const result = await verifyAnswerWithGemini(
+                sub.question,
+                correctAns,
+                userAns
+              );
+
+              console.log(`Verification Result for FILL_IN_THE_BLANKS [${sub.id}]:`, result);
+
+              return {
+                questionId: sub.id,
+                userAnswer: userAns,
+                correctAnswer: correctAns,
+                isCorrect: result.isCorrect,
+                explanation: result.explanation,
+                type: sub.type,
+              };
+            } else if (sub.type === "MCQ") {
+              const isCorrectMCQ = isAnswerCorrect(userAns, correctAns);
+
+              console.log(`Verification Result for MCQ [${sub.id}]:`, {
+                isCorrect: isCorrectMCQ
+              });
+
+              return {
+                questionId: currentQuestion.id,
+                userAnswer: userAns,
+                correctAnswer: correctAns,
+                isCorrect: isCorrectMCQ,
+                explanation: "",
+                type: sub.type,
+              };
+            }
+          })
         );
 
-        isCorrect = result.isCorrect;
-        explanation = result.explanation;
+        console.log("Sub-question Results:", subResults);
 
-        console.log("Final verification result:", isCorrect ? "Correct" : "Incorrect");
-        console.log("Explanation:", explanation);
+        const updatedResponses = [...userResponses];
+        updatedResponses[currentQuestionIndex] = subResults;
+
+        console.log("Updated User Responses:", updatedResponses);
+
+        setUserResponses(updatedResponses);
+
+      } else {
+        console.log("Handling main question...");
+
+        if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
+          const result = await verifyAnswerWithGemini(
+            currentQuestion.question,
+            currentQuestion.correctAnswer,
+            currentAnswer
+          );
+
+          console.log("Verification Result for FILL_IN_THE_BLANKS:", result);
+
+          isCorrect = result.isCorrect;
+          explanation = result.explanation;
+
+        } else if (currentQuestion.type === "MCQ" && currentAnswer) {
+          isCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correctAnswer);
+
+          console.log("MCQ Answer Check:", {
+            userAnswer: currentAnswer,
+            correctAnswer: currentQuestion.correctAnswer,
+            isCorrect,
+          });
+
+        } else if (currentQuestion.type === "TRIVIA") {
+          isCorrect = null;
+          console.log("Trivia question, skipping answer check.");
+        }
+
+        const updatedResponses = [...userResponses];
+        updatedResponses[currentQuestionIndex] = {
+          questionId: currentQuestion.id,
+          userAnswer: currentAnswer || "(Skipped)",
+          correctAnswer: currentQuestion.correctAnswer,
+          isCorrect,
+          type: currentQuestion.type,
+          explanation,
+        };
+
+        console.log("Updated User Response for main question:", updatedResponses[currentQuestionIndex]);
+
+        setUserResponses(updatedResponses);
       }
-
-      else if (currentQuestion.type === "MCQ" && currentAnswer) {
-        // For MCQ, use regular comparison
-        isCorrect = isAnswerCorrect(
-          currentAnswer,
-          currentQuestion.correctAnswer
-        );
-      } else if (currentQuestion.type === "TRIVIA") {
-        // Trivia questions are just for information, no correct/incorrect
-        isCorrect = null;
-      }
-
-      // Save the current answer to user responses
-      const updatedResponses = [...userResponses];
-      updatedResponses[currentQuestionIndex] = {
-        questionId: currentQuestion.id,
-        userAnswer: currentAnswer || "(Skipped)",
-        correctAnswer: currentQuestion.correctAnswer,
-        isCorrect: isCorrect,
-        type: currentQuestion.type,
-        explanation: explanation,
-      };
-
-      setUserResponses(updatedResponses);
 
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
+        console.log("Moving to next question index:", currentQuestionIndex + 1);
       } else {
-        // Handle quiz completion
-        handleQuizComplete(updatedResponses);
+        console.log("Quiz complete. Final user responses:", userResponses);
+        handleQuizComplete(userResponses);
       }
+
     } catch (error) {
       console.error("Error processing answer:", error);
       setError("There was a problem processing your answer. Please try again.");
@@ -423,6 +615,7 @@ Explanation:
       setVerifying(false);
     }
   };
+
 
   const handleSkipQuestion = () => {
     setShowAnswerError(false);
@@ -557,6 +750,8 @@ Explanation:
     }
   };
 
+
+
   const handleTextAnswer = (event) => {
     setSelectedAnswers({
       ...selectedAnswers,
@@ -649,47 +844,145 @@ Explanation:
       };
     }
   };
-  // const toggleAnswer = (index) => {
+  //   const toggleAnswer = (index) => {
   //   setShownAnswers((prev) => ({
   //     ...prev,
   //     [index]: !prev[index],
   //   }));
+
+  //   const response = userResponses[index];
+  //   const question = questions[index];
+
+  //   if (!shownAnswers[index] && !explanations[index]) {
+  //     // Main question explanation
+  //     fetchExplanation(
+  //       question,
+  //       response.correctAnswer,
+  //       response.userAnswer,
+  //       index
+  //     );
+
+  //     // Sub-question explanations if present
+  //     if (question.hasSubQuestions && question.subQuestions) {
+  //       question.subQuestions.forEach((subQ, subIndex) => {
+  //         const subResponse = response.subQuestions?.[subIndex] || {};
+
+  //         const explanationKey = `${index}-sub-${subIndex}`; // Unique key for explanation
+
+  //         if (!explanations[explanationKey]) {
+  //           fetchExplanation(
+  //             subQ,
+  //             subResponse.correctAnswer,
+  //             subResponse.userAnswer,
+  //             explanationKey
+  //           );
+  //         }
+  //       });
+  //     }
+  //   }
   // };
-  const toggleAnswer = (index) => {
-    setShownAnswers(prev => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
+
+  // const toggleAnswer = (index) => {
+  //   setShownAnswers(prev => ({
+  //     ...prev,
+  //     [index]: !prev[index],
+  //   }));
+
+  //   const response = userResponses[index];
+  //   const question = questions[index];
+
+  //   if (!shownAnswers[index] && !explanations[index]) {
+  //     // Only fetch if explanation isn't already fetched
+  //     fetchExplanation(question, response.correctAnswer, response.userAnswer, index);
+  //   }
+  // };
+  const toggleAnswer = (index, subIndex = null) => {
+    setShownAnswers(prev => {
+      const currentShown = { ...prev };
+
+      if (subIndex !== null) {
+        const subShown = currentShown[index]?.[subIndex] ?? false;
+
+        return {
+          ...prev,
+          [index]: {
+            ...(prev[index] || {}),
+            [subIndex]: !subShown
+          }
+        };
+      } else {
+        return {
+          ...prev,
+          [index]: !prev[index]
+        };
+      }
+    });
 
     const response = userResponses[index];
     const question = questions[index];
 
-    if (!shownAnswers[index] && !explanations[index]) {
-      // Only fetch if explanation isn't already fetched
-      fetchExplanation(question, response.correctAnswer, response.userAnswer, index);
+    if (subIndex !== null) {
+      if (!shownAnswers?.[index]?.[subIndex] && !explanations?.[index]?.[subIndex]) {
+        const subQuestionText = question.subQuestions[subIndex].question;
+        const correctAnswer = question.subQuestions[subIndex].correctAnswer;
+        const userAnswer = Array.isArray(response.userAnswer)
+          ? response.userAnswer[subIndex] ?? "(Skipped)"
+          : "(Skipped)";
+
+        const fullQuestion = `${question.mainQuestion || question.question} - ${subQuestionText}`;
+
+        fetchExplanation(fullQuestion, correctAnswer, userAnswer, index, subIndex);
+      }
+    } else {
+      if (!shownAnswers?.[index] && !explanations?.[index]) {
+        fetchExplanation(
+          question.question,
+          response.correctAnswer,
+          response.userAnswer === "(Skipped)" ? "No answer provided by the user." : response.userAnswer,
+          index
+        );
+      }
     }
   };
 
-  const fetchExplanation = async (question, correctAnswer, userAnswer, index) => {
+
+  const fetchExplanation = async (question, correctAnswer, userAnswer, index, subIndex = null) => {
     try {
       const result = await verifyAnswerWithGemini(
-        question.question,
+        question,
         correctAnswer,
         userAnswer === "(Skipped)" ? "No answer provided by the user." : userAnswer
       );
 
-      setExplanations(prev => ({
-        ...prev,
-        [index]: result.explanation || "No explanation provided."
-      }));
+      setExplanations(prev => {
+        const newState = { ...prev };
+
+        if (subIndex !== null) {
+          newState[index] = newState[index] || {};
+          newState[index][subIndex] = result.explanation || "No explanation provided.";
+        } else {
+          newState[index] = result.explanation || "No explanation provided.";
+        }
+
+        return newState;
+      });
     } catch (error) {
       console.error("Failed to fetch explanation:", error);
-      setExplanations(prev => ({
-        ...prev,
-        [index]: "Error fetching explanation."
-      }));
+      setExplanations(prev => {
+        const newState = { ...prev };
+
+        if (subIndex !== null) {
+          newState[index] = newState[index] || {};
+          newState[index][subIndex] = "Error fetching explanation.";
+        } else {
+          newState[index] = "Error fetching explanation.";
+        }
+
+        return newState;
+      });
     }
   };
+
 
 
   if (quizCompleted && quizResults) {
@@ -759,29 +1052,23 @@ Explanation:
 
 
             {quizResults.responses.map((response, index) => {
-              console.log("Question response", response);
-              const question =
-                questions.find((q) => q.id === response.questionId) ||
-                questions[index];
-
+              const question = questions.find((q) => q.id === response.questionId) || questions[index];
               const isCorrect = response.isCorrect;
               const isSkipped = response.skipped;
               const isTrivia = response.type === "TRIVIA";
               const visibleIndex = quizResults.responses
                 .filter((r, i) => i <= index && r.type !== "TRIVIA").length;
 
+              const hasSubQuestions = question?.subQuestions && question.subQuestions.length > 0;
 
               return (
                 <div
                   key={index}
-                  className={`question-container ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"
-                    }`}
+                  className={`question-container ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}
                 >
+                  {/* Header */}
                   <div className="question-header">
                     <div>
-                      {/* <span className="question-number">
-                        Question {index + 1} of {quizResults.totalQuestions}
-                      </span> */}
                       {!isTrivia && (
                         <span className="question-number">
                           Question {visibleIndex} of {
@@ -794,126 +1081,170 @@ Explanation:
                       </div>
                     </div>
                     {!isTrivia && (
-                    <div
-                      className={`answer-status ${isCorrect
-                        ? "correct"
-                        : isSkipped
-                          ? "skipped"
-                          : "incorrect"
-                        }`}
-                    >
-                      <span
-                        className={`status-icon ${isCorrect
-                          ? "correct"
-                          : isSkipped
-                            ? "skipped"
-                            : "incorrect"
-                          }`}
-                      >
-                        {isCorrect ? (
-                          <FaCheck />
-                        ) : isSkipped ? (
-                          <IoPlaySkipForward />
-                        ) : (
-                          <FaTimes />
-                        )}
-                      </span>
-                      {isCorrect
-                        ? "Correct Answer"
-                        : isSkipped
-                          ? "Skipped"
-                          : "Incorrect Answer"}
-                    </div>
+                      <div className={`answer-status ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}>
+                        <span className={`status-icon ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}>
+                          {isCorrect ? <FaCheck /> : isSkipped ? <IoPlaySkipForward /> : <FaTimes />}
+                        </span>
+                        {isCorrect ? "Correct Answer" : isSkipped ? "Skipped" : "Incorrect Answer"}
+                      </div>
                     )}
                   </div>
+
+                  {/* Main Question Text */}
                   <div className="question-body">
-                    <div className="question-content">
-                      {/* <p>{question?.question}</p> */}
-                      <p
-                        dangerouslySetInnerHTML={{ __html: question?.question }}
-                      ></p>
-                    </div>
-                     {!isTrivia && (
-                    <div className="quiz-line"></div>
-                    )}
-                     {!isTrivia && (
-                    <div className="answer-section">
-                      <p>
-                        <strong>Your Answer:</strong>{" "}
-                        <span className="user-answer">
-                          {response.userAnswer || "—"}
-                        </span>
-                      </p>
-                    </div>
-                     )}
-
-                    {/* Conditionally show correct answer */}
-                     {!isTrivia && (
-                     
-                    <div className="correct-answer-row">
-                      <p className="correct-answer-box1">
-                        <strong className="label">Correct Answer:</strong>
-                        <span className="answer-text">
-                          {Array.isArray(response.correctAnswer)
-                            ? response.correctAnswer.join(", ")
-                            : typeof response.correctAnswer === "object" && response.correctAnswer.text
-                              ? response.correctAnswer.text
-                              : response.correctAnswer}
-                        </span>
-                      </p>
-
-                      <button
-                        className={`show-answer-button ${shownAnswers[index] ? 'active' : ''}`}
-                        onClick={() => toggleAnswer(index)}
-                      >
-                        {shownAnswers[index] ? (
-                          <>
-                            <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
-                            Hide Explanation?
-                          </>
-                        ) : (
-                          <>
-                            <FaEye size={20} style={{ marginRight: "5px" }} />
-                            Show Explanation?
-                          </>
-                        )}
-                      </button>
-                    </div>
- )}
-                    {shownAnswers[index] && (
-                      <div className="explanation">
-                        <p className="explanation-text">
-                          {/* <p>🧮 Step-by-Step Solution:</p> */}
-                          {!explanations[index] ? (
-                            <p>⏳ Loading explanation...</p>
-                          ) : (
-                            explanations[index]
-                              .split('\n')
-                              .filter(Boolean)
-                              .map((line, idx) => (
-                                <p key={idx}>{line}</p>
-                              ))
-                          )}
-                        </p>
-                        {question?.type !== "TRIVIA" && (
-                          <p className="final-answer">
-                            ✅ <strong>Final Answer:</strong>{" "}
-                            {Array.isArray(response.correctAnswer)
-                              ? response.correctAnswer.join(", ")
-                              : typeof response.correctAnswer === "object" &&
-                                response.correctAnswer.text
-                                ? response.correctAnswer.text
-                                : response.correctAnswer}
-                          </p>
-                        )}
+                    {question?.mainQuestion && (
+                      <div className="main-question">
+                        <p dangerouslySetInnerHTML={{ __html: question.mainQuestion }}></p>
                       </div>
                     )}
 
+                    {/* Sub-Questions Rendering */}
+                    {hasSubQuestions ? (
+                      question.subQuestions.map((subQ, subIndex) => {
+                        
+                        // const userAns = response.userAnswer;
+                        const userAns = response?.[subIndex]?.userAnswer || "(Skipped)";
 
+
+                        const explanation = explanations[index]?.[subIndex] || "";
+                        const show = shownAnswers?.[index]?.[subIndex] || false;
+
+
+                        return (
+                          <div key={subIndex} className="sub-question">
+                            <div className="quiz-line"></div>
+                            <p dangerouslySetInnerHTML={{ __html: subQ.question }}></p>
+
+                            <div className="answer-section">
+                              <p>
+                                <strong>Your Answer:</strong>{" "}
+                                <span className="user-answer">{userAns}</span>
+                              </p>
+                            </div>
+
+                            <div className="correct-answer-row">
+                              <p className="correct-answer-box1">
+                                <strong className="label">Correct Answer:</strong>{" "}
+                                <span className="answer-text">
+                                  {Array.isArray(subQ.correctAnswer)
+                                    ? subQ.correctAnswer.join(", ")
+                                    : subQ.correctAnswer}
+                                </span>
+                              </p>
+                              <button
+                                className={`show-answer-button ${show ? 'active' : ''}`}
+                                onClick={() => toggleAnswer(index, subIndex)}
+                              >
+                                {show ? (
+                                  <>
+                                    <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
+                                    Hide Explanation?
+                                  </>
+                                ) : (
+                                  <>
+                                    <FaEye size={20} style={{ marginRight: "5px" }} />
+                                    Show Explanation?
+                                  </>
+                                )}
+                              </button>
+                            </div>
+
+                            {show && (
+                              <div className="explanation">
+                                {!explanation ? (
+                                  <p>⏳ Loading explanation...</p>
+                                ) : (
+                                  explanation.split('\n').filter(Boolean).map((line, idx) => (
+                                    <p key={idx}>{line}</p>
+                                  ))
+                                )}
+                                <p className="final-answer">
+                                  ✅ <strong>Final Answer:</strong>{" "}
+                                  {Array.isArray(subQ.correctAnswer)
+                                    ? subQ.correctAnswer.join(", ")
+                                    : subQ.correctAnswer}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })
+                    ) : (
+                      // Single Question Block
+                      <>
+                        <div className="question-content">
+                          <p dangerouslySetInnerHTML={{ __html: question?.question }}></p>
+                        </div>
+
+                        {!isTrivia && (
+                          <>
+                            <div className="quiz-line"></div>
+                            <div className="answer-section">
+                              <p>
+                                <strong>Your Answer:</strong>{" "}
+                                <span className="user-answer">
+                                  {response.userAnswer || "—"}
+                                </span>
+                              </p>
+                            </div>
+
+                            <div className="correct-answer-row">
+                              <p className="correct-answer-box1">
+                                <strong className="label">Correct Answer:</strong>{" "}
+                                <span className="answer-text">
+                                  {Array.isArray(response.correctAnswer)
+                                    ? response.correctAnswer.join(", ")
+                                    : typeof response.correctAnswer === "object" && response.correctAnswer.text
+                                      ? response.correctAnswer.text
+                                      : response.correctAnswer}
+                                </span>
+                              </p>
+                              <button
+                                className={`show-answer-button ${shownAnswers[index] ? 'active' : ''}`}
+                                onClick={() => toggleAnswer(index)}
+                              >
+                                {shownAnswers[index] ? (
+                                  <>
+                                    <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
+                                    Hide Explanation?
+                                  </>
+                                ) : (
+                                  <>
+                                    <FaEye size={20} style={{ marginRight: "5px" }} />
+                                    Show Explanation?
+                                  </>
+                                )}
+                              </button>
+                            </div>
+
+                            {shownAnswers[index] && (
+                              <div className="explanation">
+                                {!explanations[index] ? (
+                                  <p>⏳ Loading explanation...</p>
+                                ) : (
+                                  explanations[index].split('\n').filter(Boolean).map((line, idx) => (
+                                    <p key={idx}>{line}</p>
+                                  ))
+                                )}
+                                <p className="final-answer">
+                                  ✅ <strong>Final Answer:</strong>{" "}
+                                  {Array.isArray(response.correctAnswer)
+                                    ? response.correctAnswer.join(", ")
+                                    : typeof response.correctAnswer === "object" && response.correctAnswer.text
+                                      ? response.correctAnswer.text
+                                      : response.correctAnswer}
+                                </p>
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
               );
             })}
+
           </div>
           {/* <p className="correct-answer-box">
                         <strong className="label">Correct Answer:</strong>
@@ -950,6 +1281,29 @@ Explanation:
       );
     }
   };
+
+  // Called when answering a sub-question
+  const handleSubQuestionAnswerSelect = (option, subIndex) => {
+    const newAnswers = [...(selectedAnswers[currentQuestionIndex] || [])];
+    newAnswers[subIndex] = option;
+    setSelectedAnswers({
+      ...selectedAnswers,
+      [currentQuestionIndex]: newAnswers,
+    });
+  };
+
+  const handleSubQuestionTextAnswer = (e, subIndex) => {
+    const value = e.target.value;
+    const updatedAnswers = [...(selectedAnswers[currentQuestionIndex] || [])];
+    updatedAnswers[subIndex] = value;
+
+    setSelectedAnswers({
+      ...selectedAnswers,
+      [currentQuestionIndex]: updatedAnswers,
+    });
+  };
+
+
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -1013,23 +1367,75 @@ Explanation:
         ) : null}
 
         <div className="questionContainer">
-          {/* <div className="questionNumberStyled">
-            <MdHelpOutline size={24} className="questionIcon" />
-            <span>Question No: {currentQuestionIndex + 1}</span>
-          </div> */}
           {!isTriviaQuestion && (
             <div className="questionNumberStyled">
               <MdHelpOutline size={24} className="questionIcon" />
               <span>Question No: {displayQuestionIndex + 1}</span>
             </div>
           )}
-          <h2 className="questionText">
+          {/*  <h2 className="questionText">
             {isTriviaQuestion && <span className="triviaTag">Trivia</span>}
             <br />
             {isHTML(currentQuestion.question)
               ? parse(currentQuestion.question)
               : currentQuestion.question}
-          </h2>
+          </h2>*/}
+          {currentQuestion.mainQuestion ? (
+            <div className="multiQuestionContainer">
+              <h2 className="questionText">
+                {isHTML(currentQuestion.mainQuestion)
+                  ? parse(currentQuestion.mainQuestion)
+                  : currentQuestion.mainQuestion}
+              </h2>
+
+              {currentQuestion.subQuestions?.map((sub, index) => (
+                <div key={index} className="subQuestionBlock">
+                  <div className="subQuestionText">
+                    {isHTML(sub.question) ? parse(sub.question) : sub.question}
+                  </div>
+
+                  {sub.type === "MCQ" && Array.isArray(sub.options) && (
+                    <ul className="optionsList">
+                      {sub.options.map((opt, optIndex) => {
+                        const isSelected =
+                          selectedAnswers[currentQuestionIndex]?.[index] === opt;
+                        return (
+                          <li
+                            key={optIndex}
+                            className={`optionItem ${isSelected ? "selected" : ""}`}
+                            onClick={() => handleSubQuestionAnswerSelect(opt, index)}
+                          >
+                            <span className="optionText">{opt}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+
+                  {sub.type === "FILL_IN_THE_BLANKS" && (
+                    <div className="fillBlankContainer">
+                      <input
+                        type="text"
+                        placeholder="Type your answer here"
+                        value={selectedAnswers[currentQuestionIndex]?.[index] || ""}
+                        onChange={(e) => handleSubQuestionTextAnswer(e, index)}
+                        className="fillBlankInput"
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <h2 className="questionText">
+              {isTriviaQuestion && <span className="triviaTag">Trivia</span>}
+              <br />
+              {isHTML(currentQuestion.question)
+                ? parse(currentQuestion.question)
+                : currentQuestion.question}
+            </h2>
+          )}
+
 
 
           {currentQuestion.type === "FILL_IN_THE_BLANKS" ? (
