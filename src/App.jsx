@@ -12,7 +12,7 @@ import Start from './components/start/start';
 import firebaseServices from './components/firebase/firebaseSetup';
 import Chat from './components/start/chat';
 import PracticeTopics from './components/start/PracticeTopics';
-import ClassCard from './components/start/ClassCard';
+import ClassCard from './components/start/classCard';
 
 const ProtectedRoute = ({ children }) => {
   const isAuthenticated = localStorage.getItem("user");
