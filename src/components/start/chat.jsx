@@ -9,6 +9,61 @@ import { FiPlus } from "react-icons/fi";
 import copyIcon from "./copyText.png";
 import { FaCheckCircle } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
+import { useEffect } from "react"; 
+
+import { getAuth } from "firebase/auth";
+import firebaseServices from "../firebase/firebaseSetup.js";
+
+const { db, auth, ref, push, set, get, child } = firebaseServices;
+
+
+
+
+
+// Save chat message
+const saveToChatHistory = async (question, answer, image = null) => {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const db = getDatabase();
+    const chatRef = ref(db, `users/${user.uid}/chatHistory`);
+    const newChat = push(chatRef);
+    await set(newChat, {
+      question,
+      answer,
+      imageUrl: image || null,
+      timestamp: Date.now(),
+    });
+  } catch (err) {
+    console.error("Failed to save chat:", err);
+  }
+};
+
+// Load chat history on mount
+const loadChatHistory = async () => {
+  try {
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) return [];
+
+    const db = getDatabase();
+    const snapshot = await get(child(ref(db), `users/${user.uid}/chatHistory`));
+    if (snapshot.exists()) {
+      const data = Object.values(snapshot.val());
+      return data.sort((a, b) => a.timestamp - b.timestamp);
+    } else {
+      return [];
+    }
+  } catch (err) {
+    console.error("Failed to load chat:", err);
+    return [];
+  }
+};
+
+
+
 
 const GEMINI_API_KEY = "AIzaSyAhC4gJXrvbM7UOTPBiu_a3qHl7TG83MPU"; // 🔐 Replace with your key
 
@@ -17,6 +72,9 @@ const Chat = () => {
   const [image, setImage] = useState(null);
   const [response, setResponse] = useState("");
   const [loading, setLoading] = useState(false);
+    const auth = getAuth();
+  const user = auth.currentUser;
+  const uid = user?.uid || "guest";
   const [conversation, setConversation] = useState([
     {
       question: "",
@@ -87,7 +145,7 @@ const Chat = () => {
     const prompt = ` ${question}`;
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`,
       {
         method: "POST",
         headers: {
@@ -131,6 +189,7 @@ const Chat = () => {
     }
 
     const ans = await getAnswer(finalQuestion);
+    const imageUrl = image ? URL.createObjectURL(image) : null;
 
     setConversation((prev) => [
       ...prev,
@@ -140,6 +199,11 @@ const Chat = () => {
         answer: ans,
       },
     ]);
+    await saveToChatHistory(
+      image && !question ? "" : finalQuestion,
+      ans,
+      image ? URL.createObjectURL(image) : null
+    );
 
     setResponse(ans);
     setQuestion("");
@@ -165,6 +229,55 @@ const Chat = () => {
   };
 
   const [copiedIndex, setCopiedIndex] = useState(null);
+  const saveToChatHistory = async (question, answer, imageUrl) => {
+    const userId = auth.currentUser?.uid || "guest";
+    const chatRef = ref(db, `chatHistory/${userId}`);
+
+    await push(chatRef, {
+      question,
+      answer,
+      imageUrl: imageUrl || null,
+      timestamp: new Date().toISOString(),
+    });
+
+
+  };
+  const loadChatHistory = async () => {
+    const userId = auth.currentUser?.uid || "guest";
+    const chatRef = ref(db, `chatHistory/${userId}`);
+
+    try {
+      const snapshot = await get(chatRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        return Object.values(data);
+      }
+      return [];
+    } catch (error) {
+      console.error("Error fetching chat history:", error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+  const fetchHistory = async () => {
+    const history = await loadChatHistory();
+    if (history.length > 0) {
+      setConversation([
+        { question: "", answer: "Hi there, how can I help you?" },
+        ...history.map(item => ({
+          question: item.question,
+          answer: item.answer,
+          image: item.imageUrl || null,
+        }))
+      ]);
+      setIsChatStarted(true);
+    }
+  };
+
+  fetchHistory();
+}, []);
+
 
   const handleCopyToClipboard = (text, index) => {
     if (navigator.clipboard && window.isSecureContext) {
@@ -291,15 +404,13 @@ const Chat = () => {
                 )}
 
                 <button
-                  className={`uploadMainBtn ${
-                    showUploadOptions ? "activeUpload" : ""
-                  }`}
+                  className={`uploadMainBtn ${showUploadOptions ? "activeUpload" : ""
+                    }`}
                   onClick={() => setShowUploadOptions(!showUploadOptions)}
                 >
                   <FiPlus
-                    className={`plusIcon ${
-                      showUploadOptions ? "activeUpload" : ""
-                    }`}
+                    className={`plusIcon ${showUploadOptions ? "activeUpload" : ""
+                      }`}
                   />
                   Upload
                 </button>
@@ -328,11 +439,10 @@ const Chat = () => {
                   Get Hint!
                 </button>
                 <button
-                  className={`send-btn ${
-                    (question.trim() || image) && !loading
+                  className={`send-btn ${(question.trim() || image) && !loading
                       ? "active"
                       : "disabled"
-                  }`}
+                    }`}
                   onClick={handleClick}
                   disabled={!(question.trim() || image) || loading}
                 >
@@ -458,7 +568,7 @@ const Chat = () => {
                 )}
 
                 <input
-                ref={inputRef}
+                  ref={inputRef}
                   className="input11"
                   type="text"
                   placeholder="Ask anything..."
@@ -513,15 +623,13 @@ const Chat = () => {
                   )}
 
                   <button
-                    className={`uploadMainBtn ${
-                      showUploadOptions ? "activeUpload" : ""
-                    }`}
+                    className={`uploadMainBtn ${showUploadOptions ? "activeUpload" : ""
+                      }`}
                     onClick={() => setShowUploadOptions(!showUploadOptions)}
                   >
                     <FiPlus
-                      className={`plusIcon ${
-                        showUploadOptions ? "activeUpload" : ""
-                      }`}
+                      className={`plusIcon ${showUploadOptions ? "activeUpload" : ""
+                        }`}
                     />
                     Upload
                   </button>
@@ -549,11 +657,10 @@ const Chat = () => {
                     Get Hint!
                   </button>
                   <button
-                    className={`send-btn ${
-                      (question.trim() || image) && !loading
+                    className={`send-btn ${(question.trim() || image) && !loading
                         ? "active"
                         : "disabled"
-                    }`}
+                      }`}
                     onClick={handleClick}
                     disabled={!(question.trim() || image) || loading}
                   >
