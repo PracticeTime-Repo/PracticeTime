@@ -21,21 +21,6 @@ import { IoPlaySkipForward } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 // import SignupImage from "./SignupImage.png";
 
-
-
-
-
-
-const stripHTML = (html) => {
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  return doc.body.textContent || "";
-};
-
-
-
-
-
-
 const Quiz = () => {
   const { auth, provider, db, ref, set, get, child } = firebaseServices;
 
@@ -598,23 +583,14 @@ Explanation:
         console.log("Trivia question, skipping answer check.");
       }
 
-  updatedResponses[currentQuestionIndex] = {
-  questionId: currentQuestion.id,
-  userAnswer: currentAnswer || "(Skipped)",
-  correctAnswer: currentQuestion.correctAnswer,
-  isCorrect,
-  type: currentQuestion.type,
-  explanation,
-question: stripHTML(currentQuestion.question || ""),
-
-  difficulty: currentQuestion.difficultyLevel || "N/A",
-  grade: currentQuestion.grade || "N/A",
-  topic: currentQuestion.topic || "N/A",
-  topicList: currentQuestion.topicList || [],
-  options: currentQuestion.options || {},
-  date: currentQuestion.date || null
-};
-
+      updatedResponses[currentQuestionIndex] = {
+        questionId: currentQuestion.id,
+        userAnswer: currentAnswer || "(Skipped)",
+        correctAnswer: currentQuestion.correctAnswer,
+        isCorrect,
+        type: currentQuestion.type,
+        explanation,
+      };
 
       console.log("Updated User Response for main question:", updatedResponses[currentQuestionIndex]);
       setUserResponses(updatedResponses);
@@ -649,24 +625,15 @@ question: stripHTML(currentQuestion.question || ""),
     }
 
     // Save the skipped question response
- // Save the skipped question response
-const updatedResponses = [...userResponses];
-updatedResponses[currentQuestionIndex] = {
-  questionId: currentQuestion.id,
-  userAnswer: "(Skipped)",
-  correctAnswer: currentQuestion.correctAnswer,
-  isCorrect: false,
-  skipped: true,
-  type: currentQuestion.type,
-  question: stripHTML(currentQuestion.question || ""),
-
-  difficulty: currentQuestion.difficultyLevel || "N/A",
-  grade: currentQuestion.grade || "N/A",
-  topic: currentQuestion.topic || "N/A",
-  topicList: currentQuestion.topicList || [],
-  options: currentQuestion.options || {},
-  date: currentQuestion.date || null,
-};
+    const updatedResponses = [...userResponses];
+    updatedResponses[currentQuestionIndex] = {
+      questionId: currentQuestion.id,
+      userAnswer: "(Skipped)",
+      correctAnswer: currentQuestion.correctAnswer,
+      isCorrect: false,
+      skipped: true,
+      type: currentQuestion.type,
+    };
 
     setUserResponses(updatedResponses);
 
