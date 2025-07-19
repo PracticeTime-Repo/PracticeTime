@@ -53,7 +53,7 @@ padding-left: 20px;
 }
 .icon3 {
   padding: 1px;
-  border: 1.5px solid black;
+  border: 1.5px solid rgb(160, 152, 152);
   border-radius: 2px; /* optional, for rounded border */
 }
 
@@ -218,11 +218,16 @@ padding-left: 20px;
 }
 
 .topic-title {
-  padding-right: 1rem;
-  font-size:14px;
+  max-width: 170px;          /* Limit maximum width */
+  display: inline-block;     /* Allow max-width to take effect */
+  white-space: normal;       /* Allow wrapping */
+  word-wrap: break-word;     /* Wrap long words if necessary */
+  font-size: 14px;
   font-weight: 400;
   color: #111827;
   margin: 0;
+  /* padding-right: 1rem; */
+  padding: 3px 10px 3px 0px;
 }
 
 
