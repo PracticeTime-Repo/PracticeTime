@@ -472,146 +472,146 @@ Explanation:
   //   }
   // };
   const handleNextQuestion = async () => {
-  setShowAnswerError(false);
-  const currentAnswer = selectedAnswers[currentQuestionIndex];
-  const currentQuestion = questions[currentQuestionIndex];
+    setShowAnswerError(false);
+    const currentAnswer = selectedAnswers[currentQuestionIndex];
+    const currentQuestion = questions[currentQuestionIndex];
 
-  console.log("Current Question Index:", currentQuestionIndex);
-  console.log("Current Question:", currentQuestion);
-  console.log("Current Answer:", currentAnswer);
+    console.log("Current Question Index:", currentQuestionIndex);
+    console.log("Current Question:", currentQuestion);
+    console.log("Current Answer:", currentAnswer);
 
-  if (!currentAnswer && currentQuestion.type !== "TRIVIA") return;
+    if (!currentAnswer && currentQuestion.type !== "TRIVIA") return;
 
-  setVerifying(true);
+    setVerifying(true);
 
-  try {
-    let isCorrect = false;
-    let explanation = "";
+    try {
+      let isCorrect = false;
+      let explanation = "";
 
-    let updatedResponses = [...userResponses];
+      let updatedResponses = [...userResponses];
 
-    if (currentQuestion.mainQuestion && Array.isArray(currentQuestion.subQuestions)) {
-      console.log("Handling sub-questions...");
+      if (currentQuestion.mainQuestion && Array.isArray(currentQuestion.subQuestions)) {
+        console.log("Handling sub-questions...");
 
-      // Check if all sub-question answers are filled
-      const allAnswered = currentQuestion.subQuestions.every((sub, i) => {
-        const userAns = currentAnswer?.[i];
-        return userAns !== undefined && userAns !== null && userAns !== "";
-      });
-
-      if (!allAnswered) {
-        setShowAnswerError(true);
-        setVerifying(false);
-        return;
-      }
-
-      const subResults = await Promise.all(
-        currentQuestion.subQuestions.map(async (sub, i) => {
+        // Check if all sub-question answers are filled
+        const allAnswered = currentQuestion.subQuestions.every((sub, i) => {
           const userAns = currentAnswer?.[i];
-          const correctAns = sub.correctAnswer;
-
-          console.log(`Sub-question ${i + 1}:`, sub);
-          console.log(`User Answer:`, userAns);
-          console.log(`Correct Answer:`, correctAns);
-
-          if (sub.type === "FILL_IN_THE_BLANKS") {
-            const result = await verifyAnswerWithGemini(
-              sub.question,
-              correctAns,
-              userAns
-            );
-
-            console.log(`Verification Result for FILL_IN_THE_BLANKS [${sub.id}]:`, result);
-
-            return {
-              questionId: sub.id,
-              userAnswer: userAns,
-              correctAnswer: correctAns,
-              isCorrect: result.isCorrect,
-              explanation: result.explanation,
-              type: sub.type,
-            };
-          } else if (sub.type === "MCQ") {
-            const isCorrectMCQ = isAnswerCorrect(userAns, correctAns);
-
-            console.log(`Verification Result for MCQ [${sub.id}]:`, {
-              isCorrect: isCorrectMCQ
-            });
-
-            return {
-              questionId: sub.id,
-              userAnswer: userAns,
-              correctAnswer: correctAns,
-              isCorrect: isCorrectMCQ,
-              explanation: "",
-              type: sub.type,
-            };
-          }
-        })
-      );
-
-      console.log("Sub-question Results:", subResults);
-
-      updatedResponses[currentQuestionIndex] = subResults;
-      setUserResponses(updatedResponses);
-
-    } else {
-      console.log("Handling main question...");
-
-      if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
-        const result = await verifyAnswerWithGemini(
-          currentQuestion.question,
-          currentQuestion.correctAnswer,
-          currentAnswer
-        );
-
-        console.log("Verification Result for FILL_IN_THE_BLANKS:", result);
-        isCorrect = result.isCorrect;
-        explanation = result.explanation;
-
-      } else if (currentQuestion.type === "MCQ" && currentAnswer) {
-        isCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correctAnswer);
-
-        console.log("MCQ Answer Check:", {
-          userAnswer: currentAnswer,
-          correctAnswer: currentQuestion.correctAnswer,
-          isCorrect,
+          return userAns !== undefined && userAns !== null && userAns !== "";
         });
 
-      } else if (currentQuestion.type === "TRIVIA") {
-        isCorrect = null;
-        console.log("Trivia question, skipping answer check.");
+        if (!allAnswered) {
+          setShowAnswerError(true);
+          setVerifying(false);
+          return;
+        }
+
+        const subResults = await Promise.all(
+          currentQuestion.subQuestions.map(async (sub, i) => {
+            const userAns = currentAnswer?.[i];
+            const correctAns = sub.correctAnswer;
+
+            console.log(`Sub-question ${i + 1}:`, sub);
+            console.log(`User Answer:`, userAns);
+            console.log(`Correct Answer:`, correctAns);
+
+            if (sub.type === "FILL_IN_THE_BLANKS") {
+              const result = await verifyAnswerWithGemini(
+                sub.question,
+                correctAns,
+                userAns
+              );
+
+              console.log(`Verification Result for FILL_IN_THE_BLANKS [${sub.id}]:`, result);
+
+              return {
+                questionId: sub.id,
+                userAnswer: userAns,
+                correctAnswer: correctAns,
+                isCorrect: result.isCorrect,
+                explanation: result.explanation,
+                type: sub.type,
+              };
+            } else if (sub.type === "MCQ") {
+              const isCorrectMCQ = isAnswerCorrect(userAns, correctAns);
+
+              console.log(`Verification Result for MCQ [${sub.id}]:`, {
+                isCorrect: isCorrectMCQ
+              });
+
+              return {
+                questionId: sub.id,
+                userAnswer: userAns,
+                correctAnswer: correctAns,
+                isCorrect: isCorrectMCQ,
+                explanation: "",
+                type: sub.type,
+              };
+            }
+          })
+        );
+
+        console.log("Sub-question Results:", subResults);
+
+        updatedResponses[currentQuestionIndex] = subResults;
+        setUserResponses(updatedResponses);
+
+      } else {
+        console.log("Handling main question...");
+
+        if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
+          const result = await verifyAnswerWithGemini(
+            currentQuestion.question,
+            currentQuestion.correctAnswer,
+            currentAnswer
+          );
+
+          console.log("Verification Result for FILL_IN_THE_BLANKS:", result);
+          isCorrect = result.isCorrect;
+          explanation = result.explanation;
+
+        } else if (currentQuestion.type === "MCQ" && currentAnswer) {
+          isCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correctAnswer);
+
+          console.log("MCQ Answer Check:", {
+            userAnswer: currentAnswer,
+            correctAnswer: currentQuestion.correctAnswer,
+            isCorrect,
+          });
+
+        } else if (currentQuestion.type === "TRIVIA") {
+          isCorrect = null;
+          console.log("Trivia question, skipping answer check.");
+        }
+
+        updatedResponses[currentQuestionIndex] = {
+          questionId: currentQuestion.id,
+          userAnswer: currentAnswer || "(Skipped)",
+          correctAnswer: currentQuestion.correctAnswer,
+          isCorrect,
+          type: currentQuestion.type,
+          explanation,
+        };
+
+        console.log("Updated User Response for main question:", updatedResponses[currentQuestionIndex]);
+        setUserResponses(updatedResponses);
       }
 
-      updatedResponses[currentQuestionIndex] = {
-        questionId: currentQuestion.id,
-        userAnswer: currentAnswer || "(Skipped)",
-        correctAnswer: currentQuestion.correctAnswer,
-        isCorrect,
-        type: currentQuestion.type,
-        explanation,
-      };
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        console.log("Moving to next question index:", currentQuestionIndex + 1);
+      } else {
+        const finalResponses = [...updatedResponses];
+        console.log("Quiz complete. Final user responses:", finalResponses);
+        handleQuizComplete(finalResponses);  // ✅ Pass latest updated responses
+      }
 
-      console.log("Updated User Response for main question:", updatedResponses[currentQuestionIndex]);
-      setUserResponses(updatedResponses);
+    } catch (error) {
+      console.error("Error processing answer:", error);
+      setError("There was a problem processing your answer. Please try again.");
+    } finally {
+      setVerifying(false);
     }
-
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      console.log("Moving to next question index:", currentQuestionIndex + 1);
-    } else {
-      const finalResponses = [...updatedResponses];
-      console.log("Quiz complete. Final user responses:", finalResponses);
-      handleQuizComplete(finalResponses);  // ✅ Pass latest updated responses
-    }
-
-  } catch (error) {
-    console.error("Error processing answer:", error);
-    setError("There was a problem processing your answer. Please try again.");
-  } finally {
-    setVerifying(false);
-  }
-};
+  };
 
 
 
@@ -696,13 +696,21 @@ Explanation:
         const userQuizSetsRef = ref(db, `users/${user.uid}/assignedSets`);
 
         // Ensure responses do not contain undefined values
-        const filteredResponses = responses
-          .filter((r) => r !== null) // Remove null responses
-          .map((r) => ({
-            ...r,
-            correctAnswer: r.correctAnswer ?? null, // Replace undefined with null
-            selectedAnswer: r.selectedAnswer ?? null, // Replace undefined with null
-          }));
+       const filteredResponses = responses
+  .flatMap((r) => Array.isArray(r) ? r : [r])  // flatten if nested arrays exist
+  .filter((r) => r !== null && typeof r === "object")  // filter out nulls and invalid types
+  .map((r) => ({
+    questionId: r.questionId ?? null,
+    correctAnswer: r.correctAnswer ?? null,
+    selectedAnswer: r.selectedAnswer ?? null,
+    type: r.type ?? null,
+    question: r.question ?? null,
+    options: Array.isArray(r.options) ? r.options : [],
+    // Add any other expected keys with fallback
+  }));
+console.log("Sanitized filteredResponses:", filteredResponses);
+
+
 
         // Save quiz results
         const resultsRef = ref(
@@ -1054,25 +1062,25 @@ Explanation:
               // const isCorrect = response.isCorrect;
               // const isSkipped = response.skipped;
               let isCorrect = false;
-let isSkipped = false;
+              let isSkipped = false;
 
-if (Array.isArray(response)) {
-  const allCorrect = response.every(r => r.isCorrect);
-  const allSkipped = response.every(r => r.skipped);
-  const anyIncorrect = response.some(r => !r.isCorrect && !r.skipped);
+              if (Array.isArray(response)) {
+                const allCorrect = response.every(r => r.isCorrect);
+                const allSkipped = response.every(r => r.skipped);
+                const anyIncorrect = response.some(r => !r.isCorrect && !r.skipped);
 
-  if (allCorrect) {
-    isCorrect = true;
-  } else if (allSkipped) {
-    isSkipped = true;
-  } else if (anyIncorrect) {
-    isCorrect = false;
-    isSkipped = false;
-  }
-} else {
-  isCorrect = response.isCorrect;
-  isSkipped = response.skipped;
-}
+                if (allCorrect) {
+                  isCorrect = true;
+                } else if (allSkipped) {
+                  isSkipped = true;
+                } else if (anyIncorrect) {
+                  isCorrect = false;
+                  isSkipped = false;
+                }
+              } else {
+                isCorrect = response.isCorrect;
+                isSkipped = response.skipped;
+              }
 
               const isTrivia = response.type === "TRIVIA";
               const visibleIndex = quizResults.responses
@@ -1120,7 +1128,7 @@ if (Array.isArray(response)) {
                     {/* Sub-Questions Rendering */}
                     {hasSubQuestions ? (
                       question.subQuestions.map((subQ, subIndex) => {
-                        
+
                         // const userAns = response.userAnswer;
                         const userAns = response?.[subIndex]?.userAnswer || "(Skipped)";
 

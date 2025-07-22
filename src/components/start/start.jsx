@@ -13,12 +13,17 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 const start = ({ onNavigate }) => {
   const { db, ref, get } = firebaseServices;
-  const [assignedQuizzes, setAssignedQuizzes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [dailyQuizSet, setDailyQuizSet] = useState("");
-  const [hasQuizzes, setHasQuizzes] = useState(false);
+  // const [assignedQuizzes, setAssignedQuizzes] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [dailyQuizSet, setDailyQuizSet] = useState("");
+  // const [hasQuizzes, setHasQuizzes] = useState(false);
   const [user, setUser] = useState(null);
   // const [totalStars, setTotalStars] = useState(0);
+  const [assignedQuizzes, setAssignedQuizzes] = useState([]);
+  const [dailyQuizSet, setDailyQuizSet] = useState(null);
+  const [hasQuizzes, setHasQuizzes] = useState(false);
+  const [totalStars, setTotalStars] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   // Listen for authentication state changes
   useEffect(() => {
@@ -32,7 +37,6 @@ const start = ({ onNavigate }) => {
     return () => unsubscribe();
   }, []);
 
-  // Fetch quizzes whenever user changes
   useEffect(() => {
     const fetchAssignedQuizzes = async () => {
       try {
@@ -44,66 +48,41 @@ const start = ({ onNavigate }) => {
         const userId = user.uid;
         console.log("Fetching quizzes for user:", userId);
 
-        // Fetch assigned quiz sets
         const userRef = ref(db, `users/${userId}/assignedSets`);
         const snapshot = await get(userRef);
+
+        let quizzes = [];
 
         if (snapshot.exists()) {
           const assignedSetsData = snapshot.val();
           console.log("Assigned sets data:", assignedSetsData);
 
-          let quizzes = [];
-
-          // Handle different data structures
-          // if (
-          //   typeof assignedSetsData === "object" &&
-          //   !Array.isArray(assignedSetsData)
-          // ) {
-          //   quizzes = Object.keys(assignedSetsData);
-          // } else if (Array.isArray(assignedSetsData)) {
-          //   quizzes = assignedSetsData.filter((item) => item); // Filter out null/undefined values
-          // }
-
-          // console.log("Processed quizzes:", quizzes);
-          // quizzes.reverse();
           if (typeof assignedSetsData === "object") {
             quizzes = Object.entries(assignedSetsData)
               .map(([quizId, quizData]) => ({
                 id: quizId,
-                attachedAt: quizData.attachedAt || "", // fallback in case it's missing
+                attachedAt: quizData.attachedAt || "",
               }))
-              .sort((a, b) => new Date(a.attachedAt) - new Date(b.attachedAt)) // ascending order
+              .sort((a, b) => new Date(a.attachedAt) - new Date(b.attachedAt))
               .map((item) => item.id);
           }
+
           console.log("Sorted quizzes by attachedAt:", quizzes);
 
-          // Check if there are valid quizzes
           if (quizzes.length > 0) {
-            setLoading(false);
-
             setAssignedQuizzes(quizzes);
-            // setHasQuizzes(true);
-
-            // Get daily quiz set based on the date
-            // const dailySet = getDailyQuizSet(quizzes);
-            const dailySet = quizzes[0];
-            setDailyQuizSet(dailySet);
-            console.log("Daily quiz set:", dailySet);
+            setDailyQuizSet(quizzes[0]);
+            setHasQuizzes(true);
           } else {
-            setLoading(false);
-
             setAssignedQuizzes([]);
             setHasQuizzes(false);
           }
         } else {
           console.log("No assigned sets found");
           setAssignedQuizzes([]);
-          setLoading(false);
-          // setHasQuizzes(false);
-          setHasQuizzes(true);
+          setHasQuizzes(true); // ✅ YOU WANT THIS TO BE TRUE
         }
 
-        // Fetch total stars earned
         const quizResultsRef = ref(db, `users/${userId}/quizResults`);
         const quizResultsSnapshot = await get(quizResultsRef);
 
@@ -118,23 +97,22 @@ const start = ({ onNavigate }) => {
         setHasQuizzes(false);
       } finally {
         setLoading(false);
+        console.log("hasQuizzes (async state may not reflect latest):", hasQuizzes);
       }
     };
 
     fetchAssignedQuizzes();
-  }, [user, db]); // Re-run when user or db changes
+  }, [user, db]);
 
-  // Function to calculate total stars from quiz results
+  // Calculate total stars from quiz results
   const calculateTotalStars = (quizResults) => {
     if (!quizResults) return 0;
 
-    const successfulSets = Object.values(quizResults).filter((quiz) => {
+    return Object.values(quizResults).filter((quiz) => {
       const total = parseInt(quiz.totalQuestions) || 0;
       const correct = parseInt(quiz.correctAnswers) || 0;
       return total > 0 && (correct / total) * 100 >= 50;
     }).length;
-
-    return successfulSets;
   };
 
   // Function to determine the daily quiz set based on the date
@@ -346,7 +324,7 @@ const start = ({ onNavigate }) => {
 
             {/* Quiz Message */}
             <div>
-              {!hasQuizzes ? (
+              {hasQuizzes ? (
                 <p className="quizReadyText">
                   Time to test your skills!{" "}
                   <span className="highlightLink">
@@ -363,14 +341,15 @@ const start = ({ onNavigate }) => {
 
               <div className="buttonContainer1">
                 <button
-                  className={`startQuizButton ${hasQuizzes ? "redButton" : ""}`}
+                  className={`startQuizButton ${!hasQuizzes ? "redButton" : ""}`}
                   onClick={navigateToQuiz}
-                  disabled={hasQuizzes}
+                  disabled={!hasQuizzes}
                 >
                   Let’s Practice <MdKeyboardArrowRight className="startIcon" />
                 </button>
               </div>
             </div>
+
           </div>
         </div>
 
