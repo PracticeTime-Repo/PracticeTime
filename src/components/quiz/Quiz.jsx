@@ -19,14 +19,11 @@ import emoji5 from "./emoji5.png";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { IoPlaySkipForward } from "react-icons/io5";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-// import SignupImage from "./SignupImage.png";
 
 const Quiz = () => {
   const { auth, provider, db, ref, set, get, child } = firebaseServices;
-
   // Get selectedQuizSet from localStorage instead of router state
   const [selectedQuizSet, setSelectedQuizSet] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -40,7 +37,6 @@ const Quiz = () => {
   const [skippedQuestions, setSkippedQuestions] = useState([]);
   const [shownAnswers, setShownAnswers] = useState({});
   const [explanations, setExplanations] = useState({});
-
 
   //gemini api key
   const GEMINI_API_KEY = "AIzaSyAhC4gJXrvbM7UOTPBiu_a3qHl7TG83MPU";
@@ -58,83 +54,33 @@ const Quiz = () => {
 
   useEffect(() => {
     // In your fetchQuizData function, modify it to get the order field:
-
     const fetchQuizData = async () => {
       try {
         if (!selectedQuizSet) {
           return; // Wait until selectedQuizSet is loaded
         }
-
         setLoading(true);
         const auth = getAuth();
         const user = auth.currentUser;
-
         if (!user) {
           setError("User not authenticated");
           return;
         }
-
         // Set the current quiz set
         setCurrentSet(selectedQuizSet);
-
-        // // Fetch question IDs for this specific set
-        // const setRef = ref(db, `attachedQuestionSets/${selectedQuizSet}`);
-        // const setSnapshot = await get(setRef);
-
-        // if (setSnapshot.exists()) {
-        //   const setData = setSnapshot.val();
-        //   // Extract question IDs from the set data
-        //   const questionIds = Object.keys(setData);
-
-        //   // Fetch each question with their order information
-        //   const questionPromises = questionIds.map((id) =>
-        //     get(ref(db, `questions/${id}`)).then((snap) => {
-        //       // Get the order from the set data
-        //       const order = setData[id]?.order || 0;
-
-        //       return {
-        //         snapshot: snap,
-        //         order: order,
-        //         id: id,
-        //       };
-        //     })
-        //   );
-
-        //   const questionResults = await Promise.all(questionPromises);
-
-        //   // Filter out questions that don't exist and sort by order
-        //   const loadedQuestions = questionResults
-        //     .filter((result) => result.snapshot.exists())
-        //     .map((result) => ({
-        //       id: result.id,
-        //       order: result.order,
-        //       ...result.snapshot.val(),
-        //     }))
-        //     .sort((a, b) => a.order - b.order); // Sort by the order field
-        //   console.log('loadedQuestions', loadedQuestions);
-
-        //   setQuestions(loadedQuestions);
-
-        //   // Initialize empty user responses array
-        //   setUserResponses(new Array(loadedQuestions.length).fill(null));
         const setRef = ref(db, `attachedQuestionSets/${selectedQuizSet}`);
         const setSnapshot = await get(setRef);
-
         if (setSnapshot.exists()) {
           const setData = setSnapshot.val();
           console.log("setData", setData);
-
           const questionIds = Object.keys(setData);
           console.log("questionIds", questionIds);
-
           const fetchQuestions = questionIds.map(async (id) => {
             const order = setData[id]?.order || 0;
-
             const [singleSnap, multiSnap] = await Promise.all([
               get(ref(db, `questions/${id}`)),
               get(ref(db, `multiQuestions/${id}`)),
             ]);
-
             if (singleSnap.exists()) {
               return {
                 id,
@@ -151,19 +97,14 @@ const Quiz = () => {
               return null;
             }
           });
-
           const questionResults = await Promise.all(fetchQuestions);
-
           // Filter out nulls and sort by order
           const loadedQuestions = questionResults
             .filter((q) => q !== null)
             .sort((a, b) => a.order - b.order);
-
           console.log("loadedQuestions", loadedQuestions);
-
           setQuestions(loadedQuestions);
           setUserResponses(new Array(loadedQuestions.length).fill(null));
-
         } else {
           setError(`No questions found in set: ${selectedQuizSet}`);
         }
@@ -174,26 +115,21 @@ const Quiz = () => {
         setLoading(false);
       }
     };
-
     fetchQuizData();
   }, [selectedQuizSet, db]);
 
   // Enhanced normalization function
   const normalizeAnswer = (answer) => {
     if (answer === null || answer === undefined) return "";
-
     // Convert to string, trim whitespace, and convert to lowercase
     let normalized = String(answer).trim().toLowerCase();
-
     // Remove extra spaces, punctuation and special characters
     normalized = normalized.replace(/\s+/g, " ");
     normalized = normalized.replace(/[.,;:!?'"()\[\]{}]/g, "");
-
     // Handle numeric values (e.g., "1" and 1 should match)
     if (!isNaN(normalized) && !isNaN(parseFloat(normalized))) {
       normalized = parseFloat(normalized).toString();
     }
-
     // Common word replacements for numbers
     const numberWords = {
       zero: "0",
@@ -218,22 +154,18 @@ const Quiz = () => {
       nineteen: "19",
       twenty: "20",
     };
-
     // Check if the answer is a number word and replace it
     if (numberWords[normalized]) {
       normalized = numberWords[normalized];
     }
-
     return normalized;
   };
 
   // Enhanced fallback verification with better normalization
   const fallbackVerification = (userAnswer, correctAnswer) => {
     console.log("Using fallback verification method");
-
     // Normalize user answer
     const normalizedUserAnswer = normalizeAnswer(userAnswer);
-
     // Handle different ways correctAnswer might be stored
     if (typeof correctAnswer === "string") {
       return normalizedUserAnswer === normalizeAnswer(correctAnswer);
@@ -249,7 +181,6 @@ const Quiz = () => {
     ) {
       return normalizedUserAnswer === normalizeAnswer(correctAnswer.text);
     }
-
     return false;
   };
 
@@ -263,27 +194,22 @@ const Quiz = () => {
       console.error("Gemini API key is missing");
       return { isCorrect: false, explanation: "API key missing" };
     }
-
     try {
       console.log("Verifying answer with Gemini:");
       console.log("Question:", question);
       console.log("Correct answer:", correctAnswer);
       console.log("User answer:", userAnswer);
-
       let formattedCorrectAnswer = correctAnswer;
       if (Array.isArray(correctAnswer)) {
         formattedCorrectAnswer = correctAnswer.join(" OR ");
       } else if (typeof correctAnswer === "object" && correctAnswer.text) {
         formattedCorrectAnswer = correctAnswer.text;
       }
-
       const prompt = `
 You are a quiz evaluator.
-
 Question: "${question}"
 Correct answer: "${formattedCorrectAnswer}"
 User's answer: "${userAnswer || "The user skipped the question."}"
-
 Instructions:
 1. Determine whether the user's answer is correct or incorrect based on meaning (not exact text).
 2. Even if skipped, assume the user doesn't know and explain the correct answer anyway.
@@ -295,7 +221,6 @@ Explanation:
 ...
 ...
 `;
-
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
         {
@@ -316,7 +241,6 @@ Explanation:
           }),
         }
       );
-
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Gemini API error:", errorData);
@@ -325,10 +249,8 @@ Explanation:
           explanation: "Failed to fetch explanation from Gemini.",
         };
       }
-
       const data = await response.json();
       const resultText = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-
       if (!resultText) {
         console.error("Empty Gemini response");
         return {
@@ -336,20 +258,15 @@ Explanation:
           explanation: "No explanation received from Gemini.",
         };
       }
-
-      console.log("Gemini response:\n", resultText);
-
+      console.log("Gemini response:", resultText);
       const verdictMatch = resultText.match(/Verdict:\s*(correct|incorrect)/i);
       const explanationMatch = resultText.match(/Explanation:\s*([\s\S]*)/i); // Match multiline explanation
-
       const verdict = verdictMatch ? verdictMatch[1].toLowerCase() : null;
       const explanation = explanationMatch ? explanationMatch[1].trim() : "No explanation provided.";
-
       return {
         isCorrect: verdict === "correct",
         explanation,
       };
-
     } catch (error) {
       console.error("Error verifying with Gemini:", error);
       return {
@@ -359,16 +276,14 @@ Explanation:
     }
   };
 
-
   // Legacy answer verification function (kept for backward compatibility)
   const isAnswerCorrect = (userAnswer, correctAnswer) => {
     return fallbackVerification(userAnswer, correctAnswer);
   };
-  const [showAnswerError, setShowAnswerError] = useState(false);
 
+  const [showAnswerError, setShowAnswerError] = useState(false);
   const handleNextClick = () => {
     const currentAnswer = selectedAnswers[currentQuestionIndex];
-
     const isEmptyAnswer =
       !isTriviaQuestion &&
       (
@@ -377,152 +292,53 @@ Explanation:
         (typeof currentAnswer === "string" && currentAnswer.trim() === "") ||
         (Array.isArray(currentAnswer) && currentAnswer.every(ans => typeof ans !== "string" || ans.trim() === ""))
       );
-
     if (isEmptyAnswer) {
       setShowAnswerError(true);
       return;
     }
-
     setShowAnswerError(false);
     handleNextQuestion();
   };
 
-
-  // const handleNextQuestion = async () => {
-  //   setShowAnswerError(false);
-  //   const currentAnswer = selectedAnswers[currentQuestionIndex];
-  //   const currentQuestion = questions[currentQuestionIndex];
-
-  //   if (!currentAnswer && currentQuestion.type !== "TRIVIA") {
-  //     return; // Prevent proceeding without an answer for non-trivia questions
-  //   }
-
-  //   // Set verifying state to show loading indicator
-  //   setVerifying(true);
-
-  //   try {
-  //     // Check answer using Gemini for text answers
-  //     let isCorrect = false;
-  //     let explanation = "";
-  //     // if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
-  //     //   console.log("Verifying fill-in-the-blanks answer");
-
-  //     //   isCorrect = await verifyAnswerWithGemini(
-  //     //     currentQuestion.question,
-  //     //     currentQuestion.correctAnswer,
-  //     //     currentAnswer
-  //     //   );
-
-  //     //   console.log(
-  //     //     "Final verification result:",
-  //     //     isCorrect ? "Correct" : "Incorrect"
-  //     //   );
-  //     // } 
-  //     if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
-  //       console.log("Verifying fill-in-the-blanks answer");
-
-  //       const result = await verifyAnswerWithGemini(
-  //         currentQuestion.question,
-  //         currentQuestion.correctAnswer,
-  //         currentAnswer
-  //       );
-
-  //       isCorrect = result.isCorrect;
-  //       explanation = result.explanation;
-
-  //       console.log("Final verification result:", isCorrect ? "Correct" : "Incorrect");
-  //       console.log("Explanation:", explanation);
-  //     }
-
-  //     else if (currentQuestion.type === "MCQ" && currentAnswer) {
-  //       // For MCQ, use regular comparison
-  //       isCorrect = isAnswerCorrect(
-  //         currentAnswer,
-  //         currentQuestion.correctAnswer
-  //       );
-  //     } else if (currentQuestion.type === "TRIVIA") {
-  //       // Trivia questions are just for information, no correct/incorrect
-  //       isCorrect = null;
-  //     }
-
-  //     // Save the current answer to user responses
-  //     const updatedResponses = [...userResponses];
-  //     updatedResponses[currentQuestionIndex] = {
-  //       questionId: currentQuestion.id,
-  //       userAnswer: currentAnswer || "(Skipped)",
-  //       correctAnswer: currentQuestion.correctAnswer,
-  //       isCorrect: isCorrect,
-  //       type: currentQuestion.type,
-  //       explanation: explanation,
-  //     };
-
-  //     setUserResponses(updatedResponses);
-
-  //     if (currentQuestionIndex < questions.length - 1) {
-  //       setCurrentQuestionIndex(currentQuestionIndex + 1);
-  //     } else {
-  //       // Handle quiz completion
-  //       handleQuizComplete(updatedResponses);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error processing answer:", error);
-  //     setError("There was a problem processing your answer. Please try again.");
-  //   } finally {
-  //     setVerifying(false);
-  //   }
-  // };
   const handleNextQuestion = async () => {
     setShowAnswerError(false);
     const currentAnswer = selectedAnswers[currentQuestionIndex];
     const currentQuestion = questions[currentQuestionIndex];
-
     console.log("Current Question Index:", currentQuestionIndex);
     console.log("Current Question:", currentQuestion);
     console.log("Current Answer:", currentAnswer);
-
     if (!currentAnswer && currentQuestion.type !== "TRIVIA") return;
-
     setVerifying(true);
-
     try {
       let isCorrect = false;
       let explanation = "";
-
       let updatedResponses = [...userResponses];
-
       if (currentQuestion.mainQuestion && Array.isArray(currentQuestion.subQuestions)) {
         console.log("Handling sub-questions...");
-
         // Check if all sub-question answers are filled
         const allAnswered = currentQuestion.subQuestions.every((sub, i) => {
           const userAns = currentAnswer?.[i];
           return userAns !== undefined && userAns !== null && userAns !== "";
         });
-
         if (!allAnswered) {
           setShowAnswerError(true);
           setVerifying(false);
           return;
         }
-
         const subResults = await Promise.all(
           currentQuestion.subQuestions.map(async (sub, i) => {
             const userAns = currentAnswer?.[i];
             const correctAns = sub.correctAnswer;
-
             console.log(`Sub-question ${i + 1}:`, sub);
             console.log(`User Answer:`, userAns);
             console.log(`Correct Answer:`, correctAns);
-
             if (sub.type === "FILL_IN_THE_BLANKS") {
               const result = await verifyAnswerWithGemini(
                 sub.question,
                 correctAns,
                 userAns
               );
-
               console.log(`Verification Result for FILL_IN_THE_BLANKS [${sub.id}]:`, result);
-
               return {
                 questionId: sub.id,
                 userAnswer: userAns,
@@ -533,11 +349,9 @@ Explanation:
               };
             } else if (sub.type === "MCQ") {
               const isCorrectMCQ = isAnswerCorrect(userAns, correctAns);
-
               console.log(`Verification Result for MCQ [${sub.id}]:`, {
                 isCorrect: isCorrectMCQ
               });
-
               return {
                 questionId: sub.id,
                 userAnswer: userAns,
@@ -549,40 +363,31 @@ Explanation:
             }
           })
         );
-
         console.log("Sub-question Results:", subResults);
-
         updatedResponses[currentQuestionIndex] = subResults;
         setUserResponses(updatedResponses);
-
       } else {
         console.log("Handling main question...");
-
         if (currentQuestion.type === "FILL_IN_THE_BLANKS" && currentAnswer) {
           const result = await verifyAnswerWithGemini(
             currentQuestion.question,
             currentQuestion.correctAnswer,
             currentAnswer
           );
-
           console.log("Verification Result for FILL_IN_THE_BLANKS:", result);
           isCorrect = result.isCorrect;
           explanation = result.explanation;
-
         } else if (currentQuestion.type === "MCQ" && currentAnswer) {
           isCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correctAnswer);
-
           console.log("MCQ Answer Check:", {
             userAnswer: currentAnswer,
             correctAnswer: currentQuestion.correctAnswer,
             isCorrect,
           });
-
         } else if (currentQuestion.type === "TRIVIA") {
           isCorrect = null;
           console.log("Trivia question, skipping answer check.");
         }
-
         updatedResponses[currentQuestionIndex] = {
           questionId: currentQuestion.id,
           userAnswer: currentAnswer || "(Skipped)",
@@ -591,11 +396,9 @@ Explanation:
           type: currentQuestion.type,
           explanation,
         };
-
         console.log("Updated User Response for main question:", updatedResponses[currentQuestionIndex]);
         setUserResponses(updatedResponses);
       }
-
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         console.log("Moving to next question index:", currentQuestionIndex + 1);
@@ -604,7 +407,6 @@ Explanation:
         console.log("Quiz complete. Final user responses:", finalResponses);
         handleQuizComplete(finalResponses);  // ✅ Pass latest updated responses
       }
-
     } catch (error) {
       console.error("Error processing answer:", error);
       setError("There was a problem processing your answer. Please try again.");
@@ -613,17 +415,13 @@ Explanation:
     }
   };
 
-
-
   const handleSkipQuestion = () => {
     setShowAnswerError(false);
     const currentQuestion = questions[currentQuestionIndex];
-
     // Avoid duplicate entries in skippedQuestions
     if (!skippedQuestions.includes(currentQuestionIndex)) {
       setSkippedQuestions((prev) => [...prev, currentQuestionIndex]);
     }
-
     // Save the skipped question response
     const updatedResponses = [...userResponses];
     updatedResponses[currentQuestionIndex] = {
@@ -634,9 +432,7 @@ Explanation:
       skipped: true,
       type: currentQuestion.type,
     };
-
     setUserResponses(updatedResponses);
-
     // Move to the next question or finish the quiz
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
@@ -650,7 +446,6 @@ Explanation:
     const validResponses = responses.flat().filter(
       (response) => response !== null && response.type !== "TRIVIA"
     );
-
     // Count only non-trivia questions for scoring
     const totalQuestions = validResponses.length;
     const correctAnswers = validResponses.filter(
@@ -660,13 +455,11 @@ Explanation:
       totalQuestions > 0
         ? Math.round((correctAnswers / totalQuestions) * 100)
         : 0;
-
     let performance;
     if (score >= 90) performance = "Excellent";
     else if (score >= 75) performance = "Good";
     else if (score >= 60) performance = "Satisfactory";
     else performance = "Needs Improvement";
-
     return {
       totalQuestions,
       correctAnswers,
@@ -676,78 +469,84 @@ Explanation:
     };
   };
 
-  const handleQuizComplete = async (responses) => {
-    try {
-      console.log("final responses", responses);
+const handleQuizComplete = async (responses) => { // 'responses' is the array of user response objects
+  try {
+    console.log("Final responses received in handleQuizComplete", responses);
 
-      // Calculate the results
-      const results = calculateResults(responses);
-      console.log("results", results);
+    // 1. Calculate results using the processed responses
+    const results = calculateResults(responses);
+    console.log("Calculated results", results);
 
-      setQuizResults(results);
-      setQuizCompleted(true);
+    // 2. Update state for UI
+    setQuizResults(results);
+    setQuizCompleted(true);
 
-      // Save the user's responses to Firebase
-      const auth = getAuth();
-      const user = auth.currentUser;
+    // 3. Save results to Firebase
+    const auth = getAuth();
+    const user = auth.currentUser;
 
-      if (user && currentSet) {
-        // Reference to the user's quiz sets
-        const userQuizSetsRef = ref(db, `users/${user.uid}/assignedSets`);
+    if (user && currentSet) {
+      // Reference to the user's quiz sets (for removal)
+      const userQuizSetsRef = ref(db, `users/${user.uid}/assignedSets`);
 
-        // Ensure responses do not contain undefined values
-       const filteredResponses = responses
-  .flatMap((r) => Array.isArray(r) ? r : [r])  // flatten if nested arrays exist
-  .filter((r) => r !== null && typeof r === "object")  // filter out nulls and invalid types
-  .map((r) => ({
-    questionId: r.questionId ?? null,
-    correctAnswer: r.correctAnswer ?? null,
-    selectedAnswer: r.selectedAnswer ?? null,
-    type: r.type ?? null,
-    question: r.question ?? null,
-    options: Array.isArray(r.options) ? r.options : [],
-    // Add any other expected keys with fallback
-  }));
-console.log("Sanitized filteredResponses:", filteredResponses);
-
-
-
-        // Save quiz results
-        const resultsRef = ref(
-          db,
-          `users/${user.uid}/quizResults/${currentSet}`
-        );
-        await set(resultsRef, {
-          completedAt: new Date().toISOString(),
-          score: results.score,
-          correctAnswers: results.correctAnswers,
-          totalQuestions: results.totalQuestions,
-          selectedSet: currentSet,
-          responses: filteredResponses,
+      // 4. Sanitize responses for saving to Firebase
+      //    - Flatten potential multi-question arrays
+      //    - Filter out null/invalid items
+      //    - Ensure no undefined values are passed to Firebase
+      const filteredResponses = responses
+        .flatMap((r) => (Array.isArray(r) ? r : [r])) // Flatten if nested arrays exist (multi-questions)
+        .filter((r) => r !== null && typeof r === "object" && r.questionId) // Filter valid objects with ID
+        .map((r) => {
+          // Create a new object, explicitly defining fields and providing fallbacks for undefined
+          return {
+            questionId: r.questionId ?? null,
+            correctAnswer: r.correctAnswer ?? null, // Ensure correctAnswer is not undefined
+            userAnswer: r.userAnswer ?? null,       // Ensure userAnswer is not undefined
+            type: r.type ?? null,
+            question: r.question ?? null,           // Include if available
+            options: Array.isArray(r.options) ? r.options : [], // Ensure array
+            isCorrect: r.isCorrect ?? false,        // Ensure boolean
+            skipped: r.skipped ?? false,            // Ensure boolean if used
+            explanation: r.explanation ?? "",       // Ensure string if used
+            // Add any other expected keys from 'r' with appropriate fallbacks
+            // Example: subQuestions: Array.isArray(r.subQuestions) ? r.subQuestions : [],
+          };
         });
 
-        // Remove the completed quiz set from user's available sets
-        const availableSetsSnapshot = await get(userQuizSetsRef);
-        if (availableSetsSnapshot.exists()) {
-          const availableSets = availableSetsSnapshot.val();
+      console.log("Sanitized filteredResponses ready for saving:", filteredResponses);
 
-          // Remove the current set from available sets
-          delete availableSets[currentSet];
+      // 5. Save quiz results to Firebase
+      const resultsRef = ref(db, `users/${user.uid}/quizResults/${currentSet}`);
+      await set(resultsRef, {
+        completedAt: new Date().toISOString(),
+        score: results.score,
+        correctAnswers: results.correctAnswers,
+        totalQuestions: results.totalQuestions,
+        selectedSet: currentSet,
+        responses: filteredResponses, // Save the sanitized responses
+      });
 
-          // Update the available sets
-          await set(userQuizSetsRef, availableSets);
-        }
-
-        console.log("Quiz completed, results saved, and set removed!", results);
+      // 6. Remove the completed quiz set from user's available sets
+      const availableSetsSnapshot = await get(userQuizSetsRef);
+      if (availableSetsSnapshot.exists()) {
+        const availableSets = availableSetsSnapshot.val();
+        // Remove the current set from available sets
+        delete availableSets[currentSet];
+        // Update the available sets
+        await set(userQuizSetsRef, availableSets);
       }
-    } catch (error) {
-      console.error("Error saving quiz results and removing set:", error);
+
+      console.log("Quiz completed, results saved, and set removed!", results);
     }
-  };
+  } catch (error) {
+    console.error("Error saving quiz results and removing set:", error);
+    // Optionally, show an error message to the user
+    setError("Failed to save quiz results. Please try again.");
+  }
+};
 
   const handleAnswerSelect = (option) => {
     const currentQuestion = questions[currentQuestionIndex];
-
     if (currentQuestion.type === "MCQ") {
       setSelectedAnswers({
         ...selectedAnswers,
@@ -755,8 +554,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
       });
     }
   };
-
-
 
   const handleTextAnswer = (event) => {
     setSelectedAnswers({
@@ -771,6 +568,7 @@ console.log("Sanitized filteredResponses:", filteredResponses);
       window.appNavigate("start");
     }
   };
+
   const isHTML = (str) => {
     return /<[^>]+>/.test(str);
   };
@@ -817,6 +615,7 @@ console.log("Sanitized filteredResponses:", filteredResponses);
       </div>
     );
   }
+
   const getScoreDetails = (score) => {
     if (score === 100) {
       return {
@@ -850,65 +649,12 @@ console.log("Sanitized filteredResponses:", filteredResponses);
       };
     }
   };
-  //   const toggleAnswer = (index) => {
-  //   setShownAnswers((prev) => ({
-  //     ...prev,
-  //     [index]: !prev[index],
-  //   }));
 
-  //   const response = userResponses[index];
-  //   const question = questions[index];
-
-  //   if (!shownAnswers[index] && !explanations[index]) {
-  //     // Main question explanation
-  //     fetchExplanation(
-  //       question,
-  //       response.correctAnswer,
-  //       response.userAnswer,
-  //       index
-  //     );
-
-  //     // Sub-question explanations if present
-  //     if (question.hasSubQuestions && question.subQuestions) {
-  //       question.subQuestions.forEach((subQ, subIndex) => {
-  //         const subResponse = response.subQuestions?.[subIndex] || {};
-
-  //         const explanationKey = `${index}-sub-${subIndex}`; // Unique key for explanation
-
-  //         if (!explanations[explanationKey]) {
-  //           fetchExplanation(
-  //             subQ,
-  //             subResponse.correctAnswer,
-  //             subResponse.userAnswer,
-  //             explanationKey
-  //           );
-  //         }
-  //       });
-  //     }
-  //   }
-  // };
-
-  // const toggleAnswer = (index) => {
-  //   setShownAnswers(prev => ({
-  //     ...prev,
-  //     [index]: !prev[index],
-  //   }));
-
-  //   const response = userResponses[index];
-  //   const question = questions[index];
-
-  //   if (!shownAnswers[index] && !explanations[index]) {
-  //     // Only fetch if explanation isn't already fetched
-  //     fetchExplanation(question, response.correctAnswer, response.userAnswer, index);
-  //   }
-  // };
   const toggleAnswer = (index, subIndex = null) => {
     setShownAnswers(prev => {
       const currentShown = { ...prev };
-
       if (subIndex !== null) {
         const subShown = currentShown[index]?.[subIndex] ?? false;
-
         return {
           ...prev,
           [index]: {
@@ -923,10 +669,8 @@ console.log("Sanitized filteredResponses:", filteredResponses);
         };
       }
     });
-
     const response = userResponses[index];
     const question = questions[index];
-
     if (subIndex !== null) {
       if (!shownAnswers?.[index]?.[subIndex] && !explanations?.[index]?.[subIndex]) {
         const subQuestionText = question.subQuestions[subIndex].question;
@@ -934,9 +678,7 @@ console.log("Sanitized filteredResponses:", filteredResponses);
         const userAnswer = Array.isArray(response.userAnswer)
           ? response.userAnswer[subIndex] ?? "(Skipped)"
           : "(Skipped)";
-
         const fullQuestion = `${question.mainQuestion || question.question} - ${subQuestionText}`;
-
         fetchExplanation(fullQuestion, correctAnswer, userAnswer, index, subIndex);
       }
     } else {
@@ -951,7 +693,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
     }
   };
 
-
   const fetchExplanation = async (question, correctAnswer, userAnswer, index, subIndex = null) => {
     try {
       const result = await verifyAnswerWithGemini(
@@ -959,44 +700,246 @@ console.log("Sanitized filteredResponses:", filteredResponses);
         correctAnswer,
         userAnswer === "(Skipped)" ? "No answer provided by the user." : userAnswer
       );
-
       setExplanations(prev => {
         const newState = { ...prev };
-
         if (subIndex !== null) {
           newState[index] = newState[index] || {};
           newState[index][subIndex] = result.explanation || "No explanation provided.";
         } else {
           newState[index] = result.explanation || "No explanation provided.";
         }
-
         return newState;
       });
     } catch (error) {
       console.error("Failed to fetch explanation:", error);
       setExplanations(prev => {
         const newState = { ...prev };
-
         if (subIndex !== null) {
           newState[index] = newState[index] || {};
           newState[index][subIndex] = "Error fetching explanation.";
         } else {
           newState[index] = "Error fetching explanation.";
         }
-
         return newState;
       });
     }
   };
 
-
-
   if (quizCompleted && quizResults) {
+    // --- START OF CORRECTED SECTION ---
+    const renderQuestionReview = () => {
+        const nonTriviaResponses = quizResults.responses.filter(r => r.type !== "TRIVIA");
+        const totalNonTrivia = nonTriviaResponses.length;
+
+        return quizResults.responses.map((response, index) => {
+            // Use response.questionId as the key if available, otherwise fallback to index
+            const key = response.questionId || `response-${index}`;
+            
+            const question = questions.find((q) => q.id === response.questionId) || questions[index];
+            
+            let isCorrect = false;
+            let isSkipped = false;
+            
+            if (Array.isArray(response)) {
+                const allCorrect = response.every(r => r.isCorrect);
+                const allSkipped = response.every(r => r.skipped);
+                const anyIncorrect = response.some(r => !r.isCorrect && !r.skipped);
+                if (allCorrect) {
+                    isCorrect = true;
+                } else if (allSkipped) {
+                    isSkipped = true;
+                } else if (anyIncorrect) {
+                    isCorrect = false;
+                    isSkipped = false;
+                }
+            } else {
+                isCorrect = response.isCorrect;
+                isSkipped = response.skipped;
+            }
+            
+            const isTrivia = response.type === "TRIVIA";
+            
+            // Calculate the visible index for non-trivia questions
+            const visibleIndex = quizResults.responses
+                .slice(0, index + 1)
+                .filter(r => r.type !== "TRIVIA").length;
+
+            const hasSubQuestions = question?.subQuestions && question.subQuestions.length > 0;
+
+            return (
+                <div
+                    key={key} // --- KEY ADDED HERE ---
+                    className={`question-container ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}
+                >
+                    {/* Header */}
+                    <div className="question-header">
+                        <div>
+                            {!isTrivia && (
+                                <span className="question-number">
+                                    Question {visibleIndex} of {totalNonTrivia}
+                                </span>
+                            )}
+                            <div className="category-name">
+                                {question?.type === "TRIVIA" ? "Trivia" : "Category Name"}
+                            </div>
+                        </div>
+                        {!isTrivia && (
+                            <div className={`answer-status ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}>
+                                <span className={`status-icon ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}>
+                                    {isCorrect ? <FaCheck /> : isSkipped ? <IoPlaySkipForward /> : <FaTimes />}
+                                </span>
+                                {isCorrect ? "Correct Answer" : isSkipped ? "Skipped" : "Incorrect Answer"}
+                            </div>
+                        )}
+                    </div>
+                    {/* Main Question Text */}
+                    <div className="question-body">
+                        {question?.mainQuestion && (
+                            <div className="main-question">
+                                <p dangerouslySetInnerHTML={{ __html: question.mainQuestion }}></p>
+                            </div>
+                        )}
+                        {/* Sub-Questions Rendering */}
+                        {hasSubQuestions ? (
+                            question.subQuestions.map((subQ, subIndex) => {
+                                const userAns = response?.[subIndex]?.userAnswer || "(Skipped)";
+                                const explanation = explanations[index]?.[subIndex] || "";
+                                const show = shownAnswers?.[index]?.[subIndex] || false;
+                                return (
+                                    <div key={subIndex} className="sub-question">
+                                        <div className="quiz-line"></div>
+                                        <p dangerouslySetInnerHTML={{ __html: subQ.question }}></p>
+                                        <div className="answer-section">
+                                            <p>
+                                                <strong>Your Answer:</strong>{" "}
+                                                <span className="user-answer">{userAns}</span>
+                                            </p>
+                                        </div>
+                                        <div className="correct-answer-row">
+                                            <p className="correct-answer-box1">
+                                                <strong className="label">Correct Answer:</strong>{" "}
+                                                <span className="answer-text">
+                                                    {Array.isArray(subQ.correctAnswer)
+                                                        ? subQ.correctAnswer.join(", ")
+                                                        : subQ.correctAnswer}
+                                                </span>
+                                            </p>
+                                            <button
+                                                className={`show-answer-button ${show ? 'active' : ''}`}
+                                                onClick={() => toggleAnswer(index, subIndex)}
+                                            >
+                                                {show ? (
+                                                    <>
+                                                        <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
+                                                        Hide Explanation?
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <FaEye size={20} style={{ marginRight: "5px" }} />
+                                                        Show Explanation?
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
+                                        {show && (
+                                            <div className="explanation">
+                                                {!explanation ? (
+                                                    <p>⏳ Loading explanation...</p>
+                                                ) : (
+                                                    explanation.split('\n').filter(Boolean).map((line, idx) => (
+                                                        <p key={idx}>{line}</p>
+                                                    ))
+                                                )}
+                                                <p className="final-answer">
+                                                    ✅ <strong>Final Answer:</strong>{" "}
+                                                    {Array.isArray(subQ.correctAnswer)
+                                                        ? subQ.correctAnswer.join(", ")
+                                                        : subQ.correctAnswer}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })
+                        ) : (
+                            // Single Question Block
+                            <>
+                                <div className="question-content">
+                                    <p dangerouslySetInnerHTML={{ __html: question?.question }}></p>
+                                </div>
+                                {!isTrivia && (
+                                    <>
+                                        <div className="quiz-line"></div>
+                                        <div className="answer-section">
+                                            <p>
+                                                <strong>Your Answer:</strong>{" "}
+                                                <span className="user-answer">
+                                                    {response.userAnswer || "—"}
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div className="correct-answer-row">
+                                            <p className="correct-answer-box1">
+                                                <strong className="label">Correct Answer:</strong>{" "}
+                                                <span className="answer-text">
+                                                    {Array.isArray(response.correctAnswer)
+                                                        ? response.correctAnswer.join(", ")
+                                                        : typeof response.correctAnswer === "object" && response.correctAnswer.text
+                                                            ? response.correctAnswer.text
+                                                            : response.correctAnswer}
+                                                </span>
+                                            </p>
+                                            <button
+                                                className={`show-answer-button ${shownAnswers[index] ? 'active' : ''}`}
+                                                onClick={() => toggleAnswer(index)}
+                                            >
+                                                {shownAnswers[index] ? (
+                                                    <>
+                                                        <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
+                                                        Hide Explanation?
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <FaEye size={20} style={{ marginRight: "5px" }} />
+                                                        Show Explanation?
+                                                    </>
+                                                )}
+                                            </button>
+                                        </div>
+                                        {shownAnswers[index] && (
+                                            <div className="explanation">
+                                                {!explanations[index] ? (
+                                                    <p>⏳ Loading explanation...</p>
+                                                ) : (
+                                                    explanations[index].split('\n').filter(Boolean).map((line, idx) => (
+                                                        <p key={idx}>{line}</p>
+                                                    ))
+                                                )}
+                                                <p className="final-answer">
+                                                    ✅ <strong>Final Answer:</strong>{" "}
+                                                    {Array.isArray(response.correctAnswer)
+                                                        ? response.correctAnswer.join(", ")
+                                                        : typeof response.correctAnswer === "object" && response.correctAnswer.text
+                                                            ? response.correctAnswer.text
+                                                            : response.correctAnswer}
+                                                </p>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </div>
+                </div>
+            );
+        });
+    };
+    // --- END OF CORRECTED SECTION ---
+
     return (
       <div className="container">
         <div className="quizContainer resultsContainer">
           <h1 className="resultsTitle">Quiz Results</h1>
-
           <div className="scoreCard">
             <div className="progressRingWrapper">
               <svg className="progressRing" width="100" height="100">
@@ -1020,7 +963,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
                   style={{ stroke: getScoreDetails(quizResults.score).color }}
                 />
               </svg>
-
               {/* This is the center circle with the emoji */}
               <div className="emojiCenterCircle">
                 <img
@@ -1030,7 +972,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
                 />
               </div>
             </div>
-
             <div className="scoreDetails">
               <div
                 className="scoreValue"
@@ -1047,261 +988,21 @@ console.log("Sanitized filteredResponses:", filteredResponses);
               </p>
             </div>
           </div>
-
           <div className="questionReview">
             <h2>Question Review</h2>
-            {quizResults.responses
-              .filter((response) => response.type !== "TRIVIA") // ⚠️ Exclude TRIVIA from total count
-              .map((_, index) => (
-                <></> // just mapping to calculate total count
-              ))}
-
-
-            {quizResults.responses.map((response, index) => {
-              const question = questions.find((q) => q.id === response.questionId) || questions[index];
-              // const isCorrect = response.isCorrect;
-              // const isSkipped = response.skipped;
-              let isCorrect = false;
-              let isSkipped = false;
-
-              if (Array.isArray(response)) {
-                const allCorrect = response.every(r => r.isCorrect);
-                const allSkipped = response.every(r => r.skipped);
-                const anyIncorrect = response.some(r => !r.isCorrect && !r.skipped);
-
-                if (allCorrect) {
-                  isCorrect = true;
-                } else if (allSkipped) {
-                  isSkipped = true;
-                } else if (anyIncorrect) {
-                  isCorrect = false;
-                  isSkipped = false;
-                }
-              } else {
-                isCorrect = response.isCorrect;
-                isSkipped = response.skipped;
-              }
-
-              const isTrivia = response.type === "TRIVIA";
-              const visibleIndex = quizResults.responses
-                .filter((r, i) => i <= index && r.type !== "TRIVIA").length;
-
-              const hasSubQuestions = question?.subQuestions && question.subQuestions.length > 0;
-
-              return (
-                <div
-                  key={index}
-                  className={`question-container ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}
-                >
-                  {/* Header */}
-                  <div className="question-header">
-                    <div>
-                      {!isTrivia && (
-                        <span className="question-number">
-                          Question {visibleIndex} of {
-                            quizResults.responses.filter(r => r.type !== "TRIVIA").length
-                          }
-                        </span>
-                      )}
-                      <div className="category-name">
-                        {question?.type === "TRIVIA" ? "Trivia" : "Category Name"}
-                      </div>
-                    </div>
-                    {!isTrivia && (
-                      <div className={`answer-status ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}>
-                        <span className={`status-icon ${isCorrect ? "correct" : isSkipped ? "skipped" : "incorrect"}`}>
-                          {isCorrect ? <FaCheck /> : isSkipped ? <IoPlaySkipForward /> : <FaTimes />}
-                        </span>
-                        {isCorrect ? "Correct Answer" : isSkipped ? "Skipped" : "Incorrect Answer"}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Main Question Text */}
-                  <div className="question-body">
-                    {question?.mainQuestion && (
-                      <div className="main-question">
-                        <p dangerouslySetInnerHTML={{ __html: question.mainQuestion }}></p>
-                      </div>
-                    )}
-
-                    {/* Sub-Questions Rendering */}
-                    {hasSubQuestions ? (
-                      question.subQuestions.map((subQ, subIndex) => {
-
-                        // const userAns = response.userAnswer;
-                        const userAns = response?.[subIndex]?.userAnswer || "(Skipped)";
-
-
-                        const explanation = explanations[index]?.[subIndex] || "";
-                        const show = shownAnswers?.[index]?.[subIndex] || false;
-
-
-                        return (
-                          <div key={subIndex} className="sub-question">
-                            <div className="quiz-line"></div>
-                            <p dangerouslySetInnerHTML={{ __html: subQ.question }}></p>
-
-                            <div className="answer-section">
-                              <p>
-                                <strong>Your Answer:</strong>{" "}
-                                <span className="user-answer">{userAns}</span>
-                              </p>
-                            </div>
-
-                            <div className="correct-answer-row">
-                              <p className="correct-answer-box1">
-                                <strong className="label">Correct Answer:</strong>{" "}
-                                <span className="answer-text">
-                                  {Array.isArray(subQ.correctAnswer)
-                                    ? subQ.correctAnswer.join(", ")
-                                    : subQ.correctAnswer}
-                                </span>
-                              </p>
-                              <button
-                                className={`show-answer-button ${show ? 'active' : ''}`}
-                                onClick={() => toggleAnswer(index, subIndex)}
-                              >
-                                {show ? (
-                                  <>
-                                    <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
-                                    Hide Explanation?
-                                  </>
-                                ) : (
-                                  <>
-                                    <FaEye size={20} style={{ marginRight: "5px" }} />
-                                    Show Explanation?
-                                  </>
-                                )}
-                              </button>
-                            </div>
-
-                            {show && (
-                              <div className="explanation">
-                                {!explanation ? (
-                                  <p>⏳ Loading explanation...</p>
-                                ) : (
-                                  explanation.split('\n').filter(Boolean).map((line, idx) => (
-                                    <p key={idx}>{line}</p>
-                                  ))
-                                )}
-                                <p className="final-answer">
-                                  ✅ <strong>Final Answer:</strong>{" "}
-                                  {Array.isArray(subQ.correctAnswer)
-                                    ? subQ.correctAnswer.join(", ")
-                                    : subQ.correctAnswer}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })
-                    ) : (
-                      // Single Question Block
-                      <>
-                        <div className="question-content">
-                          <p dangerouslySetInnerHTML={{ __html: question?.question }}></p>
-                        </div>
-
-                        {!isTrivia && (
-                          <>
-                            <div className="quiz-line"></div>
-                            <div className="answer-section">
-                              <p>
-                                <strong>Your Answer:</strong>{" "}
-                                <span className="user-answer">
-                                  {response.userAnswer || "—"}
-                                </span>
-                              </p>
-                            </div>
-
-                            <div className="correct-answer-row">
-                              <p className="correct-answer-box1">
-                                <strong className="label">Correct Answer:</strong>{" "}
-                                <span className="answer-text">
-                                  {Array.isArray(response.correctAnswer)
-                                    ? response.correctAnswer.join(", ")
-                                    : typeof response.correctAnswer === "object" && response.correctAnswer.text
-                                      ? response.correctAnswer.text
-                                      : response.correctAnswer}
-                                </span>
-                              </p>
-                              <button
-                                className={`show-answer-button ${shownAnswers[index] ? 'active' : ''}`}
-                                onClick={() => toggleAnswer(index)}
-                              >
-                                {shownAnswers[index] ? (
-                                  <>
-                                    <FaEyeSlash size={20} style={{ marginRight: "5px" }} />
-                                    Hide Explanation?
-                                  </>
-                                ) : (
-                                  <>
-                                    <FaEye size={20} style={{ marginRight: "5px" }} />
-                                    Show Explanation?
-                                  </>
-                                )}
-                              </button>
-                            </div>
-
-                            {shownAnswers[index] && (
-                              <div className="explanation">
-                                {!explanations[index] ? (
-                                  <p>⏳ Loading explanation...</p>
-                                ) : (
-                                  explanations[index].split('\n').filter(Boolean).map((line, idx) => (
-                                    <p key={idx}>{line}</p>
-                                  ))
-                                )}
-                                <p className="final-answer">
-                                  ✅ <strong>Final Answer:</strong>{" "}
-                                  {Array.isArray(response.correctAnswer)
-                                    ? response.correctAnswer.join(", ")
-                                    : typeof response.correctAnswer === "object" && response.correctAnswer.text
-                                      ? response.correctAnswer.text
-                                      : response.correctAnswer}
-                                </p>
-                              </div>
-                            )}
-                          </>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-
+            {/* Render the question review items */}
+            {renderQuestionReview()}
           </div>
-          {/* <p className="correct-answer-box">
-                        <strong className="label">Correct Answer:</strong>
-                        <span className="answer-text">
-                          {Array.isArray(response.correctAnswer)
-                            ? response.correctAnswer.join(", ")
-                            : typeof response.correctAnswer === "object" &&
-                              response.correctAnswer.text
-                            ? response.correctAnswer.text
-                            : response.correctAnswer}
-                        </span>
-                      </p>  */}
-          {/* Show/Hide Answer Button */}
-          {/* Hurray, Practice for today is Completed */}
-
-          {/* <div className="actionButtons">
-            <button onClick={handleBackToHome} className="homeButton">
-              Submit
-            </button>
-          </div> */}
         </div>
       </div>
     );
   }
+
   const handlePreviousQuestion = () => {
     setShowAnswerError(false);
     if (currentQuestionIndex > 0) {
       const prevIndex = currentQuestionIndex - 1;
       setCurrentQuestionIndex(prevIndex);
-
       // Optionally remove from skipped list when going back
       setSkippedQuestions((prev) =>
         prev.filter((index) => index !== prevIndex)
@@ -1323,14 +1024,11 @@ console.log("Sanitized filteredResponses:", filteredResponses);
     const value = e.target.value;
     const updatedAnswers = [...(selectedAnswers[currentQuestionIndex] || [])];
     updatedAnswers[subIndex] = value;
-
     setSelectedAnswers({
       ...selectedAnswers,
       [currentQuestionIndex]: updatedAnswers,
     });
   };
-
-
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -1340,7 +1038,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
       .slice(0, currentQuestionIndex + 1)
       .filter((q) => q.type !== "TRIVIA").length - 1;
   const isTriviaQuestion = currentQuestion.type === "TRIVIA";
-
   // Calculate progress percentage
   const progressPercentage =
     ((currentQuestionIndex + 1) / questions.length) * 100;
@@ -1369,21 +1066,18 @@ console.log("Sanitized filteredResponses:", filteredResponses);
               />
             </p>
           </div>
-
           <QuestionProgress
             currentQuestionIndex={currentQuestionIndex}
             questions={questions}
             skippedQuestions={skippedQuestions}
           />
         </div>
-
         <div className="progressBarContainer">
           <div
             className="progressBar"
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
-
         {/* Display question image if available */}
         {currentQuestion.questionImage ? (
           <img
@@ -1392,7 +1086,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
             className="questionImage"
           />
         ) : null}
-
         <div className="questionContainer">
           {!isTriviaQuestion && (
             <div className="questionNumberStyled">
@@ -1400,13 +1093,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
               <span>Question No: {displayQuestionIndex + 1}</span>
             </div>
           )}
-          {/*  <h2 className="questionText">
-            {isTriviaQuestion && <span className="triviaTag">Trivia</span>}
-            <br />
-            {isHTML(currentQuestion.question)
-              ? parse(currentQuestion.question)
-              : currentQuestion.question}
-          </h2>*/}
           {currentQuestion.mainQuestion ? (
             <div className="multiQuestionContainer">
               <h2 className="questionText">
@@ -1414,13 +1100,11 @@ console.log("Sanitized filteredResponses:", filteredResponses);
                   ? parse(currentQuestion.mainQuestion)
                   : currentQuestion.mainQuestion}
               </h2>
-
               {currentQuestion.subQuestions?.map((sub, index) => (
                 <div key={index} className="subQuestionBlock">
                   <div className="subQuestionText">
                     {isHTML(sub.question) ? parse(sub.question) : sub.question}
                   </div>
-
                   {sub.type === "MCQ" && Array.isArray(sub.options) && (
                     <ul className="optionsList">
                       {sub.options.map((opt, optIndex) => {
@@ -1438,7 +1122,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
                       })}
                     </ul>
                   )}
-
                   {sub.type === "FILL_IN_THE_BLANKS" && (
                     <div className="fillBlankContainer">
                       <input
@@ -1462,9 +1145,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
                 : currentQuestion.question}
             </h2>
           )}
-
-
-
           {currentQuestion.type === "FILL_IN_THE_BLANKS" ? (
             <div className="fillBlankContainer">
               <input
@@ -1530,7 +1210,6 @@ console.log("Sanitized filteredResponses:", filteredResponses);
               </button>
             )}
           </div>
-
           {/* Right side - Skip and Next Buttons */}
           <div className="rightButtons">
             {!isTriviaQuestion && (

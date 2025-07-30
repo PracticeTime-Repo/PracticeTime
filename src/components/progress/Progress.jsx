@@ -206,93 +206,193 @@ const Progress = () => {
     fetchUserData();
   }, []);
 
-  useEffect(() => {
-    const fetchAllQuestionDetails = async () => {
-      if (!userData?.quizResults) {
-        console.log("No quiz results to fetch question details for");
-        setQuestionDetails({});
-        setQuestionDetailsLoading(false);
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchAllQuestionDetails = async () => {
+  //     if (!userData?.quizResults) {
+  //       console.log("No quiz results to fetch question details for");
+  //       setQuestionDetails({});
+  //       setQuestionDetailsLoading(false);
+  //       return;
+  //     }
 
-      setQuestionDetailsLoading(true);
+  //     setQuestionDetailsLoading(true);
 
-      const cachedQuestions = localStorage.getItem("questionDetails");
-      const newQuestionDetails = cachedQuestions
-        ? JSON.parse(cachedQuestions)
-        : {};
+  //     const cachedQuestions = localStorage.getItem("questionDetails");
+  //     console.log("cachedQuestions",cachedQuestions);
+      
+  //     const newQuestionDetails = cachedQuestions
+  //       ? JSON.parse(cachedQuestions)
+  //       : {};
 
-      try {
-        const allQuestionIds = new Set();
-        Object.values(userData.quizResults).forEach((quiz) => {
-          if (quiz.responses) {
-            quiz.responses.forEach((response) => {
-              allQuestionIds.add(response.questionId);
-            });
-          }
-        });
+  //     try {
+  //       const allQuestionIds = new Set();
+  //       Object.values(userData.quizResults).forEach((quiz) => {
+  //         if (quiz.responses) {
+  //           quiz.responses.forEach((response) => {
+  //             allQuestionIds.add(response.questionId);
+  //           });
+  //         }
+  //       });
 
-        console.log("Total unique question IDs to fetch:", allQuestionIds.size);
+  //       console.log("Total unique question IDs to fetch:", allQuestionIds.size);
 
-        const questionIdsToFetch = Array.from(allQuestionIds).filter(
-          (questionId) => !newQuestionDetails[questionId]
+  //       const questionIdsToFetch = Array.from(allQuestionIds).filter(
+  //         (questionId) => !newQuestionDetails[questionId]
+  //       );
+
+  //       if (questionIdsToFetch.length > 0) {
+  //         console.log("Fetching uncached question IDs:", questionIdsToFetch);
+
+  //         const questionsRef = firebaseServices.ref(
+  //           firebaseServices.db,
+  //           "questions"
+  //         );
+  //         const snapshot = await firebaseServices.get(questionsRef);
+
+  //         if (snapshot.exists()) {
+  //           const allQuestions = snapshot.val();
+  //           console.log("Fetched all questions:", allQuestions);
+
+  //           for (const questionId of questionIdsToFetch) {
+  //             if (allQuestions[questionId]) {
+  //               newQuestionDetails[questionId] = allQuestions[questionId];
+  //             } else {
+  //               newQuestionDetails[questionId] = {
+  //                 question: "Question not found",
+  //               };
+  //               console.log(`Question ${questionId} not found in /questions`);
+  //             }
+  //           }
+  //         } else {
+  //           console.log("No questions found at /questions");
+  //           for (const questionId of questionIdsToFetch) {
+  //             newQuestionDetails[questionId] = {
+  //               question: "Question not found",
+  //             };
+  //           }
+  //         }
+
+  //         localStorage.setItem(
+  //           "questionDetails",
+  //           JSON.stringify(newQuestionDetails)
+  //         );
+  //       } else {
+  //         console.log("All questions already in cache");
+  //       }
+
+  //       setQuestionDetails(newQuestionDetails);
+  //     } catch (err) {
+  //       console.error("Error fetching all question details:", err);
+  //       setQuestionDetails((prev) => ({
+  //         ...prev,
+  //         error: "Error fetching questions",
+  //       }));
+  //     } finally {
+  //       setQuestionDetailsLoading(false);
+  //     }
+  //   };
+
+  //   fetchAllQuestionDetails();
+  // }, [userData]);
+useEffect(() => {
+  const fetchAllQuestionDetails = async () => {
+    if (!userData?.quizResults) {
+      console.log("No quiz results to fetch question details for");
+      setQuestionDetails({});
+      setQuestionDetailsLoading(false);
+      return;
+    }
+
+    setQuestionDetailsLoading(true);
+
+    const cachedQuestions = localStorage.getItem("questionDetails");
+    console.log("cachedQuestions", cachedQuestions);
+
+    const newQuestionDetails = cachedQuestions
+      ? JSON.parse(cachedQuestions)
+      : {};
+
+    // ✅ NEW: Log comparison between cached questions and required question IDs
+    const cachedQuestionIds = new Set(Object.keys(newQuestionDetails));
+    console.log("Cached Question IDs:", cachedQuestionIds);
+
+    try {
+      const allQuestionIds = new Set();
+      Object.values(userData.quizResults).forEach((quiz) => {
+        if (quiz.responses) {
+          quiz.responses.forEach((response) => {
+            allQuestionIds.add(response.questionId);
+          });
+        }
+      });
+
+      console.log("Total unique question IDs to fetch:", allQuestionIds.size);
+      console.log("Required Question IDs:", allQuestionIds);
+
+      // ✅ NEW: Check which IDs are missing
+      const missingQuestionIds = Array.from(allQuestionIds).filter(
+        (id) => !cachedQuestionIds.has(id)
+      );
+      console.log("Missing Question IDs (not in cache):", missingQuestionIds);
+
+      const questionIdsToFetch = Array.from(allQuestionIds).filter(
+        (questionId) => !newQuestionDetails[questionId]
+      );
+
+      if (questionIdsToFetch.length > 0) {
+        console.log("Fetching uncached question IDs:", questionIdsToFetch);
+
+        const questionsRef = firebaseServices.ref(
+          firebaseServices.db,
+          "questions"
         );
+        const snapshot = await firebaseServices.get(questionsRef);
 
-        if (questionIdsToFetch.length > 0) {
-          console.log("Fetching uncached question IDs:", questionIdsToFetch);
+        if (snapshot.exists()) {
+          const allQuestions = snapshot.val();
+          console.log("Fetched all questions:", allQuestions);
 
-          const questionsRef = firebaseServices.ref(
-            firebaseServices.db,
-            "questions"
-          );
-          const snapshot = await firebaseServices.get(questionsRef);
-
-          if (snapshot.exists()) {
-            const allQuestions = snapshot.val();
-            console.log("Fetched all questions:", allQuestions);
-
-            for (const questionId of questionIdsToFetch) {
-              if (allQuestions[questionId]) {
-                newQuestionDetails[questionId] = allQuestions[questionId];
-              } else {
-                newQuestionDetails[questionId] = {
-                  question: "Question not found",
-                };
-                console.log(`Question ${questionId} not found in /questions`);
-              }
-            }
-          } else {
-            console.log("No questions found at /questions");
-            for (const questionId of questionIdsToFetch) {
+          for (const questionId of questionIdsToFetch) {
+            if (allQuestions[questionId]) {
+              newQuestionDetails[questionId] = allQuestions[questionId];
+            } else {
               newQuestionDetails[questionId] = {
                 question: "Question not found",
               };
+              console.log(`Question ${questionId} not found in /questions`);
             }
           }
-
-          localStorage.setItem(
-            "questionDetails",
-            JSON.stringify(newQuestionDetails)
-          );
         } else {
-          console.log("All questions already in cache");
+          console.log("No questions found at /questions");
+          for (const questionId of questionIdsToFetch) {
+            newQuestionDetails[questionId] = {
+              question: "Question not found",
+            };
+          }
         }
 
-        setQuestionDetails(newQuestionDetails);
-      } catch (err) {
-        console.error("Error fetching all question details:", err);
-        setQuestionDetails((prev) => ({
-          ...prev,
-          error: "Error fetching questions",
-        }));
-      } finally {
-        setQuestionDetailsLoading(false);
+        localStorage.setItem(
+          "questionDetails",
+          JSON.stringify(newQuestionDetails)
+        );
+      } else {
+        console.log("All questions already in cache");
       }
-    };
 
-    fetchAllQuestionDetails();
-  }, [userData]);
+      setQuestionDetails(newQuestionDetails);
+    } catch (err) {
+      console.error("Error fetching all question details:", err);
+      setQuestionDetails((prev) => ({
+        ...prev,
+        error: "Error fetching questions",
+      }));
+    } finally {
+      setQuestionDetailsLoading(false);
+    }
+  };
 
+  fetchAllQuestionDetails();
+}, [userData]);
   const calculateOverallProgress = () => {
   console.log("userData", userData);
 
@@ -336,6 +436,8 @@ const Progress = () => {
   };
 
   const calculateCategoryProgress = (userData, questionDetails, mathData) => {
+    console.log('questionDetails',questionDetails);
+    
     const categories = {
       "Number Systems": { attempted: 0, correct: 0 },
       Operations: { attempted: 0, correct: 0 },
