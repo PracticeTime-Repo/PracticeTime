@@ -277,10 +277,25 @@ Explanation:
   };
 
   // Legacy answer verification function (kept for backward compatibility)
-  const isAnswerCorrect = (userAnswer, correctAnswer) => {
-    return fallbackVerification(userAnswer, correctAnswer);
-  };
+  // const isAnswerCorrect = (userAnswer, correctAnswer) => {
+  //   return fallbackVerification(userAnswer, correctAnswer);
+  // };
 
+  const isAnswerCorrect = (userAnswer, correctAnswer, options) => {
+  if (!options || !Array.isArray(options)) {
+    return fallbackVerification(userAnswer, correctAnswer);
+  }
+  const labelToValue = {};
+  options.forEach((option, index) => {
+    const label = String.fromCharCode(65 + index);
+    labelToValue[label] = typeof option === 'string' ? option : option.text;
+  });
+  const correctLabel = correctAnswer?.toString().trim().toUpperCase();
+  const expectedValue = labelToValue[correctLabel];
+  const normalizedUserAnswer = normalizeAnswer(userAnswer);
+  const normalizedExpectedValue = normalizeAnswer(expectedValue);
+  return normalizedUserAnswer === normalizedExpectedValue;
+};
   const [showAnswerError, setShowAnswerError] = useState(false);
   const handleNextClick = () => {
     const currentAnswer = selectedAnswers[currentQuestionIndex];
@@ -348,7 +363,12 @@ Explanation:
                 type: sub.type,
               };
             } else if (sub.type === "MCQ") {
-              const isCorrectMCQ = isAnswerCorrect(userAns, correctAns);
+              // const isCorrectMCQ = isAnswerCorrect(userAns, correctAns);
+              const isCorrectMCQ = isAnswerCorrect(
+    userAns,
+    sub.correctAnswer,
+    sub.options
+  );
               console.log(`Verification Result for MCQ [${sub.id}]:`, {
                 isCorrect: isCorrectMCQ
               });
@@ -378,7 +398,12 @@ Explanation:
           isCorrect = result.isCorrect;
           explanation = result.explanation;
         } else if (currentQuestion.type === "MCQ" && currentAnswer) {
-          isCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correctAnswer);
+          // isCorrect = isAnswerCorrect(currentAnswer, currentQuestion.correctAnswer);
+          isCorrect = isAnswerCorrect(
+    currentAnswer,
+    currentQuestion.correctAnswer,
+    currentQuestion.options
+  );
           console.log("MCQ Answer Check:", {
             userAnswer: currentAnswer,
             correctAnswer: currentQuestion.correctAnswer,
@@ -692,6 +717,7 @@ const handleQuizComplete = async (responses) => { // 'responses' is the array of
       }
     }
   };
+  
 
   const fetchExplanation = async (question, correctAnswer, userAnswer, index, subIndex = null) => {
     try {
